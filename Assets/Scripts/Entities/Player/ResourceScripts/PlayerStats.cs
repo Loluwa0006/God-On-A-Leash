@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerStats", menuName = "Scriptable Objects/PlayerStats")]
+[CreateAssetMenu(fileName = "StatsManager", menuName = "Scriptable Objects/StatsManager")]
 public class PlayerStats : ScriptableObject
 {
     [System.Serializable]
@@ -19,7 +19,7 @@ public class PlayerStats : ScriptableObject
     [SerializeField] float moveSpeed = 15;
     public float MoveSpeed { get => moveSpeed; private set => moveSpeed = value; }
     #endregion
-    #region GroundMovement
+     #region GroundMovement
     [Header("Ground Movement")]
     [SerializeField] float groundAcceleration = 15 / 7.0f;
     public float GroundAcceleration { get => groundAcceleration; private set => groundAcceleration = value; }
@@ -176,7 +176,7 @@ public class PlayerStats : ScriptableObject
     public float PreviousSpeedToRailSpeedRatio { get => previousSpeedToRailSpeedRatio; }
     #endregion
     #region Squashbuckler
-    [Header("Squashbuckler")]
+    [Header("SquashbucklerPower")]
     [SerializeField] int chargesToEnterSquashbucklerMode = 3;
 
     public int ChargesToEnterSquashbucklerMode { get => chargesToEnterSquashbucklerMode; }
@@ -248,10 +248,28 @@ public class PlayerStats : ScriptableObject
 
     public int MaxDragonslashDamage { get => maxDragonslashDamage; }
     #endregion
+    #region Anarchy
+        [Header("Anarchy")]
+    [SerializeField] int uniqueAnarchyOptionCountToClearScaling = 2;
+    public int UniqueAnarchyOptionCountToClearScaling { get => uniqueAnarchyOptionCountToClearScaling; }
+
+    [SerializeField, Range(0, 1)] float anarchyScalingGenerationReductionAmount = 0.1f;
+
+    public float AnarchyScalingGenerationReductionAmount { get => anarchyScalingGenerationReductionAmount;}
+    [SerializeField] float generationPerAnarchyOption = 30.0f;
+    public float GenerationPerAnarchyOption { get => generationPerAnarchyOption;}
+
+    [SerializeField] int baseAnarchyDecayRate = 150;
+    public int BaseAnarchyDecayRate { get => baseAnarchyDecayRate;}
+
+    [SerializeField] int minAnarchyDecayRate = 30;
+
+    public int MinAnarchyDecayRate { get => minAnarchyDecayRate; }
+    #endregion
     #region Misc
     [Header("Invulnerablity")]
     [SerializeField] int extraInvulnerabilityFramesAfterHit = 45;
 
-    public int ExtraInvulnerablityFramesAfterHit { get => extraInvulnerabilityFramesAfterHit;}
+    public int ExtraInvulnerabilityFramesAfterHit { get => extraInvulnerabilityFramesAfterHit;}
     #endregion
 }

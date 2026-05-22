@@ -42,7 +42,7 @@ public class PlayerDragonslashState : PlayerBaseState
             return;
         }
         Player.RigidBody.linearVelocity = initialSpeed * viewCamera.transform.forward;
-        CalculateDamage(Player.PlayerStats.MinDragonslashDamage, Player.PlayerStats.MaxDragonslashDamage, Player.PlayerStats.SpeedToDragonslashDamageCurve);
+        CalculateDamage((int) Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinDragonslashDamage),(int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxDragonslashDamage), Player.StatsManager.BaseStats.SpeedToDragonslashDamageCurve);
     }
     public override void Process()
     {

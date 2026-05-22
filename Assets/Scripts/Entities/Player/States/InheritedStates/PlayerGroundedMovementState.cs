@@ -31,10 +31,10 @@ public class PlayerGroundedMovementState : PlayerBaseState
         Vector2 currentSpeed =  new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z);
     
         Vector3 moveDirection = movementDirection.x * viewCamera.transform.right + movementDirection.y * viewCamera.transform.forward;
-        Vector2 lateralAddition = new Vector2(moveDirection.x * Player.PlayerStats.GroundAcceleration, moveDirection.z * Player.PlayerStats.GroundAcceleration);
+        Vector2 lateralAddition = new Vector2(moveDirection.x * Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.GroundAcceleration), moveDirection.z * Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.GroundAcceleration));
         
 
-        if (currentSpeed.magnitude >= Player.PlayerStats.MoveSpeed)
+        if (currentSpeed.magnitude >= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MoveSpeed))
         {
             var speedNormalized = currentSpeed.normalized;
             var extraSpeed = Vector2.Dot(lateralAddition, speedNormalized);

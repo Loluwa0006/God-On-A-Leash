@@ -13,9 +13,9 @@ public class PlayerShadowstepState : PlayerBaseState
         base.Enter(message);
         startedAtMaxCharge = Player.SquashbucklerManager.SquashbucklerCharge == Player.SquashbucklerManager.MaxCharge;
         initialSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
-        if (initialSpeed < Player.PlayerStats.MinimumShadowstepSpeed) initialSpeed = Player.PlayerStats.MinimumShadowstepSpeed;
-        durationTracker = Player.PlayerStats.DurationPerSquashbucklerCharge * Player.PlayerStats.ChargesToEnterSquashbucklerMode;
-        Player.SquashbucklerManager.SquashbucklerCharge -= Player.PlayerStats.ChargesToEnterSquashbucklerMode;
+        if (initialSpeed < Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinimumShadowstepSpeed)) initialSpeed = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinimumShadowstepSpeed);
+        durationTracker = (int)(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.DurationPerSquashbucklerCharge) * Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.ChargesToEnterSquashbucklerMode));
+        Player.SquashbucklerManager.SquashbucklerCharge -= (int) Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.ChargesToEnterSquashbucklerMode);
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Squashbuckler].Consume();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].Consume(); //prevent accidental dragonslashes
     }
@@ -27,7 +27,7 @@ public class PlayerShadowstepState : PlayerBaseState
         if (durationTracker == 0)
         {
             Player.SquashbucklerManager.SquashbucklerCharge--;
-            durationTracker = Player.PlayerStats.DurationPerSquashbucklerCharge;
+            durationTracker = (int) Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.DurationPerSquashbucklerCharge);
             if (!Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Squashbuckler].ActionPressed)
             {
                 FallFromShadowstep();
@@ -64,7 +64,7 @@ public class PlayerShadowstepState : PlayerBaseState
     }
     public override bool StateAvailable()
     {
-        return Player.SquashbucklerManager.SquashbucklerCharge > Player.PlayerStats.ChargesToEnterSquashbucklerMode 
+        return Player.SquashbucklerManager.SquashbucklerCharge > (int) Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.ChargesToEnterSquashbucklerMode) 
                && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Squashbuckler].Buffered;
     }
 }

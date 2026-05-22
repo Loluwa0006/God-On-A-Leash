@@ -48,21 +48,23 @@ public class PlayerSwingState : PlayerAirState
     {
         base.PhysicsProcess();
         float gravity;
-        if (Player.RigidBody.linearVelocity.y > 0) gravity = Player.PlayerStats.SwingJumpInfo.JumpGravity;
-        else gravity = Player.PlayerStats.SwingJumpInfo.FallGravity;
+        if (Player.RigidBody.linearVelocity.y > 0) gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SwingRiseGravity);
+        else gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SwingFallGravity);
         if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Jump].Buffered)
         {
             PerformSwingJump();
             return;
         }
         ApplyGravity(gravity);
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.PlayerStats.SwingAcceleration);
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SwingAcceleration));
     }
 
     void PerformSwingJump()
     {
-        var jumpVelocity = Player.RigidBody.linearVelocity.normalized * (Player.PlayerStats.SwingJumpInfo.JumpVelocity + (Player.PlayerStats.SwingSpeedToJumpPowerRatio * Player.RigidBody.linearVelocity.magnitude));
-        if (jumpVelocity.y < Player.PlayerStats.MinSwingJumpHeight) jumpVelocity.y = Player.PlayerStats.MinSwingJumpHeight;
+        var jumpVelocity = Player.RigidBody.linearVelocity.normalized * (Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SwingJumpPower) + (Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SwingSpeedToJumpPowerRatio) * Player.RigidBody.linearVelocity.magnitude));
+        //var jumpVelocity = Player.RigidBody.linearVelocity.normalized * (Player.StatsManager.SwingJumpInfo.JumpVelocity + (Player.StatsManager.SwingSpeedToJumpPowerRatio * Player.RigidBody.linearVelocity.magnitude));
+        float minSwingJumpHeight = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinSwingJumpHeight);
+        if (jumpVelocity.y < minSwingJumpHeight) jumpVelocity.y = minSwingJumpHeight;
         Player.RigidBody.AddForce(jumpVelocity, ForceMode.VelocityChange);
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Jump].Consume();
         StateMachine.TransitionTo<PlayerFallState>();        

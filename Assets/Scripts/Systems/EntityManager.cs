@@ -7,6 +7,12 @@ public class EntityManager : MonoBehaviour
     Dictionary<IDComponent, BaseEntity> entityRegistry = new ();
     List<BaseEntity> entityList = new();
     public int PlayerID { get; set; }
+
+    public bool UpdateSpecificEntitiesOnly { get; private set; }
+
+    public float TimeScale { get; private set; }
+
+    List<BaseEntity> specificEntitiesToUpdate = new();
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -44,22 +50,50 @@ public class EntityManager : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        foreach (var entity in entityList)
+        if (UpdateSpecificEntitiesOnly)
         {
-            if (entity.enabled)
+            foreach (var entity in specificEntitiesToUpdate)
             {
-                entity.PhysicsProcess();
+                Debug.Log($"Physics update for specific entity: {entity.name}");
+                if (entity.enabled)
+                {
+                    entity.PhysicsProcess();
+                }
+            }
+        }
+        else
+        {
+            foreach (var entity in entityList)
+            {
+                if (entity.enabled)
+                {
+                    entity.PhysicsProcess();
+                }
             }
         }
     }
 
     private void Update()
     {
-        foreach (var entity in entityList)
+        if (UpdateSpecificEntitiesOnly)
         {
-            if (entity.enabled)
+            foreach (var entity in specificEntitiesToUpdate)
             {
-                entity.Process();
+                Debug.Log($"Update for specific entity: {entity.name}");
+                if (entity.enabled)
+                {
+                    entity.Process();
+                }
+            }
+        }
+        else
+        {
+            foreach (var entity in entityList)
+            {
+                if (entity.enabled)
+                {
+                    entity.Process();
+                }
             }
         }
     }
@@ -81,5 +115,19 @@ public class EntityManager : MonoBehaviour
             entityRegistry.Add(entity.IDComponent, entity);
             entityList.Add(entity);
         }
+    }
+
+    public void ActivateSpecificEntityUpdateMode(params BaseEntity[] entities)
+    {
+        specificEntitiesToUpdate.Clear();
+        specificEntitiesToUpdate.AddRange(entities);
+        UpdateSpecificEntitiesOnly = true;
+        Debug.Log($"Activated specific entity update mode for {entities.Length} entities.");
+    }
+
+    public void DeactivateSpecificEntityUpdateMode()
+    {
+        specificEntitiesToUpdate.Clear();
+        UpdateSpecificEntitiesOnly = false;
     }
 }

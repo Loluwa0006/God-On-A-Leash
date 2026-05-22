@@ -40,14 +40,14 @@ public class RodManager : MonoBehaviour
             grappleJoint.autoConfigureConnectedAnchor = false;
             grappleJoint.connectedAnchor = grappleInfo.GrapplePosition;
 
-            grappleJoint.massScale = player.PlayerStats.RodSwingMassScale;
-            grappleJoint.spring = player.PlayerStats.RodSpring;
-            grappleJoint.damper = player.PlayerStats.RodDamper;
+            grappleJoint.massScale = player.StatsManager.BaseStats.RodSwingMassScale;
+            grappleJoint.spring = player.StatsManager.BaseStats.RodSpring;
+            grappleJoint.damper = player.StatsManager.BaseStats.RodDamper;
 
             var distance = Vector3.Distance(grappleInfo.GrapplePosition, player.Collider.bounds.center);
 
-            grappleJoint.maxDistance = player.PlayerStats.RodMaxDistanceWithNoSpring * distance;
-            grappleJoint.minDistance = player.PlayerStats.RodMinDistanceWithNoSpring * distance;
+            grappleJoint.maxDistance = player.StatsManager.BaseStats.RodMaxDistanceWithNoSpring * distance;
+            grappleJoint.minDistance = player.StatsManager.BaseStats.RodMinDistanceWithNoSpring * distance;
 
             grappleActive = true;
             rodLine.enabled = true;

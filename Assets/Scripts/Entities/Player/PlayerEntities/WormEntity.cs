@@ -10,7 +10,7 @@ public class WormEntity : BaseEntity
 
     [SerializeField] MeshRenderer model;
     [SerializeField] Collider swingbox;
-    [SerializeField] VelocityComponent velocityManager;
+    [SerializeField] Rigidbody rigidBody;
 
     Vector3 target;
     int gravityTracker = 0;
@@ -18,6 +18,7 @@ public class WormEntity : BaseEntity
     bool reachedTarget = false;
    public void Fire(Vector3 target, Vector3 startingLocation, Vector3 ownerVelocity)
     {
+        rigidBody.isKinematic = false;
         this.target = target;
         gravityTracker = gravityFreeTime;
         reachedTarget = false;
@@ -26,8 +27,7 @@ public class WormEntity : BaseEntity
 
         float velocityToInheritFromOwner = Vector3.Dot(direction, ownerVelocity.normalized);
 
-        
-        velocityManager.OverwriteInternalSpeed((direction * flySpeed) + ownerVelocity * velocityToInheritFromOwner);
+        rigidBody.linearVelocity = direction * flySpeed + ownerVelocity * velocityToInheritFromOwner;
 
         wormActive = true;
         model.enabled = true;
@@ -38,7 +38,7 @@ public class WormEntity : BaseEntity
     {
         swingbox.enabled = false;
         model.enabled = false;
-        velocityManager.OverwriteInternalSpeed(Vector3.zero);
+        rigidBody.isKinematic = true;
         wormActive = false;
     }
 
@@ -57,24 +57,25 @@ public class WormEntity : BaseEntity
         }
         if (gravityTracker == 0)
         {
-            Vector3 currentSpeed = velocityManager.GetInternalSpeed();
-            currentSpeed.y -= gravity * Time.fixedDeltaTime;
-            if (currentSpeed.y < -Mathf.Abs(maxFallSpeed))
+
+            var gravityForce = gravity;
+            float differenceBetweenCurrentSpeedAndMaxFallSpeed = Mathf.Abs(rigidBody.linearVelocity.y - maxFallSpeed);
+            if (differenceBetweenCurrentSpeedAndMaxFallSpeed < gravityForce)
             {
-                currentSpeed.y = -Mathf.Abs(maxFallSpeed);
+                gravityForce = differenceBetweenCurrentSpeedAndMaxFallSpeed;
             }
-            velocityManager.OverwriteInternalSpeed(currentSpeed);
+            rigidBody.AddForce(Vector3.down * gravityForce, ForceMode.VelocityChange);
         }
     }
 
     void TargetLogic()
     {
         if (reachedTarget) return;
-        if (Vector3.Distance(transform.position, target) <= distanceWhereTargetConsideredReached)
-        {
-            velocityManager.OverwriteInternalSpeed(Vector3.zero);
-            reachedTarget = true;
-        }
+        //if (Vector3.Distance(transform.position, target) <= distanceWhereTargetConsideredReached)
+        //{
+        //    rigidBody.linearVelocity = 
+        //    reachedTarget = true;
+        //}
     }
 
 

@@ -59,10 +59,10 @@ public class LivingRumShipAbility : BaseShipAbility
     public override void PhysicsProcess()
     {
         base.PhysicsProcess();
-        if (!abilityActive) return;
+        if (!AbilityActive) return;
         SetRumTarget();
         durationTracker--;
-        if (durationTracker <= 0 && abilityActive)
+        if (durationTracker <= 0 && AbilityActive)
         {
             DeactivateAbility();
         }

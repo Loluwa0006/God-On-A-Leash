@@ -63,10 +63,10 @@ public class AnarchyManager : MonoBehaviour
         scaledGenerationMethods[ScaledGenerationMethod.Shadowstep] = 0;
         scaledGenerationMethods[ScaledGenerationMethod.WormThrow] = 0;
 
-        unscaledGenerationMethods[UnscaledGenerationMethod.JustYawn] = player.PlayerStats.JustYawnAnarchyProgress;
-        unscaledGenerationMethods[UnscaledGenerationMethod.Yawn] = player.PlayerStats.YawnAnarchyProgressPerFrame;
-        unscaledGenerationMethods[UnscaledGenerationMethod.Slash] = player.PlayerStats.SlashAnarchyProgressAmount;
-        unscaledGenerationMethods[UnscaledGenerationMethod.Dragonslash] = player.PlayerStats.DragonslashAnarchyProgressAmount;
+        unscaledGenerationMethods[UnscaledGenerationMethod.JustYawn] = player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JustYawnAnarchyProgress);
+        unscaledGenerationMethods[UnscaledGenerationMethod.Yawn] = player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.YawnAnarchyProgressPerFrame);
+        unscaledGenerationMethods[UnscaledGenerationMethod.Slash] = player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SlashAnarchyProgressAmount);
+        unscaledGenerationMethods[UnscaledGenerationMethod.Dragonslash] = player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.DragonslashAnarchyProgressAmount);
 
         UpdateAnarchyDisplays();
     }

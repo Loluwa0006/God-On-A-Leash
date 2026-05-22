@@ -25,9 +25,10 @@ public class PlayerThrowWormState : PlayerAirState
         base.Enter(message);
         FireWorm();
         Vector3 newSpeed = Player.RigidBody.linearVelocity;
-        newSpeed.y = Mathf.Max(newSpeed.y + Player.PlayerStats.WormThrowJumpInfo.JumpVelocity, Player.PlayerStats.WormThrowJumpInfo.JumpVelocity);
+        float wormJumpPower = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormJumpPower);
+        newSpeed.y = Mathf.Max(newSpeed.y + wormJumpPower, wormJumpPower);
         Player.RigidBody.linearVelocity = newSpeed;
-        durationTracker = Player.PlayerStats.WormThrowDuration;
+        durationTracker = (int) Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormThrowDuration);
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Consume();
         Player.WormManager.WormsRemaining--;
     }
@@ -35,7 +36,8 @@ public class PlayerThrowWormState : PlayerAirState
     void FireWorm()
     {
         var cameraRay = viewCamera.ViewportPointToRay(middlePointOfViewport);
-        var raycast = Physics.Raycast(cameraRay, out var hitInfo, Player.PlayerStats.WormThrowRange, terrainMask, QueryTriggerInteraction.Collide);
+        float wormThrowRange = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormThrowRange);
+        var raycast = Physics.Raycast(cameraRay, out var hitInfo, wormThrowRange, terrainMask, QueryTriggerInteraction.Collide);
         Vector3 wormTarget;
         if (raycast)
         {
@@ -43,7 +45,7 @@ public class PlayerThrowWormState : PlayerAirState
         }
         else
         {
-            wormTarget = cameraRay.GetPoint(Player.PlayerStats.WormThrowRange);
+            wormTarget = cameraRay.GetPoint(wormThrowRange);
         }
         WormEntity newWorm = Player.WormManager.GetNewWorm();
         newWorm.Fire(wormTarget, Player.transform.position, Player.RigidBody.linearVelocity);
@@ -55,13 +57,13 @@ public class PlayerThrowWormState : PlayerAirState
         base.PhysicsProcess();
         if (Player.RigidBody.linearVelocity.y > 0)
         {
-            ApplyGravity(Player.PlayerStats.WormThrowJumpInfo.JumpGravity);
+            ApplyGravity(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormJumpGravity));
         }
         else
         {
-            ApplyGravity(Player.PlayerStats.WormThrowJumpInfo.FallGravity);
+            ApplyGravity(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormFallGravity));
         }
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.PlayerStats.AirAcceleration);
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.AirAcceleration));
         durationTracker--;
         if (durationTracker == 0)
         {

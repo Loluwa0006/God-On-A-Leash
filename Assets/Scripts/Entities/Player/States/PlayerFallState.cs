@@ -29,9 +29,9 @@ public class PlayerFallState : PlayerAirState
     public override void PhysicsProcess()
     {
         Player.PlayerGrounded = IsGrounded();
-        ApplyGravity(Player.PlayerStats.GroundedJumpInfo.FallGravity);
+        ApplyGravity(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.FallGravity));
         
-        AirborneMovement(Player.PlayerInput.GetMovementDirection().normalized, Player.PlayerStats.AirAcceleration);
+        AirborneMovement(Player.PlayerInput.GetMovementDirection().normalized, Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.AirAcceleration));
         if (Player.PlayerGrounded)
         {
             if (Player.PlayerInput.GetMovementDirection().magnitude > MOVEMENT_DEADZONE)

@@ -31,15 +31,15 @@ public class PlayerDashState : PlayerAirState
         var dashDirectionCorrected = (dashDirection + 1) / 2.0f; //converts range from (-1,1) to (0,1)
 
         base.PhysicsProcess();
-        float gravity = Player.PlayerStats.DashGravity * (1.0f - dashDirectionCorrected);
+        float gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.DashGravity) * (1.0f - dashDirectionCorrected);
 
         ApplyGravity(gravity);
         var movementCorrected = new Vector2(Player.PlayerInput.GetMovementDirection().x, 0); //force 0 because forward/backward movement is completely handled by dash functionality
-        AirborneMovement(movementCorrected, Player.PlayerStats.DashLateralAcceleration);
+        AirborneMovement(movementCorrected, Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.DashLateralAcceleration));
 
         var directionToGrapple = (Player.RodManager.GrappleInfo.GrapplePosition - Player.Collider.bounds.center).normalized;
 
-        if (Vector3.Distance(Player.RodManager.GrappleInfo.GrapplePosition, Player.Collider.bounds.center) <= Player.PlayerStats.MinDistanceBeforeDashCancelled || !Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Dash].ActionPressed)
+        if (Vector3.Distance(Player.RodManager.GrappleInfo.GrapplePosition, Player.Collider.bounds.center) <= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinDistanceBeforeDashCancelled) || !Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Dash].ActionPressed)
         {
             StateMachine.TransitionTo<PlayerFallState>();
             return;
@@ -52,9 +52,9 @@ public class PlayerDashState : PlayerAirState
 
     Vector3 GetSpeedToAdd(Vector3 directionToGrapple)
     {
-        Vector3 speedToAdd = directionToGrapple * Player.PlayerStats.DashPower;
+        Vector3 speedToAdd = directionToGrapple * Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.DashPower);
         var currentSpeed = new Vector3(Player.RigidBody.linearVelocity.x, 0, Player.RigidBody.linearVelocity.z); //don't use y when clamping lateral movement
-        if (currentSpeed.magnitude >= Player.PlayerStats.MaxDashSpeed)
+        if (currentSpeed.magnitude >= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxDashSpeed))
         {
             var speedNormalized = currentSpeed.normalized;
             var extraSpeed = Vector2.Dot(speedToAdd, speedNormalized);
@@ -91,7 +91,7 @@ public class PlayerDashState : PlayerAirState
     {
         if (GrappleUtilities.AimingAtGrappable(Player, Player.RodManager.GrappleMask) && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Dash].Buffered)
         {
-            if (Vector3.Distance(GrappleUtilities.RaycastResult.point, Player.Collider.bounds.center) >= Player.PlayerStats.MinDistanceBeforeDashCancelled)
+            if (Vector3.Distance(GrappleUtilities.RaycastResult.point, Player.Collider.bounds.center) >= (int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinDistanceBeforeDashCancelled))
             {
                 return true;
             }

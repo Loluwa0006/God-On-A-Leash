@@ -19,24 +19,24 @@ public class PlayerJumpState : PlayerAirState
         };
     }
 
-    public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
-    {
-        base.InitializeState(stateMachine, owner);
-        fallStateTransitionDictionary[PlayerFallState.PlayerFallStateMessage.JumpInfo.ToString()] = Player.PlayerStats.GroundedJumpInfo;
-    }
+    //public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
+    //{
+    //    base.InitializeState(stateMachine, owner);
+    //   fallStateTransitionDictionary[PlayerFallState.PlayerFallStateMessage.JumpInfo.ToString()] = Player.StatsManager.GroundedJumpInfo;
+    //}
 
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
-        Player.RigidBody.AddForce(Vector3.up * Player.PlayerStats.GroundedJumpInfo.JumpVelocity, ForceMode.VelocityChange);
+        Player.RigidBody.AddForce(Vector3.up * Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.GroundedJumpPower), ForceMode.VelocityChange);
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Jump].Consume();
     }
 
     public override void PhysicsProcess()
     {
         Player.PlayerGrounded = IsGrounded();
-        ApplyGravity(Player.PlayerStats.GroundedJumpInfo.JumpGravity);
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.PlayerStats.AirAcceleration);
+        ApplyGravity( Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JumpGravity));
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.AirAcceleration));
         if (Player.RigidBody.linearVelocity.y <= 0.0f)
         {
             StateMachine.TransitionTo<PlayerFallState>(fallStateTransitionDictionary);

@@ -33,9 +33,9 @@ public class PlayerSlashState : PlayerAirState
     public override void PhysicsProcess()
     {
         base.PhysicsProcess();
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.PlayerStats.AirAcceleration);
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.AirAcceleration));
         //use jump gravity to make attacks feel more floaty
-        ApplyGravity(Player.PlayerStats.GroundedJumpInfo.JumpGravity);
+        ApplyGravity(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JumpGravity));
         if (slashAnimationOver)
         {
             StateMachine.TransitionTo<PlayerFallState>();
@@ -46,7 +46,7 @@ public class PlayerSlashState : PlayerAirState
             StateMachine.TransitionTo<PlayerShadowstepState>();
             return;
         }
-        CalculateDamage(Player.PlayerStats.MinSlashDamage, Player.PlayerStats.MaxSlashDamage, Player.PlayerStats.SpeedToSlashDamageCurve);
+        CalculateDamage((int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinSlashDamage), (int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxSlashDamage), Player.StatsManager.BaseStats.SpeedToSlashDamageCurve);
     }
 
     public virtual void OnHitboxDeactivation(List<HealthComponent> victims)

@@ -10,12 +10,13 @@ public class ShipAbilityData : ScriptableObject
     [SerializeField] Texture abilityIcon;
 
     public Texture AbilityIcon { get => abilityIcon; }
+}
 
-    [System.Serializable]
-   public enum ShipAbilityRegistry
-    {
-        BoostShield,
-        LivingRum,
-        EMP
-    }
+[System.Serializable]
+public enum ShipAbilityRegistry
+{
+    BoostShield,
+    LivingRum,
+    EMP,
+    Chrono
 }

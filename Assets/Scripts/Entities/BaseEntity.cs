@@ -21,7 +21,7 @@ public class BaseEntity : MonoBehaviour
 
     private void OnEnable()
     {
-        EntityManager.Instance.RegisterEntity(this);
+      if (EntityManager.Instance != null)  EntityManager.Instance.RegisterEntity(this);
     }
 
     private void OnDestroy()

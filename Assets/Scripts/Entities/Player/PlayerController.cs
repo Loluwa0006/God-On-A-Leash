@@ -8,7 +8,7 @@ public class PlayerController : BaseActor
         Bool_InSquashbuckler
     }
 
-    [SerializeField] PlayerStats _playerStats;
+    [SerializeField] PlayerStatsManager _playerStats;
 
     [Header("Managers")]
     [SerializeField] InputManager _playerInput;
@@ -24,7 +24,8 @@ public class PlayerController : BaseActor
 
 
     public InputManager PlayerInput { get => _playerInput; }
-    public PlayerStats PlayerStats { get => _playerStats;}
+    public PlayerStatsManager StatsManager { get => _playerStats;}
+
     public WormManager WormManager { get => _wormManager; }
 
     public RodManager RodManager { get => _rodManager; }

@@ -1212,7 +1212,7 @@ GameObject:
   - component: {fileID: 4316075470623054589}
   - component: {fileID: 1366431042455759010}
   - component: {fileID: 5721147126557053551}
-  - component: {fileID: 3799897356630585276}
+  - component: {fileID: 2288019825110320831}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -1243,6 +1243,7 @@ Transform:
   - {fileID: 4489595010220830823}
   - {fileID: 1583420984136553807}
   - {fileID: 4807556527859543350}
+  - {fileID: 4576583021109289962}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8369251970190751333
@@ -1335,7 +1336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce93b69d46554924885cbf577f277411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  idComponent: {fileID: 3799897356630585276}
+  idComponent: {fileID: 2288019825110320831}
   _rb: {fileID: 4316075470623054589}
   _collider: {fileID: 8061839667610271217}
   stateMachine: {fileID: 4640383311062024331}
@@ -1346,7 +1347,7 @@ MonoBehaviour:
   entityTriggerEntry:
     m_PersistentCalls:
       m_Calls: []
-  _playerStats: {fileID: 11400000, guid: 37afd5eea4cfb2a48aaf3c3462bff32a, type: 2}
+  _playerStats: {fileID: 4626381762603684209}
   _playerInput: {fileID: 7156764095087575519}
   _wormManager: {fileID: 6021299679631168183}
   _rodManager: {fileID: 8445331606179173087}
@@ -1427,7 +1428,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3799897356630585276
+--- !u!114 &2288019825110320831
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1626,6 +1627,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerIdleState
   hasInactiveProcess: 0
   hasInactivePhysicsProcess: 0
+--- !u!1 &6490272158602745305
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4576583021109289962}
+  - component: {fileID: 4626381762603684209}
+  - component: {fileID: 3900128563698183582}
+  m_Layer: 3
+  m_Name: StatsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4576583021109289962
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6490272158602745305}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3340420948024593123}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4626381762603684209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6490272158602745305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21dc7d3131f56814fa1cd207abab6998, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsManager
+  idComponent: {fileID: 3900128563698183582}
+  baseStats: {fileID: 11400000, guid: 37afd5eea4cfb2a48aaf3c3462bff32a, type: 2}
+--- !u!114 &3900128563698183582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6490272158602745305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b73511aa27605468744d3677198fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IDComponent
+  idType: 4
 --- !u!1 &6577541848443657775
 GameObject:
   m_ObjectHideFlags: 0
@@ -1844,10 +1905,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipManager
   player: {fileID: 1870535501843506831}
-  abilityOneID: 0
+  abilityOneID: 3
   abilityTwoID: 1
-  EMP_Prefab: {fileID: 0}
-  BoostShieldPrefab: {fileID: 2606688459999837528, guid: 19a59435d3905d549b30587c486ff3f6, type: 3}
+  shipAbilityRegister:
+  - ID: 0
+    Prefab: {fileID: 2606688459999837528, guid: 19a59435d3905d549b30587c486ff3f6, type: 3}
+  - ID: 1
+    Prefab: {fileID: 1246128536096520023, guid: 3a50a91aaa5e0974f85158dd281aab20, type: 3}
+  - ID: 3
+    Prefab: {fileID: 3785994334387084248, guid: 910c2e9e8018a8f47bead9d22a8c1867, type: 3}
 --- !u!1 &7321335959488850962
 GameObject:
   m_ObjectHideFlags: 0

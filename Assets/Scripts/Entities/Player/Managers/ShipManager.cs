@@ -4,15 +4,15 @@ using UnityEngine;
 public class ShipManager : MonoBehaviour
 {
     [SerializeField] PlayerController player;
-    [SerializeField] ShipAbilityData.ShipAbilityRegistry abilityOneID;
-    [SerializeField] ShipAbilityData.ShipAbilityRegistry abilityTwoID;
+    [SerializeField] ShipAbilityRegistry abilityOneID;
+    [SerializeField] ShipAbilityRegistry abilityTwoID;
     BaseShipAbility abilityOne;
     BaseShipAbility abilityTwo;
     
     [System.Serializable]
     struct ShipAbilityIndex
     {
-        public ShipAbilityData.ShipAbilityRegistry ID;
+        public ShipAbilityRegistry ID;
         public BaseShipAbility Prefab;
     }
 
@@ -54,6 +54,12 @@ public class ShipManager : MonoBehaviour
             abilityTwo.ActivateAbility();
             player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.ShipAbilityTwo].Consume();
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (abilityOne != null && abilityOne.AbilityActive) abilityOne.PhysicsProcess();
+        if (abilityTwo != null && abilityTwo.AbilityActive) abilityTwo.PhysicsProcess();
     }
 
     protected bool IsAbilityAvailable(BaseShipAbility ability, InputManager.BufferableInputs input)

@@ -25,7 +25,8 @@ public class PlayerYawnState : PlayerAirState
     }
     void OnAnarchyGenerated()
     {
-        justYawnTracker = Player.PlayerStats.JustYawnWindow;
+        justYawnTracker = (int) Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JustYawnWindow);
+        Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JustYawnWindow);
     }
 
     public override void Enter(Dictionary<string, object> message = null)
@@ -37,14 +38,14 @@ public class PlayerYawnState : PlayerAirState
         }
         else
         {
-            minYawnTime = Player.PlayerStats.MinYawnTime;
+            minYawnTime = (int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinYawnTime);
         }
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Yawn].Consume();
         elaspedYawnTime = 0;
     }
     void OnJustYawn()
     {
-        minYawnTime = Player.PlayerStats.MinJustYawnTime;
+        minYawnTime = (int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinJustYawnTime);
         Player.AnarchyManager.GenerateAnarchyUnscaled(UnscaledGenerationMethod.JustYawn);
     }
 
@@ -58,10 +59,10 @@ public class PlayerYawnState : PlayerAirState
         }
         Player.AnarchyManager.GenerateAnarchyUnscaled(UnscaledGenerationMethod.Yawn);
         float gravity;
-        if (Player.RigidBody.linearVelocity.y > 0) gravity = Player.PlayerStats.GroundedJumpInfo.JumpGravity;
-        else gravity = Player.PlayerStats.GroundedJumpInfo.FallGravity;
+        if (Player.RigidBody.linearVelocity.y > 0) gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JumpGravity);
+        else gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.FallGravity);
         ApplyGravity(gravity);
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.PlayerStats.YawnAirAcceleration);
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.YawnAirAcceleration));
     }
     public override void InactivePhysicsProcess()
     {

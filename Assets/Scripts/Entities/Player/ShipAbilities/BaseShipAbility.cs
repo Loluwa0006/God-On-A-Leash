@@ -6,7 +6,7 @@ public class BaseShipAbility : BaseEntity
     protected PlayerController player;
     public int AnarchyCost { get; protected set; }
 
-    protected bool abilityActive = false;
+    public bool AbilityActive { get; protected set; }
 
     public virtual void InitializeShipAbility(AnarchyManager anarchyManager, PlayerController player)
     {
@@ -17,13 +17,13 @@ public class BaseShipAbility : BaseEntity
 
     public virtual void ActivateAbility()
     {
-        abilityActive = true;
+        AbilityActive = true;
         anarchyManager.CurrentAnarchy -= AnarchyCost;
     }
 
     public virtual void DeactivateAbility()
     {
-        abilityActive = false;
+        AbilityActive = false;
     }
     public virtual bool AbilityAvailable()
     {
