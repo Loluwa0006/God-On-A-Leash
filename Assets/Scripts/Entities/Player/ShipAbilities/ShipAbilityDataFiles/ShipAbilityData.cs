@@ -18,5 +18,6 @@ public enum ShipAbilityRegistry
     BoostShield,
     LivingRum,
     EMP,
-    Chrono
+    Chrono,
+    SHARK
 }

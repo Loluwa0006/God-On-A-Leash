@@ -1380,7 +1380,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_Constraints: 80
   m_CollisionDetection: 3
 --- !u!114 &1366431042455759010
@@ -1914,6 +1914,8 @@ MonoBehaviour:
     Prefab: {fileID: 1246128536096520023, guid: 3a50a91aaa5e0974f85158dd281aab20, type: 3}
   - ID: 3
     Prefab: {fileID: 3785994334387084248, guid: 910c2e9e8018a8f47bead9d22a8c1867, type: 3}
+  - ID: 4
+    Prefab: {fileID: 6240846645938105530, guid: ffd7ddc2f5f60754c8ae69655b0c08f2, type: 3}
 --- !u!1 &7321335959488850962
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -21,6 +22,8 @@ public class WormManager : MonoBehaviour
     }
     Queue<WormEntity> wormPool = new();
 
+    public event Action<WormEntity> wormRequested;
+
     private void Start()
     {
         wormsRemaining = player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxWorms);
@@ -37,6 +40,7 @@ public class WormManager : MonoBehaviour
     {
         var newWorm = wormPool.Dequeue();
         wormPool.Enqueue(newWorm);
+        wormRequested.Invoke(newWorm);
         return newWorm;
     }
 

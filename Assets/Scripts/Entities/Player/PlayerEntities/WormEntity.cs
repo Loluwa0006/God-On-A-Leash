@@ -14,7 +14,8 @@ public class WormEntity : BaseEntity
 
     Vector3 target;
     int gravityTracker = 0;
-    bool wormActive = false;
+    public bool wormActive { get; private set; }
+    public Rigidbody Rigidbody { get => rigidBody; }
     bool reachedTarget = false;
    public void Fire(Vector3 target, Vector3 startingLocation, Vector3 ownerVelocity)
     {
