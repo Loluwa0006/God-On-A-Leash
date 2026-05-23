@@ -39,7 +39,16 @@
                     "id": "c5f18f0a-07c6-41fe-aee7-b586b55ab718",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HoldFire",
+                    "type": "Button",
+                    "id": "ab5e9b30-0b9d-46f2-aa5d-15f68eeb1d61",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -377,6 +386,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "09b9c2e6-155b-48f6-b2a4-f3de7592ce68",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardAndMouse",
+                    "action": "HoldFire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db8731a1-5f13-4c52-8ac7-f8108edf30bd",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "HoldFire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

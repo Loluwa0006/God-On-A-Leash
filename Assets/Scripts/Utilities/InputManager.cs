@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
     [Header("Buffers")]
     [SerializeField] BufferHelper jumpBuffer;
     [SerializeField] BufferHelper fireBuffer;
+    [SerializeField] BufferHelper fireRailBuffer;
     [SerializeField] BufferHelper slashBuffer;
     [SerializeField] BufferHelper swingBuffer;
     [SerializeField] BufferHelper parryBuffer;
@@ -30,6 +31,7 @@ public class InputManager : MonoBehaviour
     {
         Jump,
         FireWorm,
+        FireWormRail,
         Slash,
         Swing,
         Parry,
@@ -58,6 +60,7 @@ public class InputManager : MonoBehaviour
         BufferRegistry[BufferableInputs.Yawn] = yawnBuffer;
         BufferRegistry[BufferableInputs.ShipAbilityOne] = shipAbilityOneBuffer; 
         BufferRegistry[BufferableInputs.ShipAbilityTwo] = shipAbilityTwoBuffer;
+        BufferRegistry[BufferableInputs.FireWormRail] = fireRailBuffer;
     }
     public Vector2 GetMovementDirection()
     {

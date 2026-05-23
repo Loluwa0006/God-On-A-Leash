@@ -8,7 +8,7 @@ public class WormEntity : BaseEntity
     [SerializeField] float gravity = 8.0f;
     [SerializeField] float maxFallSpeed = 30.0f;
 
-    [SerializeField] MeshRenderer model;
+    [SerializeField] GameObject model;
     [SerializeField] Collider swingbox;
     [SerializeField] Rigidbody rigidBody;
 
@@ -31,14 +31,15 @@ public class WormEntity : BaseEntity
         rigidBody.linearVelocity = direction * flySpeed + ownerVelocity * velocityToInheritFromOwner;
 
         wormActive = true;
-        model.enabled = true;
-        swingbox.enabled = true;
+        model.SetActive(true);
+        if (swingbox != null) swingbox.enabled = true;
+        transform.LookAt(target);
     }
 
     public void Deactivate()
     {
-        swingbox.enabled = false;
-        model.enabled = false;
+        if (swingbox != null) swingbox.enabled = false;
+        model.SetActive(false);
         rigidBody.isKinematic = true;
         wormActive = false;
     }

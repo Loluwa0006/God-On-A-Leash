@@ -23,14 +23,22 @@ public class PlayerThrowWormState : PlayerAirState
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
-        FireWorm();
         Vector3 newSpeed = Player.RigidBody.linearVelocity;
         float wormJumpPower = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormJumpPower);
         newSpeed.y = Mathf.Max(newSpeed.y + wormJumpPower, wormJumpPower);
         Player.RigidBody.linearVelocity = newSpeed;
         durationTracker = (int) Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormThrowDuration);
+        if (!Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered)
+        {
+            FireWorm();
+        }
+        else
+        {
+            FireWormRail();
+
+        }
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Consume();
-        Player.WormManager.WormsRemaining--;
+        Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Consume();
     }
 
     void FireWorm()
@@ -49,8 +57,27 @@ public class PlayerThrowWormState : PlayerAirState
         }
         WormEntity newWorm = Player.WormManager.GetNewWorm();
         newWorm.Fire(wormTarget, Player.transform.position, Player.RigidBody.linearVelocity);
+        Player.WormManager.WormsRemaining--;
     }
 
+    void FireWormRail()
+    {
+        var cameraRay = viewCamera.ViewportPointToRay(middlePointOfViewport);
+        float wormThrowRange = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormThrowRange);
+        var raycast = Physics.Raycast(cameraRay, out var hitInfo, wormThrowRange, terrainMask, QueryTriggerInteraction.Collide);
+        Vector3 wormTarget;
+        if (raycast)
+        {
+            wormTarget = hitInfo.point;
+        }
+        else
+        {
+            wormTarget = cameraRay.GetPoint(wormThrowRange);
+        }
+        WormEntity newWorm = Player.WormManager.GetNewWormRail();
+        newWorm.Fire(wormTarget, Player.transform.position, Player.RigidBody.linearVelocity);
+        Player.WormManager.WormsRemaining -= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormsRequiredForRail);
+    }
     public override void PhysicsProcess()
     {
 
@@ -92,10 +119,15 @@ public class PlayerThrowWormState : PlayerAirState
 
     public override bool StateAvailable()
     {
-        if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Buffered && Player.WormManager.WormsRemaining > 0)
+
+        if (Player.WormManager.WormsRemaining > 0 && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Buffered)
         {
             return true;
         }
-        return false;
+        if (Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormsRequiredForRail) && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered)
+        {
+            return true;
+        }
+            return false;
     }
 }

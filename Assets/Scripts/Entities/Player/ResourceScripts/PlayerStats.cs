@@ -48,7 +48,11 @@ public class PlayerStats : ScriptableObject
     #region Worms
     [Header("Worms")]
     [SerializeField] int maxWorms = 3;
-    public int MaxWorms { get => maxWorms; private set => maxWorms = value; }
+    public int MaxWorms { get => maxWorms; }
+
+    [SerializeField] int wormsRequiredForRail = 3;
+
+    public int WormsRequiredForRail { get => wormsRequiredForRail; }
 
     [SerializeField] JumpInfo wormThrowInfo;
 

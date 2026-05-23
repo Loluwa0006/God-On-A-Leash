@@ -9,6 +9,7 @@ public class PlayerStatsManager : BaseEntity
     public const int MAX_STAT_INFLUENCERS = 5;
     public const int INFINITE_DURATION_INFLUENCE = -69420;
     public const int INFINITE_PRIORITY = 69420;
+    public const int MISSING_STAT_ID = -6969;
 
     public enum InfluenceType
     {
@@ -56,6 +57,7 @@ public class PlayerStatsManager : BaseEntity
         JumpGravity,
         //Worms
         MaxWorms,
+        WormsRequiredForRail,
         WormThrowRange,
         WormThrowDuration,
         WormJumpPower,
@@ -242,6 +244,7 @@ public class PlayerStatsManager : BaseEntity
         statRegistry[StatID.WormJumpGravity] = new StatObject(baseStats.WormThrowJumpInfo.JumpGravity, InfluenceType.Uninfluenceable, StatID.WormJumpGravity);
         statRegistry[StatID.WormFallGravity] = new StatObject(baseStats.WormThrowJumpInfo.FallGravity, InfluenceType.Uninfluenceable, StatID.WormFallGravity);
         statRegistry[StatID.AnarchyScalingGenerationReductionAmount] = new StatObject(BaseStats.AnarchyScalingGenerationReductionAmount, InfluenceType.Uninfluenceable, StatID.AnarchyScalingGenerationReductionAmount);
+        statRegistry[StatID.WormsRequiredForRail] = new StatObject(baseStats.WormsRequiredForRail, InfluenceType.Uninfluenceable, StatID.WormsRequiredForRail);
 
         statRegistry[StatID.UniqueAnarchyOptionCountToClearScaling] = new StatObject(baseStats.AnarchyScalingGenerationReductionAmount, InfluenceType.AnarchyScaling, StatID.UniqueAnarchyOptionCountToClearScaling);
 
@@ -280,6 +283,10 @@ public class PlayerStatsManager : BaseEntity
     }
     public float GetValueFromStat(StatID statID)
     {
+        if (!statRegistry.ContainsKey(statID))
+        {
+            return MISSING_STAT_ID;
+        }
         var stat = statRegistry[statID];
         float statValue = stat.value;
         if (stat.type == InfluenceType.Uninfluenceable)
