@@ -8,6 +8,8 @@ public class ChronoShipAbility : BaseShipAbility
     [SerializeField] ChronoAbilityData chronoAbilityData;
     [SerializeField] Animator vfxAnimator;
 
+    float originalTimescale = 1.0f;
+
     public override void InitializeShipAbility(AnarchyManager anarchyManager, PlayerController player)
     {
         AnarchyCost = chronoAbilityData.AbilityCost;
@@ -15,10 +17,20 @@ public class ChronoShipAbility : BaseShipAbility
     }
     public override void ActivateAbility()
     {
-        durationTracker = chronoAbilityData.AbilityDuration;
+        durationTracker = Mathf.RoundToInt(chronoAbilityData.AbilityDuration * (1 - chronoAbilityData.TimeSlow));
+        Debug.Log("Setting duration tracker to " + durationTracker);
         base.ActivateAbility();
-        EntityManager.Instance.ActivateSpecificEntityUpdateMode(player);
         vfxAnimator.SetTrigger("Activate");
+        originalTimescale = Time.timeScale;
+        Time.timeScale = 1.0f - chronoAbilityData.TimeSlow;
+        float correctionFactor = 1 / (1.0f - chronoAbilityData.TimeSlow);
+        player.StatsManager.AddInfluence(
+            PlayerStatsManager.InfluenceType.MovementSpeed, 
+            PlayerStatsManager.InfluenceSource.ChronoTimeSlowOffset,
+            PlayerStatsManager.InfluenceValueType.Multiplicative, 
+            correctionFactor,
+            PlayerStatsManager.INFINITE_DURATION_INFLUENCE);
+        player.RigidBody.linearVelocity *= 1 / Time.timeScale;
     }
 
     public override void PhysicsProcess()
@@ -35,7 +47,15 @@ public class ChronoShipAbility : BaseShipAbility
     public override void DeactivateAbility()
     {
         base.DeactivateAbility();
-        EntityManager.Instance.DeactivateSpecificEntityUpdateMode();
         vfxAnimator.SetTrigger("Deactivate");
+        Time.timeScale = originalTimescale;
+        player.StatsManager.RemoveInfluence(PlayerStatsManager.InfluenceSource.ChronoTimeSlowOffset);
+        player.RigidBody.linearVelocity *= 1 - chronoAbilityData.TimeSlow;
+    }
+
+    public override bool AbilityAvailable()
+    {
+        //can't stack, causes timescale issues
+        return base.AbilityAvailable() && !AbilityActive;
     }
 }

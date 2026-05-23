@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChronoAbilityData
   abilityCost: 0
   abilityIcon: {fileID: 0}
-  abilityDuration: 25
+  abilityDuration: 45
+  timeSlow: 0.85

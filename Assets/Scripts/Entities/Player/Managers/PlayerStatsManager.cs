@@ -241,6 +241,7 @@ public class PlayerStatsManager : BaseEntity
         statRegistry[StatID.JumpGravity] = new StatObject(baseStats.GroundedJumpInfo.JumpGravity, InfluenceType.Uninfluenceable, StatID.JumpGravity);
         statRegistry[StatID.WormJumpGravity] = new StatObject(baseStats.WormThrowJumpInfo.JumpGravity, InfluenceType.Uninfluenceable, StatID.WormJumpGravity);
         statRegistry[StatID.WormFallGravity] = new StatObject(baseStats.WormThrowJumpInfo.FallGravity, InfluenceType.Uninfluenceable, StatID.WormFallGravity);
+        statRegistry[StatID.AnarchyScalingGenerationReductionAmount] = new StatObject(BaseStats.AnarchyScalingGenerationReductionAmount, InfluenceType.Uninfluenceable, StatID.AnarchyScalingGenerationReductionAmount);
 
         statRegistry[StatID.UniqueAnarchyOptionCountToClearScaling] = new StatObject(baseStats.AnarchyScalingGenerationReductionAmount, InfluenceType.AnarchyScaling, StatID.UniqueAnarchyOptionCountToClearScaling);
 
@@ -289,6 +290,7 @@ public class PlayerStatsManager : BaseEntity
         float additiveSum = 1.0f;
         StatInfluence[] influences = influenceRegistry[stat.type];
         float multiplierProduct = 1.0f;
+        float originalValue = statValue;
         foreach (var influence in influences)
         {
             if (influence.source == InfluenceSource.Inactive) continue;
@@ -304,6 +306,9 @@ public class PlayerStatsManager : BaseEntity
                     multiplierProduct *=  1 + influence.value;
                     break;
             }
+           float currentValue = originalValue * additiveSum * multiplierProduct;
+
+            Debug.Log("Stat ID " + statID.ToString() + " influenced by " + influence.source.ToString() + " with value of " + influence.value + " changing value from " + originalValue + " to " + currentValue);
         }
         statValue = statValue * additiveSum * multiplierProduct;
         statValue = Mathf.Clamp(statValue, 0, stat.value * cappedBoostValue);
@@ -342,12 +347,22 @@ public class PlayerStatsManager : BaseEntity
             }
         }
         Array.Sort(influenceRegistry[type], (a, b) => a.priority.CompareTo(b.priority));
-    }
-    public void RemoveInfluenceFromStat(InfluenceSource source, params StatObject[] stats)
-    {
-        foreach (var stat in stats)
+        Debug.Log("Applied influence of type " + type.ToString() + " from source " + source.ToString() + " with value of " + value);
+        Debug.Log("This should effect the following stats: ");
+       foreach (var stat in statRegistry.Values)
         {
-            var sourceArray = influenceRegistry[stat.type];
+            if (stat.type == type)
+            {
+                Debug.Log(stat.ID.ToString());
+            }
+        }
+
+    }
+    public void RemoveInfluence(InfluenceSource source)
+    {
+        foreach (var type in influenceRegistry.Keys)
+        {
+            var sourceArray = influenceRegistry[type];
             for (int i = 0; i < sourceArray.Length; i++)
             {
                 var influence = sourceArray[i];
