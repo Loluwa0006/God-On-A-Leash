@@ -10,7 +10,8 @@ public class IDComponent : MonoBehaviour
     public enum IDType
     {
         Player, 
-        Projectile,
+        PlayerProjectile,
+        EnemyProjectile,
         ShipAbility,
         Entity,
         Other

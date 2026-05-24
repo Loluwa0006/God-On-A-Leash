@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EntityManager : MonoBehaviour
 {
     public static EntityManager Instance { get; private set; }
     Dictionary<IDComponent, BaseEntity> entityRegistry = new ();
+    Dictionary<IDComponent.IDType, List<BaseEntity>> entityTypes = new ();
     List<BaseEntity> entityList = new();
     public int PlayerID { get; set; }
 
@@ -29,6 +31,10 @@ public class EntityManager : MonoBehaviour
     void Start()
     {
         var entities = FindObjectsByType<BaseEntity>(sortMode: FindObjectsSortMode.InstanceID);
+        foreach (var idType in System.Enum.GetValues(typeof(IDComponent.IDType)).Cast<IDComponent.IDType>())
+        {
+            entityTypes.Add(idType, new List<BaseEntity>());
+        }
         foreach(var entity in entities)
         {
             if (entity.IDComponent == null)
@@ -39,6 +45,7 @@ public class EntityManager : MonoBehaviour
             if (!entityRegistry.ContainsKey(entity.IDComponent))
             {
                 entityRegistry.Add(entity.IDComponent, entity);
+                entityTypes[entity.IDComponent.ID_Type].Add(entity);
                 entity.entityDestroyed += OnEntityDestroyed;
                 entityList.Add(entity);
             }
@@ -54,7 +61,6 @@ public class EntityManager : MonoBehaviour
         {
             foreach (var entity in specificEntitiesToUpdate)
             {
-                Debug.Log($"Physics update for specific entity: {entity.name}");
                 if (entity.enabled)
                 {
                     entity.PhysicsProcess();
@@ -79,7 +85,6 @@ public class EntityManager : MonoBehaviour
         {
             foreach (var entity in specificEntitiesToUpdate)
             {
-                Debug.Log($"Update for specific entity: {entity.name}");
                 if (entity.enabled)
                 {
                     entity.Process();
@@ -113,6 +118,7 @@ public class EntityManager : MonoBehaviour
         if (!entityRegistry.ContainsKey(entity.IDComponent))
         {
             entityRegistry.Add(entity.IDComponent, entity);
+            entityTypes[entity.IDComponent.ID_Type].Add(entity);
             entityList.Add(entity);
         }
     }
@@ -122,12 +128,20 @@ public class EntityManager : MonoBehaviour
         specificEntitiesToUpdate.Clear();
         specificEntitiesToUpdate.AddRange(entities);
         UpdateSpecificEntitiesOnly = true;
-        Debug.Log($"Activated specific entity update mode for {entities.Length} entities.");
     }
 
     public void DeactivateSpecificEntityUpdateMode()
     {
         specificEntitiesToUpdate.Clear();
         UpdateSpecificEntitiesOnly = false;
+    }
+
+    public List<BaseEntity> GetEntitiesOfType(IDComponent.IDType type)
+    {
+        if (entityTypes.ContainsKey(type))
+        {
+            return entityTypes[type];
+        }
+        return null;
     }
 }

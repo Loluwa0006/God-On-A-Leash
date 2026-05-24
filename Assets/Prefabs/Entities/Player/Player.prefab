@@ -304,6 +304,53 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EntityStateMachine
   owner: {fileID: 3340420948024593123}
   currentState: {fileID: 4667353602917662838}
+--- !u!1 &1562159826253423628
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5846395572477478241}
+  - component: {fileID: 5474246335642446782}
+  m_Layer: 3
+  m_Name: HoldFireBuffer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5846395572477478241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562159826253423628}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 562454960481291192}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5474246335642446782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562159826253423628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a990c9e1b135e40888653fbef9da3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BufferHelper
+  actionReference: {fileID: 7663047933298834340, guid: 48a71e602041d0148aa05db4a4d57bc6, type: 3}
+  isHoldable: 0
+  bufferDuration: 8
 --- !u!1 &1992170549738256108
 GameObject:
   m_ObjectHideFlags: 0
@@ -1131,6 +1178,7 @@ Transform:
   m_Children:
   - {fileID: 4153264014410796175}
   - {fileID: 1054441358408658019}
+  - {fileID: 5846395572477478241}
   - {fileID: 4691396344604792618}
   - {fileID: 4532026842968748245}
   - {fileID: 2838280220984933442}
@@ -1185,6 +1233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
   jumpBuffer: {fileID: 689129009793558675}
   fireBuffer: {fileID: 5454959827727996242}
+  fireRailBuffer: {fileID: 5474246335642446782}
   slashBuffer: {fileID: 544837542421019636}
   swingBuffer: {fileID: 4326689777376808610}
   parryBuffer: {fileID: 5192299551710823708}
@@ -1905,7 +1954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipManager
   player: {fileID: 1870535501843506831}
-  abilityOneID: 3
+  abilityOneID: 4
   abilityTwoID: 1
   shipAbilityRegister:
   - ID: 0
@@ -1961,6 +2010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WormManager
   wormPrefab: {fileID: 1895401925792460249, guid: b0e3f6ed5e41de34b9024fcb4d1d2f4d, type: 3}
+  wormRailPrefab: {fileID: 1560132180474416024, guid: 4ac5f9485228463418fb023e9bb46bf5, type: 3}
   player: {fileID: 1870535501843506831}
   wormDisplay: {fileID: 0}
 --- !u!1 &7453938923956039747
