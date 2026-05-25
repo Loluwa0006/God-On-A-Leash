@@ -28,14 +28,13 @@ public class PlayerThrowWormState : PlayerAirState
         newSpeed.y = Mathf.Max(newSpeed.y + wormJumpPower, wormJumpPower);
         Player.RigidBody.linearVelocity = newSpeed;
         durationTracker = (int) Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormThrowDuration);
-        if (!Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered)
+        if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered && Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormsRequiredForRail))
         {
-            FireWorm();
+            FireWormRail();
         }
         else
         {
-            FireWormRail();
-
+            FireWorm();
         }
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Consume();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Consume();
@@ -120,11 +119,7 @@ public class PlayerThrowWormState : PlayerAirState
     public override bool StateAvailable()
     {
 
-        if (Player.WormManager.WormsRemaining > 0 && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Buffered)
-        {
-            return true;
-        }
-        if (Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormsRequiredForRail) && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered)
+        if (Player.WormManager.WormsRemaining > 0 && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Buffered ||  Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered)
         {
             return true;
         }
