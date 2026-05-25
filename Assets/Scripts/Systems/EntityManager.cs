@@ -27,13 +27,11 @@ public class EntityManager : MonoBehaviour
         {
             Instance = this;
         }
-    }
-    void Start()
-    {
         var entities = FindObjectsByType<BaseEntity>(sortMode: FindObjectsSortMode.InstanceID);
         foreach (var idType in System.Enum.GetValues(typeof(IDComponent.IDType)).Cast<IDComponent.IDType>())
         {
             entityTypes.Add(idType, new List<BaseEntity>());
+            Debug.Log("Adding entity list for type " + idType);
         }
         foreach(var entity in entities)
         {

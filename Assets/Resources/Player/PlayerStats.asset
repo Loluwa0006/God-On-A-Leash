@@ -47,6 +47,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxWorms: 3
+  wormsRequiredForRail: 3
   wormThrowInfo:
     jumpHeight: 5.5
     jumpTimeToPeak: 1.4
@@ -146,4 +147,9 @@ MonoBehaviour:
   maxSlashDamage: 8
   minDragonslashDamage: 10
   maxDragonslashDamage: 15
+  uniqueAnarchyOptionCountToClearScaling: 2
+  anarchyScalingGenerationReductionAmount: 0.7
+  generationPerAnarchyOption: 55
+  baseAnarchyDecayRate: 450
+  minAnarchyDecayRate: 150
   extraInvulnerabilityFramesAfterHit: 45
