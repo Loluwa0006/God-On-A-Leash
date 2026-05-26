@@ -21,6 +21,7 @@ public class PlayerStatsManager : BaseEntity
         WormCount,
         WormRange,
         RodLength,
+        RodRetractionSpeed,
         ParryDuration,
         ParryPower,
         SquashbucklerPower,
@@ -116,8 +117,10 @@ public class PlayerStatsManager : BaseEntity
         JustYawnWindow,
         YawnAnarchyProgressPerFrame,
         JustYawnAnarchyProgress,
-        //Misc
-        ExtraInvulnerabilityFramesAfterHit,
+        RodRetractionSpeedWhileYawning ,
+
+    //Misc
+    ExtraInvulnerabilityFramesAfterHit,
     }
 
     [SerializeField] PlayerStats baseStats;
@@ -168,6 +171,7 @@ public class PlayerStatsManager : BaseEntity
         { InfluenceType.WormCount, 4.0f },
         { InfluenceType.WormRange, 4.0f },
         { InfluenceType.RodLength, 4.0f },
+        { InfluenceType.RodRetractionSpeed, 4.0f },
         { InfluenceType.ParryDuration, 4.0f },
         { InfluenceType.ParryPower, 4.0f },
         { InfluenceType.SquashbucklerPower, 4.0f },
@@ -278,6 +282,8 @@ public class PlayerStatsManager : BaseEntity
         statRegistry[StatID.MaxRodRange] = new StatObject(baseStats.MaxRodRange, InfluenceType.RodLength, StatID.MaxRodRange);
 
         statRegistry[StatID.ParrySpeedIncrease] = new StatObject(baseStats.ParrySpeedIncrease, InfluenceType.ParryPower, StatID.ParrySpeedIncrease);
+
+        statRegistry[StatID.RodRetractionSpeedWhileYawning] = new StatObject(baseStats.RodRetractionSpeedWhileYawning, InfluenceType.RodRetractionSpeed, StatID.RodRetractionSpeedWhileYawning);
 
         statRegistry[StatID.Undefined] = new StatObject(-1.0f, InfluenceType.Uninfluenceable, StatID.Undefined);
     }

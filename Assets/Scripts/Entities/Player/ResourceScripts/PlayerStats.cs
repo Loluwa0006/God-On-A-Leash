@@ -222,6 +222,10 @@ public class PlayerStats : ScriptableObject
 
     public float JustYawnAnarchyProgress { get => justYawnAnarchyProgress; }
 
+    [SerializeField] float rodRetractionSpeedWhileYawning = 35.0f;
+
+    public float RodRetractionSpeedWhileYawning { get => rodRetractionSpeedWhileYawning; }
+
     #endregion
     #region Slash
     [SerializeField] float slashAnarchyProgressAmount = 100.0f;

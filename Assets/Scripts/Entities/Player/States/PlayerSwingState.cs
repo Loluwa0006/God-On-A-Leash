@@ -73,14 +73,14 @@ public class PlayerSwingState : PlayerAirState
     public override void Exit()
     {
         base.Exit();
-        Player.RodManager.RetractRod();
+        Player.RodManager.DisableGrapple();
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Swing);
         Player.CameraManager.TransitionToCamera(Player.CameraManager.DefaultCamera, cameraTransitionTime);
     }
 
     public override bool StateAvailable()
     {
-        if (GrappleUtilities.AimingAtGrappable(Player, Player.RodManager.GrappleMask) && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Swing].Buffered)
+        if (GrappleUtilities.AimingAtGrappable(Player, Player.RodManager.GrappleMask) && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Swing].Buffered && Player.RodManager.RodLength <= 0.001f)
         {
             return true;
         }

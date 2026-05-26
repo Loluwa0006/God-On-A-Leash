@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class RodManager : MonoBehaviour
@@ -7,6 +8,9 @@ public class RodManager : MonoBehaviour
     [SerializeField] PlayerController player;
 
     [SerializeField] Transform grapplePoint;
+
+
+    [SerializeField] TMP_Text rodLengthDisplay;
 
     bool grappleActive = true;
 
@@ -24,9 +28,26 @@ public class RodManager : MonoBehaviour
 
     public GrappleData GrappleInfo { set => grappleInfo = value; get => grappleInfo; }
     public LayerMask GrappleMask { get => grappleMask; }
+
+    float rodLength;
+
+    public float RodLength {
+
+        set
+        {
+            if (rodLengthDisplay != null)
+            {
+                rodLengthDisplay.text = Mathf.RoundToInt(value).ToString();
+            }
+            rodLength = value;
+        }
+
+        get { return rodLength; }
+    } 
+
     private void Start()
     {
-        RetractRod();
+        DisableGrapple();
     }
 
     public void StartSwing()
@@ -51,6 +72,8 @@ public class RodManager : MonoBehaviour
 
             grappleActive = true;
             rodLine.enabled = true;
+
+            RodLength = Vector3.Distance(player.RigidBody.position, GrappleUtilities.RaycastResult.point);
         }
     }
 
@@ -63,6 +86,8 @@ public class RodManager : MonoBehaviour
 
             grappleInfo.collider = GrappleUtilities.RaycastResult.collider;
             grappleInfo.offset = GrappleUtilities.RaycastResult.point - grappleInfo.collider.bounds.center;
+
+            RodLength = Vector3.Distance(player.RigidBody.position, GrappleUtilities.RaycastResult.point);
         }
     }
     private void FixedUpdate()
@@ -74,7 +99,7 @@ public class RodManager : MonoBehaviour
     }
 
 
-    public void RetractRod()
+    public void DisableGrapple()
     {
         grappleActive = false;
         rodLine.enabled = false;

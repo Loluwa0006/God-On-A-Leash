@@ -94,6 +94,7 @@ MonoBehaviour:
   justYawnWindow: 35
   yawnAnarchyProgressPerFrame: 0.3
   justYawnAnarchyProgress: 100
+  rodRetractionSpeedWhileYawning: 7
   slashAnarchyProgressAmount: 100
   speedToSlashDamage:
     serializedVersion: 2

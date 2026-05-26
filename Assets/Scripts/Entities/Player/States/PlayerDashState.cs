@@ -39,11 +39,23 @@ public class PlayerDashState : PlayerAirState
 
         var directionToGrapple = (Player.RodManager.GrappleInfo.GrapplePosition - Player.Collider.bounds.center).normalized;
 
-        if (Vector3.Distance(Player.RodManager.GrappleInfo.GrapplePosition, Player.Collider.bounds.center) <= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinDistanceBeforeDashCancelled) || !Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Dash].ActionPressed)
+        float distanceFromGrapplePoint = Vector3.Distance(Player.RodManager.GrappleInfo.GrapplePosition, Player.Collider.bounds.center);
+        float distanceBeforeCancel = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinDistanceBeforeDashCancelled);
+
+        if (distanceFromGrapplePoint <= distanceBeforeCancel)
+        {
+            Player.RodManager.RodLength = 0.0f;
+            StateMachine.TransitionTo<PlayerFallState>();
+            return;
+        }
+        if (!Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Dash].ActionPressed)
         {
             StateMachine.TransitionTo<PlayerFallState>();
             return;
         }
+
+        Player.RodManager.RodLength = distanceFromGrapplePoint;
+        
         var speedToAdd = GetSpeedToAdd(directionToGrapple);
         Player.RigidBody.AddForce(speedToAdd, ForceMode.VelocityChange);
         var strippedLateral = StripLateralMovementBasedOnInput(directionToGrapple, dashDirectionCorrected);
@@ -83,7 +95,7 @@ public class PlayerDashState : PlayerAirState
     public override void Exit()
     {
         base.Exit();
-        Player.RodManager.RetractRod();
+        Player.RodManager.DisableGrapple();
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Dash);
         Player.CameraManager.TransitionToCamera(Player.CameraManager.DefaultCamera, cameraTransitionTime);
     }
