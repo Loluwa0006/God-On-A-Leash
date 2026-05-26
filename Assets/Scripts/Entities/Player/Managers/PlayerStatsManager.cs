@@ -84,8 +84,7 @@ public class PlayerStatsManager : BaseEntity
         PartialParryDuration,
         ParryAccelerationInPercent,
         ParryStrafeSpeed,
-        MinParryRange,
-        ParryRangeIncreaseWithSpeedRatio,
+        RodLengthAdditionalParrySize,
         ParrySpeedIncrease,
         PartialParrySpeedPenalty,
         ParryBounceControl,
@@ -224,7 +223,6 @@ public class PlayerStatsManager : BaseEntity
         statRegistry[StatID.MinDistanceBeforeDashCancelled] = new StatObject(baseStats.MinDistanceBeforeDashCancelled, InfluenceType.Uninfluenceable, StatID.MinDistanceBeforeDashCancelled);
         statRegistry[StatID.ExtraInvulnerabilityFramesAfterHit] = new StatObject(baseStats.ExtraInvulnerabilityFramesAfterHit, InfluenceType.Uninfluenceable, StatID.ExtraInvulnerabilityFramesAfterHit);
         statRegistry[StatID.PreviousSpeedToRailSpeedRatio] = new StatObject(baseStats.PreviousSpeedToRailSpeedRatio, InfluenceType.Uninfluenceable, StatID.PreviousSpeedToRailSpeedRatio);
-        statRegistry[StatID.MinParryRange] = new StatObject(baseStats.MinParryRange, InfluenceType.Uninfluenceable, StatID.MinParryRange);
         statRegistry[StatID.ParryAccelerationInPercent] = new StatObject(baseStats.ParryAccelerationInPercent, InfluenceType.Uninfluenceable, StatID.ParryAccelerationInPercent);
         statRegistry[StatID.MinAnarchyDecayRate] = new StatObject(baseStats.MinAnarchyDecayRate, InfluenceType.Uninfluenceable, StatID.MinAnarchyDecayRate);
         statRegistry[StatID.BaseAnarchyDecayRate] = new StatObject(baseStats.BaseAnarchyDecayRate, InfluenceType.Uninfluenceable, StatID.BaseAnarchyDecayRate);
@@ -238,7 +236,6 @@ public class PlayerStatsManager : BaseEntity
         statRegistry[StatID.WormThrowDuration] = new StatObject(baseStats.WormThrowDuration, InfluenceType.Uninfluenceable, StatID.WormThrowDuration);
         statRegistry[StatID.DashGravity] = new StatObject(baseStats.DashGravity, InfluenceType.Uninfluenceable, StatID.DashGravity);
         statRegistry[StatID.ProperParryDuration] = new StatObject(baseStats.ProperParryDuration, InfluenceType.Uninfluenceable, StatID.ProperParryDuration);
-        statRegistry[StatID.ParryRangeIncreaseWithSpeedRatio] = new StatObject(baseStats.ParryRangeIncreaseWithSpeedRatio, InfluenceType.Uninfluenceable, StatID.ParryRangeIncreaseWithSpeedRatio);
         statRegistry[StatID.ParryBounceControl] = new StatObject(baseStats.ParryBounceControl, InfluenceType.Uninfluenceable, StatID.ParryBounceControl);
         statRegistry[StatID.ChargesToEnterSquashbucklerMode] = new StatObject(baseStats.ChargesToEnterSquashbucklerMode, InfluenceType.Uninfluenceable, StatID.ChargesToEnterSquashbucklerMode);
         statRegistry[StatID.FallGravity] = new StatObject(baseStats.GroundedJumpInfo.FallGravity, InfluenceType.Uninfluenceable, StatID.FallGravity);
@@ -249,6 +246,8 @@ public class PlayerStatsManager : BaseEntity
         statRegistry[StatID.WormFallGravity] = new StatObject(baseStats.WormThrowJumpInfo.FallGravity, InfluenceType.Uninfluenceable, StatID.WormFallGravity);
         statRegistry[StatID.AnarchyScalingGenerationReductionAmount] = new StatObject(BaseStats.AnarchyScalingGenerationReductionAmount, InfluenceType.Uninfluenceable, StatID.AnarchyScalingGenerationReductionAmount);
         statRegistry[StatID.WormsRequiredForRail] = new StatObject(baseStats.WormsRequiredForRail, InfluenceType.Uninfluenceable, StatID.WormsRequiredForRail);
+        statRegistry[StatID.RodLengthAdditionalParrySize] = new StatObject(baseStats.RodLengthAdditionalParrySize, InfluenceType.Uninfluenceable, StatID.RodLengthAdditionalParrySize);
+
 
         statRegistry[StatID.UniqueAnarchyOptionCountToClearScaling] = new StatObject(baseStats.AnarchyScalingGenerationReductionAmount, InfluenceType.AnarchyScaling, StatID.UniqueAnarchyOptionCountToClearScaling);
 
@@ -321,7 +320,6 @@ public class PlayerStatsManager : BaseEntity
             }
            float currentValue = originalValue * additiveSum * multiplierProduct;
 
-            Debug.Log("Stat ID " + statID.ToString() + " influenced by " + influence.source.ToString() + " with value of " + influence.value + " changing value from " + originalValue + " to " + currentValue);
         }
         statValue = statValue * additiveSum * multiplierProduct;
         statValue = Mathf.Clamp(statValue, 0, stat.value * cappedBoostValue);
@@ -360,16 +358,6 @@ public class PlayerStatsManager : BaseEntity
             }
         }
         Array.Sort(influenceRegistry[type], (a, b) => a.priority.CompareTo(b.priority));
-        Debug.Log("Applied influence of type " + type.ToString() + " from source " + source.ToString() + " with value of " + value);
-        Debug.Log("This should effect the following stats: ");
-       foreach (var stat in statRegistry.Values)
-        {
-            if (stat.type == type)
-            {
-                Debug.Log(stat.ID.ToString());
-            }
-        }
-
     }
     public void RemoveInfluence(InfluenceSource source)
     {

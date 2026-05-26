@@ -147,14 +147,6 @@ public class PlayerStats : ScriptableObject
 
     public float ParryStrafeSpeed { get => parryStrafeSpeed;}
 
-    [SerializeField] float minParryRange = 6.0f;
-
-    public float MinParryRange { get => minParryRange; }
-
-    [SerializeField] float parryRangeIncreaseWithSpeedRatio = 0.25f;
-
-    public float ParryRangeIncreaseWithSpeedRatio {  get => parryRangeIncreaseWithSpeedRatio;}
-
     [SerializeField, Range(0, 1)] float parrySpeedIncrease = 0.1f;
 
     public float ParrySpeedIncrease { get => parrySpeedIncrease; }
@@ -178,6 +170,10 @@ public class PlayerStats : ScriptableObject
     [SerializeField] float previousSpeedToRailSpeedRatio = 2.4f;
 
     public float PreviousSpeedToRailSpeedRatio { get => previousSpeedToRailSpeedRatio; }
+
+    [SerializeField] float rodLengthAdditionalParrySize = 4.0f;
+
+    public float RodLengthAdditionalParrySize { get => rodLengthAdditionalParrySize; }
     #endregion
     #region Squashbuckler
     [Header("SquashbucklerPower")]

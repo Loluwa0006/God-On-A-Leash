@@ -10,6 +10,8 @@ public class PlayerParryState : PlayerAirState
 
     float startingSpeed = 0.0f;
 
+    RaycastHit parryRaycast;
+
     public override Type[] statesToAttemptToTransitionTo
     {
         get => new Type[]
@@ -23,7 +25,6 @@ public class PlayerParryState : PlayerAirState
         base.Enter(message);
         startingSpeed = Player.RigidBody.linearVelocity.magnitude;
         Player.entityCollision.AddListener(OnPlayerCollision);
-//        Player.entityTriggerEntry.AddListener(OnPlayerTriggerEnter);
         durationTracker = 0;
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Parry].Consume();
 
@@ -56,19 +57,29 @@ public class PlayerParryState : PlayerAirState
         {
             StateMachine.TransitionTo<PlayerFallState>();
         }
+        if (AttemptParry())
+        {
+            PerformParry(Player.PlayerInput.GetMovementDirection(), parryRaycast.normal);
+            StateMachine.TransitionTo<PlayerFallState>();
+            return;
+        }
     }
 
+    bool AttemptParry()
+    {
+        float shapecastSize = Mathf.Lerp(1.0f, 1.0f + Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.RodLengthAdditionalParrySize), Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxRodRange));
+        var shapecast = Physics.BoxCast(Player.Collider.bounds.center, Player.Collider.bounds.extents, Player.RigidBody.linearVelocity.normalized,  out RaycastHit hitinfo, Player.Collider.transform.rotation, shapecastSize, parryMask);
+        if (shapecast)
+        {
+            parryRaycast = hitinfo;
+        }
+        return shapecast;
+    }
     void OnPlayerCollision(Collision collision)
     {
-        PerformParry(Player.PlayerInput.GetMovementDirection(), collision.GetContact(0).normal);
+        //PerformParry(Player.PlayerInput.GetMovementDirection(), collision.GetContact(0).normal);
     }
-    //void OnPlayerTriggerEnter(Collider collider)
-    //{
-    //    if ((parryMask & (1 << collider.gameObject.layer)) != 0)
-    //    {
-    //        PerformParry(Player.PlayerInput.GetMovementDirection(), Vector3.zero);
-    //    }
-    //}
+  
     void PerformParry(Vector3 movementDirection, Vector3 normal)
     {
         float bounceVelocity = startingSpeed + (startingSpeed * Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.ParrySpeedIncrease));
