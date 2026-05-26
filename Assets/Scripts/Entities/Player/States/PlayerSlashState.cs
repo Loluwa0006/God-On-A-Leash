@@ -16,11 +16,17 @@ public class PlayerSlashState : PlayerAirState
         };
     }
 
+
+    float baseHitboxSize;
     public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
     {
         base.InitializeState(stateMachine, owner);
         if (slashHitbox == null) slashHitbox = GetComponent<HitboxComponent>();
         slashHitbox.targetsStruck += OnHitboxDeactivation;
+        if (slashHitbox.HitboxCollider is SphereCollider sphereHitbox)
+        {
+            baseHitboxSize = sphereHitbox.radius;
+        }
     }
     public override void Enter(Dictionary<string, object> message = null)
     {
@@ -28,6 +34,11 @@ public class PlayerSlashState : PlayerAirState
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_IsAttacking).ToString());
         slashAnimationOver = false;
         Player.RigidBody.MoveRotation(Quaternion.LookRotation(viewCamera.transform.forward));
+        float rodLengthAsPercent = Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxRodRange);
+        if (slashHitbox.HitboxCollider is SphereCollider sphereHitbox)
+        {
+            sphereHitbox.radius = Mathf.Lerp(baseHitboxSize, baseHitboxSize * (1 + Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SlashRangeBonusFromRodLength)), rodLengthAsPercent);
+        }
     }
 
     public override void PhysicsProcess()

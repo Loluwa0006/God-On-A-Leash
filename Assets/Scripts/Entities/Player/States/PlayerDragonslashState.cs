@@ -4,7 +4,7 @@ using System;
 
 public class PlayerDragonslashState : PlayerBaseState
 {
-    float initialSpeed;
+    float dragonslashSpeed;
     [HideInInspector] public bool dragonslashAnimationOver = false;
     [SerializeField] HitboxComponent dragonslashHitbox;
     [SerializeField] float cameraTransitionTime = 0.1f;
@@ -17,18 +17,30 @@ public class PlayerDragonslashState : PlayerBaseState
         };
     }
 
+    float baseHitboxSize;
     public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
     {
         base.InitializeState(stateMachine, owner);
         if (dragonslashHitbox == null) dragonslashHitbox = GetComponent<HitboxComponent>();
         dragonslashHitbox.targetsStruck += OnHitboxDeactivation;
+        if (dragonslashHitbox.HitboxCollider is SphereCollider sphereHitbox)
+        {
+            baseHitboxSize = sphereHitbox.radius;
+        }
     }
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
         Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_InSquashbuckler), true);
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_IsAttacking));
-        initialSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
+        dragonslashSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
+        float rodLengthAsPercent = Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxRodRange);
+        dragonslashSpeed += Mathf.Lerp(0, Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.DragonslashSpeedBonusFromRodLength), 1.0f - rodLengthAsPercent);
+        if (dragonslashHitbox.HitboxCollider is SphereCollider sphereHitbox)
+        {
+            sphereHitbox.radius = Mathf.Lerp(baseHitboxSize, baseHitboxSize * (1 + Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SlashRangeBonusFromRodLength)), rodLengthAsPercent);
+        }
+        
         dragonslashAnimationOver = false;
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].Consume();
         Player.SquashbucklerManager.SquashbucklerCharge = 0;
@@ -43,7 +55,7 @@ public class PlayerDragonslashState : PlayerBaseState
             StateMachine.TransitionTo<PlayerFallState>();
             return;
         }
-        Player.RigidBody.linearVelocity = initialSpeed * viewCamera.transform.forward;
+        Player.RigidBody.linearVelocity = dragonslashSpeed * viewCamera.transform.forward;
         CalculateDamage((int) Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinDragonslashDamage),(int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxDragonslashDamage), Player.StatsManager.BaseStats.SpeedToDragonslashDamageCurve);
     }
     public override void Process()

@@ -192,6 +192,10 @@ public class PlayerStats : ScriptableObject
     [SerializeField] float dragonslashAnarchyProgressAmount = 300.0f;
 
     public float DragonslashAnarchyProgressAmount { get => dragonslashAnarchyProgressAmount; }
+
+    [SerializeField] float dragonslashSpeedBonusFromRodLength = 60.0f;
+
+    public float DragonslashSpeedBonusFromRodLength {  get => dragonslashSpeedBonusFromRodLength;}
     #endregion
     #region Yawn
     [Header("Yawn")]
@@ -251,9 +255,13 @@ public class PlayerStats : ScriptableObject
     [SerializeField] int maxDragonslashDamage = 15;
 
     public int MaxDragonslashDamage { get => maxDragonslashDamage; }
+
+    [SerializeField] float slashRangeBonusFromRodLength = 4.0f; // multiplier
+
+    public float SlashRangeBonusFromRodLength { get => slashRangeBonusFromRodLength; }
     #endregion
     #region Anarchy
-        [Header("Anarchy")]
+    [Header("Anarchy")]
     [SerializeField] int uniqueAnarchyOptionCountToClearScaling = 2;
     public int UniqueAnarchyOptionCountToClearScaling { get => uniqueAnarchyOptionCountToClearScaling; }
 

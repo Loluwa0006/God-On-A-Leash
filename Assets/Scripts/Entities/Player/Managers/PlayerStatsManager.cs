@@ -96,6 +96,7 @@ public class PlayerStatsManager : BaseEntity
         MinimumShadowstepSpeed,
         DurationPerSquashbucklerCharge,
         DragonslashAnarchyProgressAmount,
+        DragonslashSpeedBonusFromRodLength,
         //Anarchy
         UniqueAnarchyOptionCountToClearScaling,
         AnarchyScalingGenerationReductionAmount,
@@ -109,6 +110,7 @@ public class PlayerStatsManager : BaseEntity
         MaxDragonslashDamage,
         SlashSpeed,
         SlashAnarchyProgressAmount,
+        SlashRangeBonusFromRodLength,
         //Yawn
         YawnAirAcceleration,
         MinYawnTime,
@@ -248,7 +250,6 @@ public class PlayerStatsManager : BaseEntity
         statRegistry[StatID.WormsRequiredForRail] = new StatObject(baseStats.WormsRequiredForRail, InfluenceType.Uninfluenceable, StatID.WormsRequiredForRail);
         statRegistry[StatID.RodLengthAdditionalParrySize] = new StatObject(baseStats.RodLengthAdditionalParrySize, InfluenceType.Uninfluenceable, StatID.RodLengthAdditionalParrySize);
 
-
         statRegistry[StatID.UniqueAnarchyOptionCountToClearScaling] = new StatObject(baseStats.AnarchyScalingGenerationReductionAmount, InfluenceType.AnarchyScaling, StatID.UniqueAnarchyOptionCountToClearScaling);
 
         statRegistry[StatID.GenerationPerAnarchyOption] = new StatObject(baseStats.GenerationPerAnarchyOption, InfluenceType.AnarchyGeneration, StatID.GenerationPerAnarchyOption);
@@ -260,6 +261,7 @@ public class PlayerStatsManager : BaseEntity
 
         statRegistry[StatID.MinDragonslashDamage] = new StatObject(baseStats.MinDragonslashDamage, InfluenceType.SquashbucklerPower, StatID.MinDragonslashDamage);
         statRegistry[StatID.MaxDragonslashDamage] = new StatObject(baseStats.MaxDragonslashDamage, InfluenceType.SquashbucklerPower, StatID.MaxDragonslashDamage);
+        statRegistry[StatID.DragonslashSpeedBonusFromRodLength] = new StatObject(baseStats.DragonslashSpeedBonusFromRodLength, InfluenceType.SquashbucklerPower, StatID.DragonslashSpeedBonusFromRodLength);
 
         statRegistry[StatID.DurationPerSquashbucklerCharge] = new StatObject(baseStats.DurationPerSquashbucklerCharge, InfluenceType.SquashbucklerLimit, StatID.DurationPerSquashbucklerCharge);
 
@@ -279,6 +281,7 @@ public class PlayerStatsManager : BaseEntity
         statRegistry[StatID.WormThrowRange] = new StatObject(baseStats.WormThrowRange, InfluenceType.WormRange, StatID.WormJumpPower);
 
         statRegistry[StatID.MaxRodRange] = new StatObject(baseStats.MaxRodRange, InfluenceType.RodLength, StatID.MaxRodRange);
+        statRegistry[StatID.SlashRangeBonusFromRodLength] = new StatObject(baseStats.SlashRangeBonusFromRodLength, InfluenceType.RodLength, StatID.SlashRangeBonusFromRodLength);
 
         statRegistry[StatID.ParrySpeedIncrease] = new StatObject(baseStats.ParrySpeedIncrease, InfluenceType.ParryPower, StatID.ParrySpeedIncrease);
 

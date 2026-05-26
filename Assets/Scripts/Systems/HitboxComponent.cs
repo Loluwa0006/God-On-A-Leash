@@ -1,8 +1,6 @@
-using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class HitboxComponent : MonoBehaviour
 {
@@ -15,6 +13,25 @@ public class HitboxComponent : MonoBehaviour
 
     public const int MAX_CONTACTS_PER_FRAME = 4;
     [SerializeField] Collider hitboxCollider;
+
+    public Collider HitboxCollider
+    { 
+        get 
+        {
+
+            if (isBoxCollider)
+            {
+                return hitboxCollider as BoxCollider;
+            }
+            else
+            {
+                return hitboxCollider as SphereCollider;
+            }
+                
+         }
+        
+       set => hitboxCollider = value;
+    }
     [SerializeField] LayerMask hitboxMask;
     [SerializeField] List<HealthComponent> blacklistedTargets;
     [SerializeField] DamageInfo damageInfo;
