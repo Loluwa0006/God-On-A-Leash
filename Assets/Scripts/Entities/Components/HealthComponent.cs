@@ -145,4 +145,4 @@ public enum StatusEffectID
 {
     PlayerGethitInvulnerability,
     ParryProjectileInvulnerability,
-}
+}  
