@@ -8,7 +8,7 @@ public class RaceCheckpoint : MonoBehaviour
     [SerializeField] Material checkpointMaterial;
    
 
-    bool checkpointDisabled = false;
+    public bool CheckpointDisabled { get; set; } = false;
 
 
     private void Start()
@@ -21,12 +21,12 @@ public class RaceCheckpoint : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (checkpointDisabled) return;
+        if (CheckpointDisabled) return;
         if (other.CompareTag("Player"))
         {
             checkpointReached.Invoke(this);
             checkpointMaterial.color = Color.green;
-            checkpointDisabled = true;
+            CheckpointDisabled = true;
         }
     }
 }
