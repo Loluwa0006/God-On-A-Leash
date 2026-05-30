@@ -16,20 +16,18 @@ public class RaceUI : MonoBehaviour
     bool gameRunning = false;
     public void InitializeUI(RaceCheckpoint[] checkpoints, RaceMode modeManager)
     {
-        for (int i = 0; i < checkpoints.Length; i++)
-        {
-            checkpoints[i].checkpointReached += OnCheckpointReached;
-        }
+        if (gameRunning) return;
+       
         this.racemodeManager = modeManager;
         racemodeManager.GameEnding += OnGameOver;
         checkpointsRemainingDisplay.text = checkpoints.Length.ToString();
         gameRunning = true;
     }
 
-    void OnCheckpointReached(RaceCheckpoint checkpoint)
+    public void UpdateCheckpointsRemainingDisplay(int checkpointsRemaining) 
     {
         if (!gameRunning) return;
-        checkpointsRemainingDisplay.text = racemodeManager.CheckpointsRemaining.ToString();
+        checkpointsRemainingDisplay.text = checkpointsRemaining.ToString();
     }
 
     private void FixedUpdate()

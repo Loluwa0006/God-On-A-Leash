@@ -76,18 +76,18 @@ MonoBehaviour:
   partialParryDuration: 13
   parryAccelerationInPercent: 0.1
   parryStrafeSpeed: 1
-  minParryRange: 2
-  parryRangeIncreaseWithSpeedRatio: 0.25
   parrySpeedIncrease: 0.1
   partialParrySpeedPenalty: 0.6
   parryBounceControl: 0
   railParryMinimumSpeed: 120
   railParryMinimumJump: 8
   previousSpeedToRailSpeedRatio: 2.4
+  rodLengthAdditionalParrySize: 4
   chargesToEnterSquashbucklerMode: 3
   minimumShadowstepSpeed: 60
   durationPerSquashbucklerCharge: 15
   dragonslashAnarchyProgressAmount: 300
+  dragonslashSpeedBonusFromRodLength: 60
   yawnAirAcceleration: 1.6
   minYawnTime: 45
   minJustYawnTime: 15
@@ -148,6 +148,8 @@ MonoBehaviour:
   maxSlashDamage: 8
   minDragonslashDamage: 10
   maxDragonslashDamage: 15
+  slashRangeBonusFromRodLength: 4
+  slashRodExtensionSpeed: 145
   uniqueAnarchyOptionCountToClearScaling: 2
   anarchyScalingGenerationReductionAmount: 0.7
   generationPerAnarchyOption: 55

@@ -5,8 +5,6 @@ public class PlayerThrowWormState : PlayerAirState
 { 
     [SerializeField] LayerMask terrainMask;
     
-    Vector3 middlePointOfViewport = new (0.5f, 0.5f);
-
     int durationTracker = 0;
 
     public override Type[] statesToAttemptToTransitionTo
@@ -30,19 +28,19 @@ public class PlayerThrowWormState : PlayerAirState
         durationTracker = (int) Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormThrowDuration);
         if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered && Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormsRequiredForRail))
         {
-            FireWormRail();
+            FireWorm(Player.WormManager.GetNewWormRail(), cost: (int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormsRequiredForRail));
         }
         else
         {
-            FireWorm();
+            FireWorm(Player.WormManager.GetNewWorm(), cost: 1);
         }
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Consume();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Consume();
     }
 
-    void FireWorm()
+    void FireWorm(WormEntity worm, int cost)
     {
-        var cameraRay = viewCamera.ViewportPointToRay(middlePointOfViewport);
+        var cameraRay = viewCamera.ScreenPointToRay(new Vector2(Screen.width / 2.0f, Screen.height / 2.0f));
         float wormThrowRange = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormThrowRange);
         var raycast = Physics.Raycast(cameraRay, out var hitInfo, wormThrowRange, terrainMask, QueryTriggerInteraction.Collide);
         Vector3 wormTarget;
@@ -54,28 +52,8 @@ public class PlayerThrowWormState : PlayerAirState
         {
             wormTarget = cameraRay.GetPoint(wormThrowRange);
         }
-        WormEntity newWorm = Player.WormManager.GetNewWorm();
-        newWorm.Fire(wormTarget, Player.transform.position, Player.RigidBody.linearVelocity);
-        Player.WormManager.WormsRemaining--;
-    }
-
-    void FireWormRail()
-    {
-        var cameraRay = viewCamera.ViewportPointToRay(middlePointOfViewport);
-        float wormThrowRange = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormThrowRange);
-        var raycast = Physics.Raycast(cameraRay, out var hitInfo, wormThrowRange, terrainMask, QueryTriggerInteraction.Collide);
-        Vector3 wormTarget;
-        if (raycast)
-        {
-            wormTarget = hitInfo.point;
-        }
-        else
-        {
-            wormTarget = cameraRay.GetPoint(wormThrowRange);
-        }
-        WormEntity newWorm = Player.WormManager.GetNewWormRail();
-        newWorm.Fire(wormTarget, Player.transform.position, Player.RigidBody.linearVelocity);
-        Player.WormManager.WormsRemaining -= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormsRequiredForRail);
+        worm.Fire(wormTarget, Player.transform.position, Player.RigidBody.linearVelocity);
+        Player.WormManager.WormsRemaining -= cost;
     }
     public override void PhysicsProcess()
     {

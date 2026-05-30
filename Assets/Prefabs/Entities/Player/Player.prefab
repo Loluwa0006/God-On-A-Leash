@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSlashState
   hasInactiveProcess: 0
-  hasInactivePhysicsProcess: 0
+  hasInactivePhysicsProcess: 1
   slashHitbox: {fileID: 7901163656482743022}
   slashAnimationOver: 0
 --- !u!135 &5631768534695570731
@@ -795,11 +795,6 @@ MonoBehaviour:
   anarchyDisplay: {fileID: 0}
   anarchyProgressDisplay: {fileID: 0}
   anarchyDecayDisplay: {fileID: 0}
-  numberOfOptionsToUseToReduceScaling: 2
-  scalingGenerationReductionAmount: 0.7
-  generationPerOption: 55
-  baseDecayRate: 450
-  minDecayRate: 150
   anarchyGainedThroughScaledMethod:
     m_PersistentCalls:
       m_Calls: []
@@ -905,6 +900,7 @@ MonoBehaviour:
     m_Bits: 1792
   player: {fileID: 1870535501843506831}
   grapplePoint: {fileID: 6271263608659458738}
+  rodLengthDisplay: {fileID: 0}
 --- !u!1 &5401427390679268989
 GameObject:
   m_ObjectHideFlags: 0
@@ -1002,6 +998,7 @@ MonoBehaviour:
   hasInactivePhysicsProcess: 0
   dragonslashAnimationOver: 0
   dragonslashHitbox: {fileID: 7736850955957959357}
+  cameraTransitionTime: 0.1
 --- !u!114 &7736850955957959357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1955,7 +1952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipManager
   player: {fileID: 1870535501843506831}
   abilityOneID: 4
-  abilityTwoID: 1
+  abilityTwoID: 0
   shipAbilityRegister:
   - ID: 0
     Prefab: {fileID: 2606688459999837528, guid: 19a59435d3905d549b30587c486ff3f6, type: 3}
@@ -1965,6 +1962,8 @@ MonoBehaviour:
     Prefab: {fileID: 3785994334387084248, guid: 910c2e9e8018a8f47bead9d22a8c1867, type: 3}
   - ID: 4
     Prefab: {fileID: 6240846645938105530, guid: ffd7ddc2f5f60754c8ae69655b0c08f2, type: 3}
+  - ID: 2
+    Prefab: {fileID: 9028473160089806116, guid: b27c06c0c7f965b4b8df6e72860b4f6d, type: 3}
 --- !u!1 &7321335959488850962
 GameObject:
   m_ObjectHideFlags: 0

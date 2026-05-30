@@ -67,6 +67,12 @@ public class CameraManager : MonoBehaviour
         if (transitionProgressNormalized > 0.99f)
         {
             activeCamera = cameraToTransitionTo;
+            foreach (var camera in mixingCamera.ChildCameras)
+            {
+                if (camera == cameraToTransitionTo) continue;
+                mixingCamera.SetWeight(camera, 0.0f);
+            }
+            mixingCamera.SetWeight(activeCamera, 1.0f);
         }
     }
 

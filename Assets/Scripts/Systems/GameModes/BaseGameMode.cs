@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class BaseGameMode : MonoBehaviour
@@ -22,7 +21,7 @@ public class BaseGameMode : MonoBehaviour
     public virtual void EndGame(bool won)
     {
         if (gameOver) return;
-        GameEnding.Invoke(won);
+        GameEnding?.Invoke(won);
         gameOver = true;
     }
 }

@@ -33,6 +33,7 @@ public class RaceMode : BaseGameMode
         {
             EndGame(won: true);
         }
+        raceUI.UpdateCheckpointsRemainingDisplay(CheckpointsRemaining);
     }
 
     private void FixedUpdate()
