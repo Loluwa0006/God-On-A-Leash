@@ -16,6 +16,7 @@ public class PlayerSlashState : PlayerAirState
         };
     }
 
+    bool releasedSlashButton = true;
 
     float baseHitboxSize;
     public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
@@ -39,6 +40,7 @@ public class PlayerSlashState : PlayerAirState
         {
             sphereHitbox.radius = Mathf.Lerp(baseHitboxSize, baseHitboxSize * (1 + Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SlashRangeBonusFromRodLength)), rodLengthAsPercent);
         }
+        releasedSlashButton = false;
     }
 
     public override void PhysicsProcess()
@@ -76,6 +78,22 @@ public class PlayerSlashState : PlayerAirState
         var info = slashHitbox.DamageInfo;
         info.damage = Mathf.RoundToInt(Mathf.Lerp(minDamage, maxDamage, speedSampled));
         slashHitbox.DamageInfo = info;
+    }
+
+    public override void InactivePhysicsProcess()
+    {
+        base.InactivePhysicsProcess();
+        if (!releasedSlashButton)
+        {
+            if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].ActionPressed)
+            {
+                Player.RodManager.RodLength += Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SlashRodExtensionSpeed) * Time.fixedDeltaTime;
+            }
+            else
+            {
+                releasedSlashButton = true;
+            }
+        }
     }
 
     public override void Process()

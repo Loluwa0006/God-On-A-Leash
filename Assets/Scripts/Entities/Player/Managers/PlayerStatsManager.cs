@@ -111,6 +111,7 @@ public class PlayerStatsManager : BaseEntity
         SlashSpeed,
         SlashAnarchyProgressAmount,
         SlashRangeBonusFromRodLength,
+        SlashRodExtensionSpeed,
         //Yawn
         YawnAirAcceleration,
         MinYawnTime,
@@ -249,6 +250,7 @@ public class PlayerStatsManager : BaseEntity
         statRegistry[StatID.AnarchyScalingGenerationReductionAmount] = new StatObject(BaseStats.AnarchyScalingGenerationReductionAmount, InfluenceType.Uninfluenceable, StatID.AnarchyScalingGenerationReductionAmount);
         statRegistry[StatID.WormsRequiredForRail] = new StatObject(baseStats.WormsRequiredForRail, InfluenceType.Uninfluenceable, StatID.WormsRequiredForRail);
         statRegistry[StatID.RodLengthAdditionalParrySize] = new StatObject(baseStats.RodLengthAdditionalParrySize, InfluenceType.Uninfluenceable, StatID.RodLengthAdditionalParrySize);
+        statRegistry[StatID.SlashRodExtensionSpeed] = new StatObject(baseStats.SlashRodExtensionSpeed, InfluenceType.Uninfluenceable, StatID.SlashRodExtensionSpeed);
 
         statRegistry[StatID.UniqueAnarchyOptionCountToClearScaling] = new StatObject(baseStats.AnarchyScalingGenerationReductionAmount, InfluenceType.AnarchyScaling, StatID.UniqueAnarchyOptionCountToClearScaling);
 

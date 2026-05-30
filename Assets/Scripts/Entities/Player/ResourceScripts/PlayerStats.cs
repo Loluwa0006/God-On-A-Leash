@@ -259,6 +259,10 @@ public class PlayerStats : ScriptableObject
     [SerializeField] float slashRangeBonusFromRodLength = 4.0f; // multiplier
 
     public float SlashRangeBonusFromRodLength { get => slashRangeBonusFromRodLength; }
+
+    [SerializeField] float slashRodExtensionSpeed = 35.0f;
+
+    public float SlashRodExtensionSpeed { get => slashRodExtensionSpeed; }
     #endregion
     #region Anarchy
     [Header("Anarchy")]

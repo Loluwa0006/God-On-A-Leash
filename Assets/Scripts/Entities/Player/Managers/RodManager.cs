@@ -39,10 +39,10 @@ public class RodManager : MonoBehaviour
             {
                 rodLengthDisplay.text = Mathf.RoundToInt(value).ToString();
             }
-            rodLength = value;
+            rodLength = Mathf.Clamp(value, 0.0f, player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxRodRange));
         }
 
-        get { return rodLength; }
+        get => rodLength;
     } 
 
     private void Start()
