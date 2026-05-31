@@ -72,7 +72,7 @@ MonoBehaviour:
   idComponent: {fileID: 1610769942815114598}
   gravityFreeTime: 180
   distanceWhereTargetConsideredReached: 8
-  flySpeed: 120
+  flySpeed: 95
   gravity: 9
   maxFallSpeed: 30
   model: {fileID: 4562340481959436509}
