@@ -18,7 +18,6 @@ public class ChronoShipAbility : BaseShipAbility
     public override void ActivateAbility()
     {
         durationTracker = Mathf.RoundToInt(chronoAbilityData.AbilityDuration * (1 - chronoAbilityData.TimeSlow));
-        Debug.Log("Setting duration tracker to " + durationTracker);
         base.ActivateAbility();
         vfxAnimator.SetTrigger("Activate");
         originalTimescale = Time.timeScale;

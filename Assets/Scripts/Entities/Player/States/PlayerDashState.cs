@@ -11,8 +11,8 @@ public class PlayerDashState : PlayerAirState
         get => new Type[]
         {
             typeof(PlayerSlashState),
+            typeof(PlayerThrowWormState),
             typeof(PlayerShadowstepState),
-            typeof(PlayerFallState),
         };
     }
 
@@ -84,14 +84,7 @@ public class PlayerDashState : PlayerAirState
         var lateralMovement = Player.RigidBody.linearVelocity - velocityProjected; //subtract aligned velocity
         return -lateralMovement * yAxis;
     }
-    public override void Process()
-    {
-        if (StateMachine.IsStateAvailable<PlayerThrowWormState>())
-        {
-            StateMachine.TransitionTo<PlayerThrowWormState>();
-            return;
-        }
-    }
+
     public override void Exit()
     {
         base.Exit();

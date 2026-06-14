@@ -34,8 +34,8 @@ public class PlayerBaseState : BaseState
         bool hit = Physics.SphereCast
             (
             ray, 
-            Player.Collider.bounds.extents.y * SHAPECAST_RATIO,
-            GROUND_CHECK_SAFE_MARGIN,
+            Player.Collider.bounds.extents.x * SHAPECAST_RATIO,
+            Player.Collider.bounds.extents.y + GROUND_CHECK_SAFE_MARGIN,
             groundMask
             );
         return hit;

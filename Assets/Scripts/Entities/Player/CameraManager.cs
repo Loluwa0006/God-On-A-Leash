@@ -82,7 +82,7 @@ public class CameraManager : MonoBehaviour
         {
             player.RigidBody.MoveRotation(Quaternion.Euler(0, lookDirection.x, 0));
         }
-        lookTarget.localRotation = Quaternion.Euler(-lookDirection.y, lookDirection.x, 0);
+        lookTarget.localRotation = Quaternion.Euler(-lookDirection.y, 0, 0);
     }
 
 

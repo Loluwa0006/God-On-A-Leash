@@ -99,6 +99,6 @@ public class EntityStateMachine : MonoBehaviour
         {
             return false;
         }
-        return stateLookup[(type)].StateAvailable();
+        return stateLookup[type].StateAvailable();
     }
 }

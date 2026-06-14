@@ -6,8 +6,6 @@ public class PlayerSlashState : PlayerAirState
 {
     [SerializeField] HitboxComponent slashHitbox;
 
-    [HideInInspector] public bool slashAnimationOver = false;
-
     public override Type[] statesToAttemptToTransitionTo
     {
         get => new Type[]
@@ -17,7 +15,7 @@ public class PlayerSlashState : PlayerAirState
     }
 
     bool releasedSlashButton = true;
-
+    bool cancelAllowed = false;
     float baseHitboxSize;
     public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
     {
@@ -32,24 +30,26 @@ public class PlayerSlashState : PlayerAirState
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_InSquashbuckler).ToString(), false);
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_IsAttacking).ToString());
-        slashAnimationOver = false;
-        Player.RigidBody.MoveRotation(Quaternion.LookRotation(viewCamera.transform.forward));
         float rodLengthAsPercent = Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxRodRange);
         if (slashHitbox.HitboxCollider is SphereCollider sphereHitbox)
         {
             sphereHitbox.radius = Mathf.Lerp(baseHitboxSize, baseHitboxSize * (1 + Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SlashRangeBonusFromRodLength)), rodLengthAsPercent);
         }
         releasedSlashButton = false;
+        Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].Consume();
+        cancelAllowed = false;
     }
 
     public override void PhysicsProcess()
     {
         base.PhysicsProcess();
         AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.AirAcceleration));
+        transform.rotation = Player.RigidBody.rotation;
         //use jump gravity to make attacks feel more floaty
         ApplyGravity(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JumpGravity));
-        if (slashAnimationOver)
+        if (Player.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
         {
             StateMachine.TransitionTo<PlayerFallState>();
             return;
@@ -59,7 +59,30 @@ public class PlayerSlashState : PlayerAirState
             StateMachine.TransitionTo<PlayerShadowstepState>();
             return;
         }
-        CalculateDamage((int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinSlashDamage), (int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxSlashDamage), Player.StatsManager.BaseStats.SpeedToSlashDamageCurve);
+        if (cancelAllowed)
+        {
+            if (StateMachine.IsStateAvailable<PlayerDashState>())
+            {
+                StateMachine.TransitionTo<PlayerDashState>();
+                return;
+            }
+            if (StateMachine.IsStateAvailable<PlayerSwingState>())
+            {
+                StateMachine.TransitionTo<PlayerSwingState>();
+                return;
+            }
+            if (StateMachine.IsStateAvailable<PlayerYawnState>())
+            {
+                StateMachine.TransitionTo<PlayerYawnState>();
+                return;
+            }
+            if (StateMachine.IsStateAvailable<PlayerThrowWormState>())
+            {
+                StateMachine.TransitionTo<PlayerThrowWormState>();
+                return;
+            }
+        }
+        CalculateDamageInfo((int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinSlashDamage), (int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxSlashDamage), Player.StatsManager.BaseStats.SpeedToSlashDamageCurve);
     }
 
     public virtual void OnHitboxDeactivation(List<HealthComponent> victims)
@@ -70,13 +93,14 @@ public class PlayerSlashState : PlayerAirState
         }
     }
 
-    protected void CalculateDamage(int minDamage, int maxDamage, AnimationCurve curve)
+    protected void CalculateDamageInfo(int minDamage, int maxDamage, AnimationCurve curve)
     {
         var lateralSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
         var speedSampled = curve.Evaluate(lateralSpeed);
 
         var info = slashHitbox.DamageInfo;
         info.damage = Mathf.RoundToInt(Mathf.Lerp(minDamage, maxDamage, speedSampled));
+        info.horizontalKnockback = lateralSpeed;
         slashHitbox.DamageInfo = info;
     }
 
@@ -103,7 +127,6 @@ public class PlayerSlashState : PlayerAirState
     public override void Exit()
     {
         base.Exit();
-        Player.CameraManager.ControlPlayerRotation = true;
         slashHitbox.OnDeactivate();
     }
 

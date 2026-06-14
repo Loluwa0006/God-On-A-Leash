@@ -64,7 +64,7 @@ public class HitboxComponent : MonoBehaviour
 
     public void OnDeactivate()
     {
-        targetsStruck.Invoke(previousTargets);
+        targetsStruck?.Invoke(previousTargets);
     }
 
     private void FixedUpdate()

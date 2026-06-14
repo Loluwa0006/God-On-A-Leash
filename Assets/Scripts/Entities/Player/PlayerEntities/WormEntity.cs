@@ -2,22 +2,27 @@ using UnityEngine;
 
 public class WormEntity : BaseEntity
 {
+    [Header("Worm Settings")]
     [SerializeField] int gravityFreeTime = 7 * 60;
     [SerializeField] float distanceWhereTargetConsideredReached = 8.0f;
     [SerializeField] float flySpeed = 60.0f;
     [SerializeField] float gravity = 8.0f;
     [SerializeField] float maxFallSpeed = 30.0f;
+    [SerializeField] int hitsBeforeDeactivation = 2;
 
+    [Header("References")]
     [SerializeField] GameObject model;
     [SerializeField] Collider swingbox;
     [SerializeField] Rigidbody rigidBody;
+    [SerializeField] HealthComponent healthComponent;
 
     Vector3 target;
     int gravityTracker = 0;
     public bool wormActive { get; private set; }
     public Rigidbody Rigidbody { get => rigidBody; }
     bool reachedTarget = false;
-   public void Fire(Vector3 target, Vector3 startingLocation, Vector3 ownerVelocity)
+    int remainingHitsBeforeDeactivation = 2;
+    public void Fire(Vector3 target, Vector3 startingLocation, Vector3 ownerVelocity)
     {
         rigidBody.isKinematic = false;
         this.target = target;
@@ -34,6 +39,8 @@ public class WormEntity : BaseEntity
         model.SetActive(true);
         if (swingbox != null) swingbox.enabled = true;
         transform.LookAt(target);
+
+        remainingHitsBeforeDeactivation = hitsBeforeDeactivation;
     }
 
     public void Deactivate()
@@ -49,6 +56,24 @@ public class WormEntity : BaseEntity
         if (!wormActive) return;
         GravityLogic();
         TargetLogic();
+    }
+
+    public void OnHurtboxStruck(HitboxContactInfo contactInfo)
+    {
+        if (contactInfo.DamageInfo.damageSource == DamageSource.PlayerSlash)
+        {
+            var directionAwayFromContactPoint = (transform.position - contactInfo.collisionPoint).normalized;
+            var startingLocation = transform.position;
+            var ownerVelocity =  directionAwayFromContactPoint * contactInfo.DamageInfo.horizontalKnockback;
+            Fire(target, startingLocation, ownerVelocity);
+            Debug.Log("Worm hit by slash, firing towards target again with knockback velocity inherited from slash");
+            remainingHitsBeforeDeactivation--;
+            if (remainingHitsBeforeDeactivation <= 0)
+            {
+                Deactivate();
+                remainingHitsBeforeDeactivation = hitsBeforeDeactivation;
+            }
+        }
     }
 
     void GravityLogic()

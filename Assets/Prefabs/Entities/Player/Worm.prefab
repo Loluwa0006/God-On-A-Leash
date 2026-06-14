@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1895401925792460249}
   - component: {fileID: 6987743295247668556}
   - component: {fileID: 1610769942815114598}
+  - component: {fileID: 2999265365078860461}
   m_Layer: 8
   m_Name: Worm
   m_TagString: LockOn
@@ -75,9 +76,11 @@ MonoBehaviour:
   flySpeed: 95
   gravity: 9
   maxFallSpeed: 30
+  hitsBeforeDeactivation: 2
   model: {fileID: 4562340481959436509}
   swingbox: {fileID: 4482398490604426576}
   rigidBody: {fileID: 6987743295247668556}
+  healthComponent: {fileID: 2999265365078860461}
 --- !u!54 &6987743295247668556
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -118,6 +121,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IDComponent
   idType: 1
+--- !u!114 &2999265365078860461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9062560815971836277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31ca389ec8596a04fad08e3874084fb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
+  maxHealth: 2
+  hurtbox: {fileID: 4482398490604426576}
+  entityKilled:
+    m_PersistentCalls:
+      m_Calls: []
+  entityDamaged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1895401925792460249}
+        m_TargetAssemblyTypeName: WormEntity, Assembly-CSharp
+        m_MethodName: OnHurtboxStruck
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  entityHealed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &3715990513730362764
 PrefabInstance:
   m_ObjectHideFlags: 0
