@@ -145,7 +145,7 @@ MonoBehaviour:
     damageSource: 0
   inactiveColor: {r: 1, g: 0, b: 0, a: 1}
   activeColor: {r: 0, g: 1, b: 0, a: 1}
-  hitboxDrawMode: 2
+  hitboxDrawMode: 1
   HitboxActive: 0
 --- !u!1 &1169385189053670155
 GameObject:
@@ -1509,13 +1509,13 @@ MonoBehaviour:
   _collider: {fileID: 8061839667610271217}
   stateMachine: {fileID: 4640383311062024331}
   _healthComponent: {fileID: 1292771791658868985}
+  _statsManager: {fileID: 6676928779841109646}
   entityCollision:
     m_PersistentCalls:
       m_Calls: []
   entityTriggerEntry:
     m_PersistentCalls:
       m_Calls: []
-  _playerStats: {fileID: 4626381762603684209}
   _playerInput: {fileID: 7156764095087575519}
   _wormManager: {fileID: 6021299679631168183}
   _rodManager: {fileID: 8445331606179173087}
@@ -1804,8 +1804,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4576583021109289962}
-  - component: {fileID: 4626381762603684209}
   - component: {fileID: 3900128563698183582}
+  - component: {fileID: 6676928779841109646}
   m_Layer: 3
   m_Name: StatsManager
   m_TagString: Untagged
@@ -1828,20 +1828,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3340420948024593123}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4626381762603684209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6490272158602745305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21dc7d3131f56814fa1cd207abab6998, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsManager
-  idComponent: {fileID: 3900128563698183582}
-  baseStats: {fileID: 11400000, guid: 37afd5eea4cfb2a48aaf3c3462bff32a, type: 2}
 --- !u!114 &3900128563698183582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1854,7 +1840,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8b73511aa27605468744d3677198fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IDComponent
-  idType: 4
+  idType: 5
+--- !u!114 &6676928779841109646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6490272158602745305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22c5a5e08e02eed41aadac743da38098, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityStatsManager
+  idComponent: {fileID: 3900128563698183582}
+  statsHolder: {fileID: 11400000, guid: f72b4a40f380b3b44b6ba9c8ee3292ef, type: 2}
 --- !u!1 &6577541848443657775
 GameObject:
   m_ObjectHideFlags: 0

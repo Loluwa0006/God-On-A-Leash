@@ -8,7 +8,6 @@ public class PlayerController : BaseActor
         Bool_InSquashbuckler
     }
 
-    [SerializeField] PlayerStatsManager _playerStats;
 
     [Header("Managers")]
     [SerializeField] InputManager _playerInput;
@@ -18,14 +17,14 @@ public class PlayerController : BaseActor
     [SerializeField] SquashbucklerManager _squashbucklerManager;
     [SerializeField] CameraManager _cameraManager;
     [SerializeField] ShipManager _shipManager;
+    [SerializeField] HealthComponent _healthComponent;
+    [SerializeField] Collider _collider;
 
     [Header("Components")]
     [SerializeField] Animator _animator;
 
 
     public InputManager PlayerInput { get => _playerInput; }
-    public PlayerStatsManager StatsManager { get => _playerStats;}
-
     public WormManager WormManager { get => _wormManager; }
 
     public RodManager RodManager { get => _rodManager; }
@@ -36,7 +35,8 @@ public class PlayerController : BaseActor
     public Animator Animator { get => _animator; }
 
     public CameraManager CameraManager { get => _cameraManager; }
-
+    public HealthComponent HealthComponent { get => _healthComponent; }
+    public Collider Collider { get => _collider; }
     public bool PlayerGrounded { get; set; }
 
     private void Start()

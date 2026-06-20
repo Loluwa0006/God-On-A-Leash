@@ -17,7 +17,7 @@ public class WormManager : MonoBehaviour
         set
         {
             wormsRemaining =
-            Mathf.Clamp(value, 0, player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxWorms));
+            Mathf.Clamp(value, 0, player.StatsManager.GetValueFromStat(StatID.MaxWorms));
             if (wormDisplay != null) wormDisplay.text = wormsRemaining.ToString();
         }
     }
@@ -29,7 +29,7 @@ public class WormManager : MonoBehaviour
 
     private void Start()
     {
-        wormsRemaining = player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxWorms);
+        wormsRemaining = player.StatsManager.GetValueFromStat(StatID.MaxWorms);
 
         for (int i = 0; i < WormsRemaining; i++)
         {

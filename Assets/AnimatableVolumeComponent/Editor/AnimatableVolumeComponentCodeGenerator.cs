@@ -82,12 +82,12 @@ namespace TsukimiNeko.AnimatableVolumeComponent
                 readMethodCode +=
                     $"{methodIndent}override_{fieldInfo.helperFieldName} = volumeComponent.{fieldInfo.volumeComponentFieldName}.overrideState;\n";
                 readMethodCode +=
-                    $"{methodIndent}{fieldInfo.helperFieldName} = volumeComponent.{fieldInfo.volumeComponentFieldName}.value;\n";
+                    $"{methodIndent}{fieldInfo.helperFieldName} = volumeComponent.{fieldInfo.volumeComponentFieldName}.floatValue;\n";
                 // write to profile
                 writeMethodCode +=
                     $"{methodIndent}volumeComponent.{fieldInfo.volumeComponentFieldName}.overrideState = override_{fieldInfo.helperFieldName};\n";
                 writeMethodCode +=
-                    $"{methodIndent}volumeComponent.{fieldInfo.volumeComponentFieldName}.value = {fieldInfo.helperFieldName};\n";
+                    $"{methodIndent}volumeComponent.{fieldInfo.volumeComponentFieldName}.floatValue = {fieldInfo.helperFieldName};\n";
             }
 
             var typeFullName = GetFullName(type);

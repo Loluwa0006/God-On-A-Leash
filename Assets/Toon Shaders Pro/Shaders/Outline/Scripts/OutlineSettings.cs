@@ -62,15 +62,15 @@ namespace ToonShadersPro.URP
 
         [Tooltip("How should the masking pass detect unique maskable areas?\n" + 
             "\n<b>Per Object</b>" +
-            "\n  Use the world-space position of the mesh origin as a seed value.\n" +
+            "\n  Use the world-space position of the mesh origin as a seed floatValue.\n" +
             "\n<b>Per Triangle</b>" +
-            "\n  Same as per-object, but the triangle ID is added to the seed value.\n" +
+            "\n  Same as per-object, but the triangle ID is added to the seed floatValue.\n" +
             "\n<b>Merge All Masked Objects</b>" +
-            "\n  Produces a binary mask; all masked objects use the same seed value.\n" +
+            "\n  Produces a binary mask; all masked objects use the same seed floatValue.\n" +
             "\n<b>Vertex Colors</b>" +
-            "\n  Use vertex colors baked into each mesh as a seed value.\n" +
+            "\n  Use vertex colors baked into each mesh as a seed floatValue.\n" +
             "\n<b>Renderer Shader User Value</b>" +
-            "\n  In Unity 6.3+ only, use RSUV as a seed value. Search MeshRenderer.SetShaderUserValue(uint value) for more info.")]
+            "\n  In Unity 6.3+ only, use RSUV as a seed floatValue. Search MeshRenderer.SetShaderUserValue(uint floatValue) for more info.")]
         public MaskDrawingParameter maskDrawingMode = new MaskDrawingParameter(MaskDrawingMode.PerObject);
 
         [Tooltip("Which LightMode tags should be included in the mask?\n" +
@@ -129,7 +129,7 @@ namespace ToonShadersPro.URP
         [Tooltip("Scale to use for the Perlin noise generator. Higher values result in more noise variation over UV space.")] 
         public ClampedFloatParameter noiseScale = new ClampedFloatParameter(1.0f, 1.0f, 500.0f);
         
-        [Tooltip("Offset value to use for the Perlin noise generator. You can manually change this to tweak the appearance of the noise pattern.")]
+        [Tooltip("Offset floatValue to use for the Perlin noise generator. You can manually change this to tweak the appearance of the noise pattern.")]
         public FloatParameter noiseOffset = new FloatParameter(0.0f);
 
         [Tooltip("How strongly the noise values offset the outline UV calculations.")] 

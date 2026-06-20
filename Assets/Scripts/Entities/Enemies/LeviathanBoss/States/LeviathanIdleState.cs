@@ -1,14 +1,21 @@
-using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class LeviathanIdleState : LeviathanBaseState
 {
-   
-    int moveDuration;
+    int idleDuration;
     public override void Enter(Dictionary<string, object> message = null)
     {
-        moveDuration = UnityEngine.Random.Range(Leviathan.LeviathanStats.MinMoveDuration, Leviathan.LeviathanStats.MaxMoveDuration);
+        var minIdleDuration = Leviathan.StatsManager.GetValueFromStat(StatID.LeviathanMinIdleDuration);
+        var maxIdleDuration = Leviathan.StatsManager.GetValueFromStat(StatID.LeviathanMaxIdleDuration);
+        idleDuration = (int) Random.Range(minIdleDuration, maxIdleDuration);
+    }
+    public override void PhysicsProcess()
+    {
+        idleDuration--;
+        if (idleDuration <= 0)
+        {
+            StateMachine.TransitionTo<LeviathanMoveState>();
+        }
     }
 }

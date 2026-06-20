@@ -6,17 +6,11 @@ public class BaseActor : BaseEntity
     [SerializeField] Rigidbody _rb;
     public Rigidbody RigidBody { get => _rb; }
 
-    [SerializeField] Collider _collider;
-
-    public Collider Collider { get => _collider; }
-
     [SerializeField] protected EntityStateMachine stateMachine;
 
-    [SerializeField] HealthComponent _healthComponent;
+    [SerializeField] EntityStatsManager _statsManager;
 
-    public HealthComponent HealthComponent { get => _healthComponent; }
-
-
+    public EntityStatsManager StatsManager { get => _statsManager; }
 
     public UnityEvent<Collision> entityCollision = new();
     public UnityEvent<Collider> entityTriggerEntry = new();

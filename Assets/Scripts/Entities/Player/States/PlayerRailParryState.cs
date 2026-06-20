@@ -62,8 +62,8 @@ public class PlayerRailParryState : PlayerBaseState
         splineDirection = Mathf.Sign(velocityProjectedOntoSpline);
         splineAnimator.Container = splineToFollow;
         splineAnimator.MaxSpeed = Mathf.Abs(
-            Mathf.Max(lateralSpeed.magnitude * Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PreviousSpeedToRailSpeedRatio) * velocityProjectedOntoSpline,
-            Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.RailParryMinimumSpeed))) ;
+            Mathf.Max(lateralSpeed.magnitude * Player.StatsManager.GetValueFromStat(StatID.PreviousSpeedToRailSpeedRatio) * velocityProjectedOntoSpline,
+            Player.StatsManager.GetValueFromStat(StatID.RailParryMinimumSpeed))) ;
         splineAnimator.NormalizedTime = time;
         splineLength = splineToFollow.CalculateLength();
     }
@@ -89,7 +89,7 @@ public class PlayerRailParryState : PlayerBaseState
         Vector3 normalizedTangent = Vector3.Normalize(tangent);
 
         Vector3 exitVelocity = splineAnimator.MaxSpeed * normalizedTangent * splineDirection;
-        float railParryMinimumJump = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.RailParryMinimumJump);
+        float railParryMinimumJump = Player.StatsManager.GetValueFromStat(StatID.RailParryMinimumJump);
         if (exitVelocity.y < railParryMinimumJump) exitVelocity.y = railParryMinimumJump;
 
         return exitVelocity;

@@ -24,11 +24,11 @@ public class ChronoShipAbility : BaseShipAbility
         Time.timeScale = 1.0f - chronoAbilityData.TimeSlow;
         float correctionFactor = 1 / (1.0f - chronoAbilityData.TimeSlow);
         player.StatsManager.AddInfluence(
-            PlayerStatsManager.InfluenceType.MovementSpeed, 
-            PlayerStatsManager.InfluenceSource.ChronoTimeSlowOffset,
-            PlayerStatsManager.InfluenceValueType.Multiplicative, 
+            StatInfluenceType.MovementSpeed, 
+            StatInfluenceSource.ChronoTimeSlowOffset,
+            StatInfluenceValueType.Multiplicative, 
             correctionFactor,
-            PlayerStatsManager.INFINITE_DURATION_INFLUENCE);
+            EntityStatsManager.INFINITE_DURATION_INFLUENCE);
         player.RigidBody.linearVelocity *= 1 / Time.timeScale;
     }
 
@@ -48,7 +48,7 @@ public class ChronoShipAbility : BaseShipAbility
         base.DeactivateAbility();
         vfxAnimator.SetTrigger("Deactivate");
         Time.timeScale = originalTimescale;
-        player.StatsManager.RemoveInfluence(PlayerStatsManager.InfluenceSource.ChronoTimeSlowOffset);
+        player.StatsManager.RemoveInfluence(StatInfluenceSource.ChronoTimeSlowOffset);
         player.RigidBody.linearVelocity *= 1 - chronoAbilityData.TimeSlow;
     }
 

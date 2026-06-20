@@ -25,8 +25,8 @@ public class PlayerYawnState : PlayerAirState
     }
     void OnAnarchyGenerated()
     {
-        justYawnTracker = (int) Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JustYawnWindow);
-        Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JustYawnWindow);
+        justYawnTracker = (int) Player.StatsManager.GetValueFromStat(StatID.PlayerJustYawnWindow);
+        Player.StatsManager.GetValueFromStat(StatID.PlayerJustYawnWindow);
     }
 
     public override void Enter(Dictionary<string, object> message = null)
@@ -38,14 +38,14 @@ public class PlayerYawnState : PlayerAirState
         }
         else
         {
-            minYawnTime = (int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinYawnTime);
+            minYawnTime = (int)Player.StatsManager.GetValueFromStat(StatID.PlayerMinYawnTime);
         }
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Yawn].Consume();
         elaspedYawnTime = 0;
     }
     void OnJustYawn()
     {
-        minYawnTime = (int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinJustYawnTime);
+        minYawnTime = (int)Player.StatsManager.GetValueFromStat(StatID.PlayerMinJustYawnTime);
         Player.AnarchyManager.GenerateAnarchyUnscaled(UnscaledGenerationMethod.JustYawn);
         Player.RodManager.RodLength = 0.0f;
     }
@@ -60,11 +60,11 @@ public class PlayerYawnState : PlayerAirState
         }
         Player.AnarchyManager.GenerateAnarchyUnscaled(UnscaledGenerationMethod.Yawn);
         float gravity;
-        if (Player.RigidBody.linearVelocity.y > 0) gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerJumpGravity);
-        else gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerFallGravity);
+        if (Player.RigidBody.linearVelocity.y > 0) gravity = Player.StatsManager.GetValueFromStat(StatID.PlayerJumpGravity);
+        else gravity = Player.StatsManager.GetValueFromStat(StatID.PlayerFallGravity);
         ApplyGravity(gravity);
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.YawnAirAcceleration));
-        Player.RodManager.RodLength = Mathf.MoveTowards(Player.RodManager.RodLength, 0.0f, Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.RodRetractionSpeedWhileYawning));
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatID.PlayerYawnAirAcceleration));
+        Player.RodManager.RodLength = Mathf.MoveTowards(Player.RodManager.RodLength, 0.0f, Player.StatsManager.GetValueFromStat(StatID.PlayerRodRetractionSpeedWhileYawning));
     }
     public override void InactivePhysicsProcess()
     {

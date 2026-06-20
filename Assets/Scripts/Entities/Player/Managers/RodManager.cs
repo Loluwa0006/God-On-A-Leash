@@ -39,7 +39,7 @@ public class RodManager : MonoBehaviour
             {
                 rodLengthDisplay.text = Mathf.RoundToInt(value).ToString();
             }
-            rodLength = Mathf.Clamp(value, 0.0f, player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxRodRange));
+            rodLength = Mathf.Clamp(value, 0.0f, player.StatsManager.GetValueFromStat(StatID.PlayerMaxRodRange));
         }
 
         get => rodLength;
@@ -61,14 +61,14 @@ public class RodManager : MonoBehaviour
             grappleJoint.autoConfigureConnectedAnchor = false;
             grappleJoint.connectedAnchor = grappleInfo.GrapplePosition;
 
-            grappleJoint.massScale = player.StatsManager.BaseStats.RodSwingMassScale;
-            grappleJoint.spring = player.StatsManager.BaseStats.RodSpring;
-            grappleJoint.damper = player.StatsManager.BaseStats.RodDamper;
+            grappleJoint.massScale = player.StatsManager.GetValueFromStat(StatID.PlayerRodSwingMassScale);
+            grappleJoint.spring = player.StatsManager.GetValueFromStat(StatID.PlayerRodSpring);
+            grappleJoint.damper = player.StatsManager.GetValueFromStat(StatID.PlayerRodDamper);
 
             var distance = Vector3.Distance(grappleInfo.GrapplePosition, player.Collider.bounds.center);
 
-            grappleJoint.maxDistance = player.StatsManager.BaseStats.RodMaxDistanceWithNoSpring * distance;
-            grappleJoint.minDistance = player.StatsManager.BaseStats.RodMinDistanceWithNoSpring * distance;
+            grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatID.PlayerRodMaxDistanceWithNoSpring) * distance;
+            grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatID.PlayerRodMinDistanceWithNoSpring) * distance;
 
             grappleActive = true;
             rodLine.enabled = true;

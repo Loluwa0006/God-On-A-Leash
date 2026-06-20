@@ -96,16 +96,16 @@ namespace ToonShadersPro.URP
         const string shadowThresholdsLabel = "Shadow Thresholds";
         const string shadowThresholdsTooltip = "Thresholds which determine position of lighting cutoff for diffuse light.\n" +
             "\nThe internal lighting values run from 0 to 1, and then for the output brightness: " +
-            "\nx = Raw shadow value where shadowed area ends." +
-            "\ny = Raw shadow value where calculated lighting (no shadow) starts.";
+            "\nx = Raw shadow floatValue where shadowed area ends." +
+            "\ny = Raw shadow floatValue where calculated lighting (no shadow) starts.";
 
         MaterialProperty diffuseThresholdsProp = null;
         const string diffuseThresholdsName = "_DiffuseThresholds";
         const string diffuseThresholdsLabel = "Diffuse Thresholds";
         const string diffuseThresholdsTooltip = "Thresholds which determine position of lighting cutoff for diffuse light.\n" +
             "\nThe internal lighting values run from -1 to +1, and then for the output brightness: " +
-            "\nx = Raw light value where darkness ends." +
-            "\ny = Raw light value where full brightness starts." +
+            "\nx = Raw light floatValue where darkness ends." +
+            "\ny = Raw light floatValue where full brightness starts." +
             "\nValues between x and y use a smoothstep falloff to calculate final diffuse between fully shadow and fully lit.\n" +
             "\nUsing the 'second threshold' option performs two thresholding steps and introduces a 'middle tint'.";
 
@@ -161,7 +161,7 @@ namespace ToonShadersPro.URP
         MaterialProperty rimThresholdsProp = null;
         const string rimThresholdsName = "_RimThresholds";
         const string rimThresholdsLabel = "Rim Thresholds";
-        const string rimThresholdsTooltip = "Cutoff thresholds for rim lighting. Internal Fresnel lighting values run from 0 to 1, then: \nx = Value where rim lighting starts.\ny = Value where rim lighting is at full strength.\nValues between x and y use a smoothstep falloff to calculate final rim value between unlit and fully lit.";
+        const string rimThresholdsTooltip = "Cutoff thresholds for rim lighting. Internal Fresnel lighting values run from 0 to 1, then: \nx = Value where rim lighting starts.\ny = Value where rim lighting is at full strength.\nValues between x and y use a smoothstep falloff to calculate final rim floatValue between unlit and fully lit.";
 
         MaterialProperty rimExtensionProp = null;
         const string rimExtensionName = "_RimExtension";

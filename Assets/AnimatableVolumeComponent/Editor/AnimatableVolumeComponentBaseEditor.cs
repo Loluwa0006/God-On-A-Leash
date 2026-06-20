@@ -74,7 +74,7 @@ namespace TsukimiNeko.AnimatableVolumeComponent
                     }
                     else {
                         var niceFieldName = ObjectNames.NicifyVariableName(fieldName);
-                        EditorGUILayout.LabelField(niceFieldName, "(value is not animatable)");
+                        EditorGUILayout.LabelField(niceFieldName, "(floatValue is not animatable)");
                     }
                     EditorGUILayout.EndHorizontal();
 

@@ -5,16 +5,15 @@ public class PlayerAirState : PlayerBaseState
 {
     protected virtual void ApplyGravity(float gravity)
     {
-        Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerMaxFallSpeed);
-            if (Player.RigidBody.linearVelocity.y < Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerMaxFallSpeed))
+        if (Player.RigidBody.linearVelocity.y < -Player.StatsManager.GetValueFromStat(StatID.PlayerMaxFallSpeed))
+        {
+            var speedNormalized = Player.RigidBody.linearVelocity.normalized;
+            var extraSpeed = Vector3.Dot(Vector3.down * gravity, speedNormalized);
+            if (extraSpeed > 0)
             {
-                var speedNormalized = Player.RigidBody.linearVelocity.normalized;
-                var extraSpeed = Vector3.Dot(Vector3.down * gravity, speedNormalized);
-                if (extraSpeed > 0)
-                {
-                    gravity = 0.0f;
-                }
+                gravity = 0.0f;
             }
+        }
         Player.RigidBody.AddForce(gravity * Vector3.down, ForceMode.Acceleration);
     }
 
@@ -30,16 +29,16 @@ public class PlayerAirState : PlayerBaseState
 
         float currentTurnAngle = Vector2.Angle(lateralSpeed, lateralSpeed + lateralAddition);
 
-        if (currentTurnAngle > Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerAngleToBeConsideredTurning)) //too sharp, decelerating
+        if (currentTurnAngle > Player.StatsManager.GetValueFromStat(StatID.PlayerAngleToBeConsideredTurning)) //too sharp, decelerating
         {
             //normalize the turn angle so we can sample it later
-            var value01 = Mathf.InverseLerp(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerAngleToBeConsideredTurning) + 0.001f, 180, currentTurnAngle);
+            var value01 = Mathf.InverseLerp(Player.StatsManager.GetValueFromStat(StatID.PlayerAngleToBeConsideredTurning) + 0.001f, 180, currentTurnAngle);
             //map the loss to a curve for more control
-            var scaler = Player.StatsManager.BaseStats.TurnAngleSpeedLostCurve.Evaluate(value01);
+            var scaler = Player.StatsManager.GetValueFromStat(StatID.TurnAngleSpeedLostCurve, value01);
             lateralAddition *= scaler;
         }
 
-        if (lateralSpeed.magnitude >= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerMoveSpeed))
+        if (lateralSpeed.magnitude >= Player.StatsManager.GetValueFromStat(StatID.PlayerMoveSpeed))
         {
             var speedNormalized = lateralSpeed.normalized;
             var extraSpeed = Vector2.Dot(lateralAddition, speedNormalized);
@@ -59,11 +58,11 @@ public static class GrappleUtilities
 
     public static RaycastHit RaycastResult { get => raycastResult; private set => raycastResult = value; }
 
-    
+        
     public static bool AimingAtGrappable(PlayerController Player, LayerMask swingMask)
     {
         var ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f));
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxRodRange), swingMask, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, Player.StatsManager.GetValueFromStat(StatID.PlayerMaxRodRange), swingMask, QueryTriggerInteraction.Collide))
         {
             
             raycastResult = hitInfo;

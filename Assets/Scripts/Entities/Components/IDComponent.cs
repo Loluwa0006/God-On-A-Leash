@@ -13,7 +13,8 @@ public class IDComponent : MonoBehaviour
         PlayerProjectile,
         EnemyProjectile,
         ShipAbility,
-        Entity,
+        Enemy,
+        StatsManager,
         Other
     }
 

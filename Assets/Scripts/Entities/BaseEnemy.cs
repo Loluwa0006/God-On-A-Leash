@@ -1,12 +1,12 @@
-
+using System.Collections.Generic;
 using UnityEngine;
-public class BaseEnemy : BaseEntity
-{
-    [SerializeField] Rigidbody rigidBody;
 
-    public Rigidbody RigidBody { get => rigidBody; }
-    
+public class BaseEnemy : BaseActor
+{
+    [SerializeField] List<HealthComponent> healthFragments = new();
     public PlayerController Target { get; private set; }
+
+    public List<HealthComponent> HealthFragments { get => healthFragments; }
 
     public override void Initialize()
     {
@@ -14,3 +14,4 @@ public class BaseEnemy : BaseEntity
         Target = EntityManager.Instance.GetEntitiesOfType(IDComponent.IDType.Player)[0].GetComponent<PlayerController>();
     }
 }
+

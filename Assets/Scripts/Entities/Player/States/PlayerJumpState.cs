@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PlayerJumpState : PlayerAirState
 {
-
-    Dictionary<string, object> fallStateTransitionDictionary = new();
-
     public override Type[] statesToAttemptToTransitionTo
     {
         get => new Type[]
@@ -18,28 +15,21 @@ public class PlayerJumpState : PlayerAirState
             typeof(PlayerThrowWormState),
         };
     }
-
-    //public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
-    //{
-    //    base.InitializeState(stateMachine, owner);
-    //   fallStateTransitionDictionary[PlayerFallState.PlayerFallStateMessage.JumpInfo.ToString()] = Player.StatsManager.GroundedJumpInfo;
-    //}
-
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
-        Player.RigidBody.AddForce(Vector3.up * Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerGroundedJumpPower), ForceMode.VelocityChange);
+        Player.RigidBody.AddForce(Vector3.up * Player.StatsManager.GetValueFromStat(StatID.PlayerGroundedJumpPower), ForceMode.VelocityChange);
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Jump].Consume();
     }
 
     public override void PhysicsProcess()
     {
         Player.PlayerGrounded = IsGrounded();
-        ApplyGravity( Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerJumpGravity));
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerAirAcceleration));
+        ApplyGravity( Player.StatsManager.GetValueFromStat(StatID.PlayerJumpGravity));
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatID.PlayerAirAcceleration));
         if (Player.RigidBody.linearVelocity.y <= 0.0f)
         {
-            StateMachine.TransitionTo<PlayerFallState>(fallStateTransitionDictionary);
+            StateMachine.TransitionTo<PlayerFallState>();
             return;
         }
     }

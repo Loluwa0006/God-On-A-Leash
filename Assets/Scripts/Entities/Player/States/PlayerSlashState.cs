@@ -32,10 +32,10 @@ public class PlayerSlashState : PlayerAirState
         base.Enter(message);
         Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_InSquashbuckler).ToString(), false);
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_IsAttacking).ToString());
-        float rodLengthAsPercent = Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxRodRange);
+        float rodLengthAsPercent = Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(StatID.PlayerMaxRodRange);
         if (slashHitbox.HitboxCollider is SphereCollider sphereHitbox)
         {
-            sphereHitbox.radius = Mathf.Lerp(baseHitboxSize, baseHitboxSize * (1 + Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SlashRangeBonusFromRodLength)), rodLengthAsPercent);
+            sphereHitbox.radius = Mathf.Lerp(baseHitboxSize, baseHitboxSize * (1 + Player.StatsManager.GetValueFromStat(StatID.PlayerSlashRangeBonusFromRodLength)), rodLengthAsPercent);
         }
         releasedSlashButton = false;
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].Consume();
@@ -45,10 +45,10 @@ public class PlayerSlashState : PlayerAirState
     public override void PhysicsProcess()
     {
         base.PhysicsProcess();
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerAirAcceleration));
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatID.PlayerAirAcceleration));
         transform.rotation = Player.RigidBody.rotation;
         //use jump gravity to make attacks feel more floaty
-        ApplyGravity(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerJumpGravity));
+        ApplyGravity(Player.StatsManager.GetValueFromStat(StatID.PlayerJumpGravity));
         if (Player.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
         {
             StateMachine.TransitionTo<PlayerFallState>();
@@ -82,7 +82,13 @@ public class PlayerSlashState : PlayerAirState
                 return;
             }
         }
-        CalculateDamageInfo((int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MinSlashDamage), (int)Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxSlashDamage), Player.StatsManager.BaseStats.SpeedToSlashDamageCurve);
+        var lateralSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
+        CalculateDamageInfo(
+            (int)Player.StatsManager.GetValueFromStat(StatID.PlayerMinSlashDamage),
+            (int)Player.StatsManager.GetValueFromStat(StatID.PlayerMaxSlashDamage), 
+            Player.StatsManager.GetValueFromStat(StatID.PlayerSpeedToSlashDamageCurve, lateralSpeed),
+            lateralSpeed
+            );
     }
 
     public virtual void OnHitboxDeactivation(List<HealthComponent> victims)
@@ -93,15 +99,13 @@ public class PlayerSlashState : PlayerAirState
         }
     }
 
-    protected void CalculateDamageInfo(int minDamage, int maxDamage, AnimationCurve curve)
+    protected void CalculateDamageInfo(int minDamage, int maxDamage, float speedSampled, float lateralSpeed)
     {
-        var lateralSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
-        var speedSampled = curve.Evaluate(lateralSpeed);
-
         var info = slashHitbox.DamageInfo;
         info.damage = Mathf.RoundToInt(Mathf.Lerp(minDamage, maxDamage, speedSampled));
         info.horizontalKnockback = lateralSpeed;
         slashHitbox.DamageInfo = info;
+
     }
 
     public override void InactivePhysicsProcess()
@@ -111,7 +115,7 @@ public class PlayerSlashState : PlayerAirState
         {
             if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].ActionPressed)
             {
-                Player.RodManager.RodLength += Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.SlashRodExtensionSpeed) * Time.fixedDeltaTime;
+                Player.RodManager.RodLength += Player.StatsManager.GetValueFromStat(StatID.PlayerSlashRodExtensionSpeed) * Time.fixedDeltaTime;
             }
             else
             {
