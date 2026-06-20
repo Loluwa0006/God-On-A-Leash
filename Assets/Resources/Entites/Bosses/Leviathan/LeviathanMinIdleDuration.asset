@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LeviathanMinIdleDuration
   m_EditorClassIdentifier: Assembly-CSharp::StatObject
   type: 0
-  floatValue: 45
+  floatValue: 85
   curveValue:
     serializedVersion: 2
     m_Curve: []
@@ -28,5 +28,5 @@ MonoBehaviour:
   fallGravityID: 0
   jumpVelocityID: 0
   percentageValue: 0
-  statID: 78
+  statID: 79
   statValueType: 0

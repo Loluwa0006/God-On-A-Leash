@@ -326,11 +326,15 @@ public enum StatID
 
 
     //Leviathan Stats
+
+    //Movement
     LeviathanMoveSpeed,
+    LeviathanMoveAcceleration,
     LeviathanMinMoveDuration,
     LeviathanMaxMoveDuration,
     LeviathanMinIdleDuration,
     LeviathanMaxIdleDuration,
+    LeviathanDecelerationRate,
 }
 
 public enum StatInfluenceType

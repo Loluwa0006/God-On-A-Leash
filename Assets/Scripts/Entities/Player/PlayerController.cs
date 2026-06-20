@@ -39,12 +39,11 @@ public class PlayerController : BaseActor
     public Collider Collider { get => _collider; }
     public bool PlayerGrounded { get; set; }
 
-    private void Start()
+    public override void Initialize()
     {
         _shipManager.InitializeShipManager();
         EntityManager.Instance.PlayerID = IDComponent.ID;
     }
-
     public override void Process()
     {
         stateMachine.Process();

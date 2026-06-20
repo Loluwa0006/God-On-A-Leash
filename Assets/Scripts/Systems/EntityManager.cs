@@ -51,6 +51,10 @@ public class EntityManager : MonoBehaviour
                 Debug.LogWarning($"Duplicate IDComponent found on {entity.name}. This entity will not be registered.");
             }
         }
+        foreach (var entity in entities)
+        {
+            entity.Initialize();
+        }
     }
     private void FixedUpdate()
     {

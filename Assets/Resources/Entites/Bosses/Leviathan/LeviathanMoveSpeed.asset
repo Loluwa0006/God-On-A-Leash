@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LeviathanMoveSpeed
   m_EditorClassIdentifier: Assembly-CSharp::StatObject
   type: 1
-  floatValue: 15
+  floatValue: 225
   curveValue:
     serializedVersion: 2
     m_Curve: []
