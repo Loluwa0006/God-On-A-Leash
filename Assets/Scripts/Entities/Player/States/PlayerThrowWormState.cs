@@ -67,7 +67,7 @@ public class PlayerThrowWormState : PlayerAirState
         {
             ApplyGravity(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.WormFallGravity));
         }
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.AirAcceleration));
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerAirAcceleration));
         durationTracker--;
         if (durationTracker == 0)
         {

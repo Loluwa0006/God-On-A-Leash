@@ -37,11 +37,11 @@ public class PlayerParryState : PlayerAirState
         float gravity;
         if (Player.RigidBody.linearVelocity.y > 0)
         {
-            gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JumpGravity);
+            gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerJumpGravity);
         }
         else
         {
-            gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.FallGravity);
+            gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerFallGravity);
         }
         ApplyGravity(gravity);
         Vector3 movementDirection = Player.PlayerInput.GetMovementDirection();

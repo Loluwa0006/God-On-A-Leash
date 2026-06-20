@@ -5,8 +5,8 @@ public class PlayerAirState : PlayerBaseState
 {
     protected virtual void ApplyGravity(float gravity)
     {
-        Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxFallSpeed);
-            if (Player.RigidBody.linearVelocity.y < Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MaxFallSpeed))
+        Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerMaxFallSpeed);
+            if (Player.RigidBody.linearVelocity.y < Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerMaxFallSpeed))
             {
                 var speedNormalized = Player.RigidBody.linearVelocity.normalized;
                 var extraSpeed = Vector3.Dot(Vector3.down * gravity, speedNormalized);
@@ -30,16 +30,16 @@ public class PlayerAirState : PlayerBaseState
 
         float currentTurnAngle = Vector2.Angle(lateralSpeed, lateralSpeed + lateralAddition);
 
-        if (currentTurnAngle > Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.AngleToBeConsideredTurning)) //too sharp, decelerating
+        if (currentTurnAngle > Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerAngleToBeConsideredTurning)) //too sharp, decelerating
         {
             //normalize the turn angle so we can sample it later
-            var value01 = Mathf.InverseLerp(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.AngleToBeConsideredTurning) + 0.001f, 180, currentTurnAngle);
+            var value01 = Mathf.InverseLerp(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerAngleToBeConsideredTurning) + 0.001f, 180, currentTurnAngle);
             //map the loss to a curve for more control
             var scaler = Player.StatsManager.BaseStats.TurnAngleSpeedLostCurve.Evaluate(value01);
             lateralAddition *= scaler;
         }
 
-        if (lateralSpeed.magnitude >= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.MoveSpeed))
+        if (lateralSpeed.magnitude >= Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerMoveSpeed))
         {
             var speedNormalized = lateralSpeed.normalized;
             var extraSpeed = Vector2.Dot(lateralAddition, speedNormalized);

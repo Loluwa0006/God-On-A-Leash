@@ -56,8 +56,8 @@ public class PlayerGetHitState : PlayerAirState
         }
         //Use jump gravity because it's more forgiving: the force is weaker and gives the player
         //more opportunity to recover.
-        ApplyGravity(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JumpGravity));
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.AirAcceleration));
+        ApplyGravity(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerJumpGravity));
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerAirAcceleration));
     }
 
     public override void InactivePhysicsProcess()

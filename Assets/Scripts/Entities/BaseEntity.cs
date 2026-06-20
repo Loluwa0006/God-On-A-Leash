@@ -9,6 +9,11 @@ public class BaseEntity : MonoBehaviour
 
     public Action<BaseEntity> entityDestroyed;
 
+    public virtual void Initialize()
+    {
+
+    }
+
     public virtual void Process()
     {
 

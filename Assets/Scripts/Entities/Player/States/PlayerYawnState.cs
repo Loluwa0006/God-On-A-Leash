@@ -60,8 +60,8 @@ public class PlayerYawnState : PlayerAirState
         }
         Player.AnarchyManager.GenerateAnarchyUnscaled(UnscaledGenerationMethod.Yawn);
         float gravity;
-        if (Player.RigidBody.linearVelocity.y > 0) gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JumpGravity);
-        else gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.FallGravity);
+        if (Player.RigidBody.linearVelocity.y > 0) gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerJumpGravity);
+        else gravity = Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerFallGravity);
         ApplyGravity(gravity);
         AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.YawnAirAcceleration));
         Player.RodManager.RodLength = Mathf.MoveTowards(Player.RodManager.RodLength, 0.0f, Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.RodRetractionSpeedWhileYawning));

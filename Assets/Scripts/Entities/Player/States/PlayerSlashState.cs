@@ -45,10 +45,10 @@ public class PlayerSlashState : PlayerAirState
     public override void PhysicsProcess()
     {
         base.PhysicsProcess();
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.AirAcceleration));
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerAirAcceleration));
         transform.rotation = Player.RigidBody.rotation;
         //use jump gravity to make attacks feel more floaty
-        ApplyGravity(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.JumpGravity));
+        ApplyGravity(Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerJumpGravity));
         if (Player.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
         {
             StateMachine.TransitionTo<PlayerFallState>();

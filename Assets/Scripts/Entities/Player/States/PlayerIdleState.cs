@@ -24,7 +24,7 @@ public class PlayerIdleState : PlayerGroundedMovementState
             StateMachine.TransitionTo<PlayerFallState>();
             return;
         }
-        Player.RigidBody.linearVelocity = Vector3.MoveTowards(Player.RigidBody.linearVelocity, Vector3.zero, Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.DecelerationDrag));
+        Player.RigidBody.linearVelocity = Vector3.MoveTowards(Player.RigidBody.linearVelocity, Vector3.zero, Player.StatsManager.GetValueFromStat(PlayerStatsManager.StatID.PlayerDecelerationDrag));
     }
     public override bool StateAvailable()
     {
