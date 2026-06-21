@@ -45,6 +45,7 @@ public class PlayerDragonslashState : PlayerBaseState
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].Consume();
         Player.SquashbucklerManager.SquashbucklerCharge = 0;
         Player.CameraManager.TransitionToCamera(Player.CameraManager.CloseFollowCamera, cameraTransitionTime);
+        Player.Animator.speed = Player.StatsManager.GetValueFromStat(StatID.PlayerDragonslashSpeed);
     }
 
     public override void PhysicsProcess()
@@ -93,6 +94,7 @@ public class PlayerDragonslashState : PlayerBaseState
         base.Exit();
         Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_InSquashbuckler), false);
         Player.CameraManager.TransitionToCamera(Player.CameraManager.DefaultCamera, cameraTransitionTime);
+        Player.Animator.speed = 1;
     }
 
 }

@@ -40,6 +40,7 @@ public class PlayerSlashState : PlayerAirState
         releasedSlashButton = false;
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].Consume();
         cancelAllowed = false;
+        Player.Animator.speed = Player.StatsManager.GetValueFromStat(StatID.PlayerSlashSpeed);
     }
 
     public override void PhysicsProcess()
@@ -132,6 +133,7 @@ public class PlayerSlashState : PlayerAirState
     {
         base.Exit();
         slashHitbox.OnDeactivate();
+        Player.Animator.speed = 1;
     }
 
     public override bool StateAvailable()
