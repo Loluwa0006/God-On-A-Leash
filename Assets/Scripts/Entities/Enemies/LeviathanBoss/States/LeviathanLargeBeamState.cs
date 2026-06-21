@@ -70,7 +70,7 @@ public class LeviathanLargeBeamState : LeviathanBaseState
 
     public override void InactivePhysicsProcess()
     {
-        cooldownRemaining = (int) Mathf.MoveTowards(0, cooldownRemaining, 1);
+        cooldownRemaining = (int) Mathf.MoveTowards(cooldownRemaining, 0, 1);
     }
 
     public override bool StateAvailable()
