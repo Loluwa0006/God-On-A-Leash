@@ -1,5 +1,4 @@
 using UnityEngine;
-using static TestEnemy;
 
 public class LivingRumShipAbility : BaseShipAbility
 {
@@ -32,8 +31,7 @@ public class LivingRumShipAbility : BaseShipAbility
         durationTracker = livingRumAbilityData.RumDuration;
         float velocityToInheritFromOwner = Vector3.Dot((rumTarget.position - player.Collider.bounds.center).normalized, player.RigidBody.linearVelocity);
         livingRumProjectile.RigidBody.linearVelocity = player.RigidBody.linearVelocity * velocityToInheritFromOwner;
-        livingRumProjectile.RigidBody.MovePosition(firePoint.position);
-        livingRumProjectile.EnableProjectile(rumTarget);
+        livingRumProjectile.EnableProjectile(firePoint.position, rumTarget);
     }
 
     public override void DeactivateAbility()

@@ -21,7 +21,6 @@ public class PlayerController : BaseActor
     [SerializeField] Collider _collider;
 
     [Header("Components")]
-    [SerializeField] Animator _animator;
 
 
     public InputManager PlayerInput { get => _playerInput; }
@@ -32,7 +31,6 @@ public class PlayerController : BaseActor
     public AnarchyManager AnarchyManager { get => _anarchyManager; }
 
     public SquashbucklerManager SquashbucklerManager { get => _squashbucklerManager; }
-    public Animator Animator { get => _animator; }
 
     public CameraManager CameraManager { get => _cameraManager; }
     public HealthComponent HealthComponent { get => _healthComponent; }

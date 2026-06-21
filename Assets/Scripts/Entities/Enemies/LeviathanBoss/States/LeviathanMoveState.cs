@@ -9,13 +9,7 @@ public class LeviathanMoveState : LeviathanBaseState
     int moveDuration;
     public override void Enter(Dictionary<string, object> message = null)
     {
-        if (Leviathan.Target == null)
-        {
-            Debug.Log("Leviathan target is null");
-            StateMachine.TransitionTo<LeviathanIdleState>();
-            return;
-        }
-        moveDirection = (Leviathan.RigidBody.position - Leviathan.Target.transform.position).normalized;
+        moveDirection = GetDirectionAwayFromTarget();
         var minMoveDuration = Leviathan.StatsManager.GetValueFromStat(StatID.LeviathanMinMoveDuration);
         var maxMoveDuration = Leviathan.StatsManager.GetValueFromStat(StatID.LeviathanMaxMoveDuration);
         moveDuration = (int) Random.Range(minMoveDuration, maxMoveDuration);
@@ -43,4 +37,8 @@ public class LeviathanMoveState : LeviathanBaseState
         }
     }
 
+    public override bool StateAvailable()
+    {
+        return true;
+    }
 }

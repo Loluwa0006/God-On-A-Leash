@@ -66,7 +66,6 @@ public class WormEntity : BaseEntity
             var startingLocation = transform.position;
             var ownerVelocity =  directionAwayFromContactPoint * contactInfo.DamageInfo.horizontalKnockback;
             Fire(target, startingLocation, ownerVelocity);
-            Debug.Log("Worm hit by slash, firing towards target again with knockback velocity inherited from slash");
             remainingHitsBeforeDeactivation--;
             if (remainingHitsBeforeDeactivation <= 0)
             {

@@ -63,8 +63,7 @@ public class TestEnemy : BaseActor
         fireState = FireState.Reloading;
         var queueInfo = projectileRegistry[queuedProjectileFire];
         var nextProjectile = queueInfo.projectilePool.Dequeue();
-        nextProjectile.RigidBody.MovePosition(queueInfo.fireInformation.spawnPoint.position);
-        nextProjectile.EnableProjectile(player.transform);
+        nextProjectile.EnableProjectile(queueInfo.fireInformation.spawnPoint.position, player.transform);
         projectileRegistry[queuedProjectileFire].projectilePool.Enqueue(nextProjectile);
         cooldownRemaining = projectileRegistry[queuedProjectileFire].fireInformation.fireCooldown;
     }

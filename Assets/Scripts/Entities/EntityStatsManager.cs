@@ -335,6 +335,9 @@ public enum StatID
     LeviathanMinIdleDuration,
     LeviathanMaxIdleDuration,
     LeviathanDecelerationRate,
+    //Laser
+    LeviathanLargeLaserCooldown,
+    LeviathanLargeLaserAttackSpeed,
 }
 
 public enum StatInfluenceType

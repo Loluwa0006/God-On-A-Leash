@@ -60,8 +60,9 @@ public class BaseProjectile : BaseEntity
         }
     }
 
-    public void EnableProjectile(Transform target)
+    public void EnableProjectile(Vector3 start, Transform target)
     {
+        rigidBody.MovePosition(start);
         Target = target;
         meshObjects.SetActive(true);
         ProjectileFired?.Invoke();
