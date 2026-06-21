@@ -12,7 +12,7 @@ public class LeviathanIdleState : LeviathanBaseState
     }
     public override void PhysicsProcess()
     {
-        Leviathan.RigidBody.linearVelocity = Vector3.MoveTowards(Leviathan.RigidBody.linearVelocity, Vector3.zero, -Leviathan.StatsManager.GetValueFromStat(StatID.LeviathanDecelerationRate));
+        Leviathan.RigidBody.linearVelocity = Vector3.MoveTowards(Leviathan.RigidBody.linearVelocity, Vector3.zero, Leviathan.StatsManager.GetValueFromStat(StatID.LeviathanDecelerationRate));
         idleDuration--;
         if (idleDuration <= 0)
         {
