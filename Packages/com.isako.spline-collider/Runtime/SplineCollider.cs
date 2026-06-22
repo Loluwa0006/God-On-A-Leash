@@ -165,6 +165,7 @@ namespace SplineCollider
         private void OnEnable()
         {
             RebuildSpawnedSegmentsCache();
+            EnsureSplineReference();
         }
 
         private void OnValidate()

@@ -12,6 +12,9 @@ public class BaseProjectileModifier : MonoBehaviour
     {
 
     }
+    /// <summary>
+    /// Called while the projectile is not currently active
+    /// </summary>
 
     public virtual void InactiveUpdateModifier()
     {
@@ -28,7 +31,7 @@ public class BaseProjectileModifier : MonoBehaviour
 
     }
 
-    public virtual void OnProjectileLanded()
+    public virtual void OnProjectileLanded(HealthComponent victim)
     {
 
     }

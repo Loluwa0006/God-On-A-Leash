@@ -24,7 +24,6 @@ public class PlayerAirState : PlayerBaseState
         if (moveDirection.magnitude < MOVEMENT_DEADZONE) return;
 
         Vector2 lateralSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z);
-        float lateralMagnitude = lateralSpeed.magnitude;
         Vector2 lateralAddition = new(moveDirection.x * acceleration, moveDirection.z * acceleration);
 
         float currentTurnAngle = Vector2.Angle(lateralSpeed, lateralSpeed + lateralAddition);
@@ -34,7 +33,7 @@ public class PlayerAirState : PlayerBaseState
             //normalize the turn angle so we can sample it later
             var value01 = Mathf.InverseLerp(Player.StatsManager.GetValueFromStat(StatID.PlayerAngleToBeConsideredTurning) + 0.001f, 180, currentTurnAngle);
             //map the loss to a curve for more control
-            var scaler = Player.StatsManager.GetValueFromStat(StatID.TurnAngleSpeedLostCurve, value01);
+            float scaler = Player.StatsManager.GetValueFromStat(StatID.TurnAngleSpeedLostCurve, value01);
             lateralAddition *= scaler;
         }
 

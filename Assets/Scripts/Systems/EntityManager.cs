@@ -9,12 +9,8 @@ public class EntityManager : MonoBehaviour
     Dictionary<IDComponent.IDType, List<BaseEntity>> entityTypes = new ();
     List<BaseEntity> entityList = new();
     public int PlayerID { get; set; }
-
-    public bool UpdateSpecificEntitiesOnly { get; private set; }
-
     public float TimeScale { get; private set; }
 
-    List<BaseEntity> specificEntitiesToUpdate = new();
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -23,10 +19,8 @@ public class EntityManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        else
-        {
-            Instance = this;
-        }
+        else Instance = this;
+        
         var entities = FindObjectsByType<BaseEntity>(sortMode: FindObjectsSortMode.InstanceID);
         foreach (var idType in System.Enum.GetValues(typeof(IDComponent.IDType)).Cast<IDComponent.IDType>())
         {
@@ -51,56 +45,21 @@ public class EntityManager : MonoBehaviour
                 Debug.LogWarning($"Duplicate IDComponent found on {entity.name}. This entity will not be registered.");
             }
         }
-        foreach (var entity in entities)
-        {
-            entity.Initialize();
-        }
+        foreach (var entity in entities) entity.Initialize();
     }
     private void FixedUpdate()
     {
-        if (UpdateSpecificEntitiesOnly)
+        foreach (var entity in entityList)
         {
-            foreach (var entity in specificEntitiesToUpdate)
-            {
-                if (entity.enabled)
-                {
-                    entity.PhysicsProcess();
-                }
-            }
-        }
-        else
-        {
-            foreach (var entity in entityList)
-            {
-                if (entity.enabled)
-                {
-                    entity.PhysicsProcess();
-                }
-            }
-        }
+            if (entity.enabled) entity.PhysicsProcess();
+        }       
     }
 
     private void Update()
     {
-        if (UpdateSpecificEntitiesOnly)
+        foreach (var entity in entityList)
         {
-            foreach (var entity in specificEntitiesToUpdate)
-            {
-                if (entity.enabled)
-                {
-                    entity.Process();
-                }
-            }
-        }
-        else
-        {
-            foreach (var entity in entityList)
-            {
-                if (entity.enabled)
-                {
-                    entity.Process();
-                }
-            }
+            if (entity.enabled) entity.Process();
         }
     }
 
@@ -123,20 +82,6 @@ public class EntityManager : MonoBehaviour
             entityList.Add(entity);
         }
     }
-
-    public void ActivateSpecificEntityUpdateMode(params BaseEntity[] entities)
-    {
-        specificEntitiesToUpdate.Clear();
-        specificEntitiesToUpdate.AddRange(entities);
-        UpdateSpecificEntitiesOnly = true;
-    }
-
-    public void DeactivateSpecificEntityUpdateMode()
-    {
-        specificEntitiesToUpdate.Clear();
-        UpdateSpecificEntitiesOnly = false;
-    }
-
     public List<BaseEntity> GetEntitiesOfType(IDComponent.IDType type)
     {
         if (entityTypes.ContainsKey(type))

@@ -14,6 +14,7 @@ public class BaseProjectile : BaseEntity
 
     public event Action ProjectileFired;
     public event Action ProjectileDestroyed;
+    public Action<HealthComponent> ProjectileLanded;
 
     public Transform Target { get; private set; }
 
@@ -26,6 +27,7 @@ public class BaseProjectile : BaseEntity
         InitializeModifiers();
         OrderModifiersByPriority();
         EntityManager.Instance.RegisterEntity(this);
+        ProjectileLanded += OnProjectileLanded;
     }
 
     void InitializeModifiers()
@@ -85,9 +87,17 @@ public class BaseProjectile : BaseEntity
         }
     }
 
+    public void OnProjectileLanded(HealthComponent victim)
+    {
+        for (int i = 0; i < projectileModifiers.Length; i++)
+        {
+            projectileModifiers[i].OnProjectileLanded(victim);
+        }
+    }
+
     public T GetModifier<T>() where T: BaseProjectileModifier
     {
-        for (int i = 0; i < projectileModifiers.Length;i++)
+        for (int i = 0; i < projectileModifiers.Length; i++)
         {
             if (projectileModifiers[i].GetType() == typeof(T))  
             {
