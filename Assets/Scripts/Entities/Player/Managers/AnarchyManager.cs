@@ -93,7 +93,6 @@ public class AnarchyManager : MonoBehaviour
         int chargesGained = ConvertProgressToCharges();
         if (chargesGained > 0) anarchyGainedThroughUnscaledMethod.Invoke(method, chargesGained);
 
-        Debug.Log($"Generated {progress} anarchy through {method}");
         UpdateAnarchyDisplays();
     }
 

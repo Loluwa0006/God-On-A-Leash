@@ -28,8 +28,7 @@ public class PlayerDashState : PlayerAirState
     {
         var dashDirection = Player.PlayerInput.GetMovementDirection().y;
 
-        var dashDirectionCorrected = (dashDirection + 1) / 2.0f; //converts range from (-1,1) to (0,1)
-
+        var dashDirectionCorrected = Mathf.Clamp(dashDirection, 0, 1); //makes neutral and holding back the same value
         base.PhysicsProcess();
         float gravity = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerDashGravity) * (1.0f - dashDirectionCorrected);
 
