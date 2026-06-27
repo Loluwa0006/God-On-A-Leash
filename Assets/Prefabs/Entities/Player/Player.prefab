@@ -48,7 +48,7 @@ MonoBehaviour:
   hasInactivePhysicsProcess: 0
   parryMask:
     serializedVersion: 2
-    m_Bits: 832
+    m_Bits: 17216
 --- !u!1 &688355114899007959
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 7697902623462757242}
   - component: {fileID: 5631768534695570731}
   - component: {fileID: 7901163656482743022}
-  m_Layer: 3
+  m_Layer: 14
   m_Name: Slash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 6071449120060975319}
   - component: {fileID: 4640383311062024331}
   m_Layer: 3
-  m_Name: StateMachine
+  m_Name: PlayerStateMachine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,9 +281,9 @@ Transform:
   - {fileID: 7431743368645410915}
   - {fileID: 3184677362814718927}
   - {fileID: 9122533123221172339}
+  - {fileID: 1262573910220082082}
   - {fileID: 3436187125366228050}
   - {fileID: 7669484520907310133}
-  - {fileID: 1262573910220082082}
   - {fileID: 9105740226442567929}
   - {fileID: 1522539469012922421}
   - {fileID: 151139268132224842}
@@ -811,7 +811,7 @@ MonoBehaviour:
   hasInactivePhysicsProcess: 0
   railLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 33792
   railCollider: {fileID: 8443746451259274933}
   splineAnimator: {fileID: 1366431042455759010}
   cameraTransitionTime: 0.35
@@ -1076,7 +1076,7 @@ MonoBehaviour:
   rodLine: {fileID: 8496726179433166469}
   grappleMask:
     serializedVersion: 2
-    m_Bits: 1792
+    m_Bits: 34560
   player: {fileID: 1870535501843506831}
   grapplePoint: {fileID: 6271263608659458738}
   rodLengthDisplay: {fileID: 0}
@@ -1139,7 +1139,7 @@ GameObject:
   - component: {fileID: 1885915755285934966}
   - component: {fileID: 7736850955957959357}
   - component: {fileID: 1487945002665989433}
-  m_Layer: 3
+  m_Layer: 15
   m_Name: Dragonslash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1506,10 +1506,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   idComponent: {fileID: 2288019825110320831}
   _rb: {fileID: 4316075470623054589}
-  _collider: {fileID: 8061839667610271217}
   stateMachine: {fileID: 4640383311062024331}
-  _healthComponent: {fileID: 1292771791658868985}
   _statsManager: {fileID: 6676928779841109646}
+  _animator: {fileID: 5721147126557053551}
   entityCollision:
     m_PersistentCalls:
       m_Calls: []
@@ -1523,7 +1522,8 @@ MonoBehaviour:
   _squashbucklerManager: {fileID: 1378361783068774386}
   _cameraManager: {fileID: 8914475700068092981}
   _shipManager: {fileID: 5746047314728215764}
-  _animator: {fileID: 5721147126557053551}
+  _healthComponent: {fileID: 1292771791658868985}
+  _collider: {fileID: 8061839667610271217}
 --- !u!54 &4316075470623054589
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1840,7 +1840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8b73511aa27605468744d3677198fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IDComponent
-  idType: 5
+  idType: 6
 --- !u!114 &6676928779841109646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1854,7 +1854,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityStatsManager
   idComponent: {fileID: 3900128563698183582}
-  statsHolder: {fileID: 11400000, guid: f72b4a40f380b3b44b6ba9c8ee3292ef, type: 2}
+  managerInitialized:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6021299679631168183}
+        m_TargetAssemblyTypeName: WormManager, Assembly-CSharp
+        m_MethodName: InitializeManager
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6577541848443657775
 GameObject:
   m_ObjectHideFlags: 0

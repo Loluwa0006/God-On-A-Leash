@@ -22,7 +22,7 @@ public class ProjectileHomingModifier : BaseProjectileModifier
 
         if (hasMaxDistanceForHoming) 
         {
-            var distance = Vector3.Distance(Projectile.ProjectileCollider.bounds.center, Projectile.Target.position);
+            var distance = Vector3.Distance(Projectile.transform.position, Projectile.Target.position);
             if (distance > maxDistanceForHoming)
             {
                 return;

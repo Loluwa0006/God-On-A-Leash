@@ -5,5 +5,5 @@ using UnityEngine;
 /// </summary>
 public class ProjectileEmpoweredModifier : BaseProjectileModifier 
 {
- 
+    
 }

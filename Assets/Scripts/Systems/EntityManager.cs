@@ -11,7 +11,7 @@ public class EntityManager : MonoBehaviour
     public int PlayerID { get; set; }
     public float TimeScale { get; private set; }
 
-    private void Awake()
+    private void Start()
     {
         if (Instance != null && Instance != this)
         {
@@ -82,11 +82,18 @@ public class EntityManager : MonoBehaviour
             entityList.Add(entity);
         }
     }
-    public List<BaseEntity> GetEntitiesOfType(IDComponent.IDType type)
+    public List<BaseEntity> GetEntitiesOfType(IDComponent.IDType type, bool includeInactive = false)
     {
         if (entityTypes.ContainsKey(type))
         {
-            return entityTypes[type];
+            if (includeInactive)
+            {
+                return entityTypes[type];
+            }
+            else
+            {
+                return entityTypes[type].Where(entity => entity.gameObject.activeInHierarchy).ToList();
+            }
         }
         return null;
     }

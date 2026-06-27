@@ -34,18 +34,18 @@ public class PlayerDragonslashState : PlayerBaseState
         Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_InSquashbuckler), true);
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_IsAttacking));
         dragonslashSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
-        float rodLengthAsPercent = Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(StatID.PlayerMaxRodRange);
-        dragonslashSpeed += Mathf.Lerp(0, Player.StatsManager.GetValueFromStat(StatID.PlayerDragonslashSpeedBonusFromRodLength), 1.0f - rodLengthAsPercent);
+        float rodLengthAsPercent = Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxRodRange);
+        dragonslashSpeed += Mathf.Lerp(0, Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerDragonslashSpeedBonusFromRodLength), 1.0f - rodLengthAsPercent);
         if (dragonslashHitbox.HitboxCollider is SphereCollider sphereHitbox)
         {
-            sphereHitbox.radius = Mathf.Lerp(baseHitboxSize, baseHitboxSize * (1 + Player.StatsManager.GetValueFromStat(StatID.PlayerSlashRangeBonusFromRodLength)), rodLengthAsPercent);
+            sphereHitbox.radius = Mathf.Lerp(baseHitboxSize, baseHitboxSize * (1 + Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSlashRangeBonusFromRodLength)), rodLengthAsPercent);
         }
         
         dragonslashAnimationOver = false;
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].Consume();
         Player.SquashbucklerManager.SquashbucklerCharge = 0;
         Player.CameraManager.TransitionToCamera(Player.CameraManager.CloseFollowCamera, cameraTransitionTime);
-        Player.Animator.speed = Player.StatsManager.GetValueFromStat(StatID.PlayerDragonslashSpeed);
+        Player.Animator.speed = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerDragonslashSpeed);
     }
 
     public override void PhysicsProcess()
@@ -59,9 +59,9 @@ public class PlayerDragonslashState : PlayerBaseState
         Player.RigidBody.linearVelocity = dragonslashSpeed * viewCamera.transform.forward;
         float lateralSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
         CalculateDamage(
-            (int)Player.StatsManager.GetValueFromStat(StatID.PlayerMinDragonslashDamage),
-            (int)Player.StatsManager.GetValueFromStat(StatID.PlayerMaxDragonslashDamage),
-            Player.StatsManager.GetValueFromStat(StatID.PlayerSpeedToDragonslashDamageCurve, lateralSpeed)
+            (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinDragonslashDamage),
+            (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxDragonslashDamage),
+            Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSpeedToDragonslashDamageCurve, 0, lateralSpeed)
             );
     }
     public override void Process()

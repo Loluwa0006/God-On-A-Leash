@@ -54,9 +54,9 @@ public class LivingRumShipAbility : BaseShipAbility
         }
     }
 
-    public override void PhysicsProcess()
+    public override void UpdateAbility()
     {
-        base.PhysicsProcess();
+        base.UpdateAbility();
         if (!AbilityActive) return;
         SetRumTarget();
         durationTracker--;

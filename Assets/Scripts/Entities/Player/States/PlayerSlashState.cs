@@ -32,24 +32,24 @@ public class PlayerSlashState : PlayerAirState
         base.Enter(message);
         Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_InSquashbuckler).ToString(), false);
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_IsAttacking).ToString());
-        float rodLengthAsPercent = Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(StatID.PlayerMaxRodRange);
+        float rodLengthAsPercent = Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxRodRange);
         if (slashHitbox.HitboxCollider is SphereCollider sphereHitbox)
         {
-            sphereHitbox.radius = Mathf.Lerp(baseHitboxSize, baseHitboxSize * (1 + Player.StatsManager.GetValueFromStat(StatID.PlayerSlashRangeBonusFromRodLength)), rodLengthAsPercent);
+            sphereHitbox.radius = Mathf.Lerp(baseHitboxSize, baseHitboxSize * (1 + Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSlashRangeBonusFromRodLength)), rodLengthAsPercent);
         }
         releasedSlashButton = false;
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].Consume();
         cancelAllowed = false;
-        Player.Animator.speed = Player.StatsManager.GetValueFromStat(StatID.PlayerSlashSpeed);
+        Player.Animator.speed = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSlashSpeed);
     }
 
     public override void PhysicsProcess()
     {
         base.PhysicsProcess();
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatID.PlayerAirAcceleration));
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerAirAcceleration));
         transform.rotation = Player.RigidBody.rotation;
         //use jump gravity to make attacks feel more floaty
-        ApplyGravity(Player.StatsManager.GetValueFromStat(StatID.PlayerJumpGravity));
+        ApplyGravity(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerGroundedJumpInfo, JumpInfo.JUMP_GRAVITY_ID));
         if (Player.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
         {
             StateMachine.TransitionTo<PlayerFallState>();
@@ -85,9 +85,9 @@ public class PlayerSlashState : PlayerAirState
         }
         var lateralSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
         CalculateDamageInfo(
-            (int)Player.StatsManager.GetValueFromStat(StatID.PlayerMinSlashDamage),
-            (int)Player.StatsManager.GetValueFromStat(StatID.PlayerMaxSlashDamage), 
-            Player.StatsManager.GetValueFromStat(StatID.PlayerSpeedToSlashDamageCurve, lateralSpeed),
+            (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinSlashDamage),
+            (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxSlashDamage), 
+            Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSpeedToSlashDamageCurve, 0, lateralSpeed),
             lateralSpeed
             );
     }
@@ -116,7 +116,7 @@ public class PlayerSlashState : PlayerAirState
         {
             if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].ActionPressed)
             {
-                Player.RodManager.RodLength += Player.StatsManager.GetValueFromStat(StatID.PlayerSlashRodExtensionSpeed) * Time.fixedDeltaTime;
+                Player.RodManager.RodLength += Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSlashRodExtensionSpeed) * Time.fixedDeltaTime;
             }
             else
             {

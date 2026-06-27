@@ -1,15 +1,16 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BaseProjectile : BaseEntity
 {
     [SerializeField] GameObject modifierHolder;
     [SerializeField] protected Rigidbody rigidBody;
-    [SerializeField] protected Collider projectileCollider;
+    [SerializeField] protected List<Collider> projectileColliders;
     [SerializeField] protected GameObject meshObjects;
 
     public Rigidbody RigidBody { get => rigidBody; }
-    public Collider ProjectileCollider { get => projectileCollider; }
+    public List<Collider> ProjectileColliders { get => projectileColliders; }
     BaseProjectileModifier[] projectileModifiers;
 
     public event Action ProjectileFired;
@@ -68,7 +69,10 @@ public class BaseProjectile : BaseEntity
         Target = target;
         meshObjects.SetActive(true);
         ProjectileFired?.Invoke();
-        projectileCollider.enabled = true;
+        for (int i = 0; i < projectileColliders.Count; i++)
+        {
+            projectileColliders[i].enabled = true;
+        }
         Active = true;
         for (int i = 0; i < projectileModifiers.Length; i++)
         {
@@ -79,7 +83,10 @@ public class BaseProjectile : BaseEntity
     {
         meshObjects.SetActive(false);
         ProjectileDestroyed?.Invoke();
-        projectileCollider.enabled = false;
+        for (int i = 0; i < projectileColliders.Count; i++)
+        {
+            projectileColliders[i].enabled = false;
+        }
         Active = false;
         for (int i = 0; i < projectileModifiers.Length; i++)
         {

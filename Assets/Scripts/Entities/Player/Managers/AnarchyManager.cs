@@ -21,18 +21,16 @@ public class AnarchyManager : MonoBehaviour
 
     int decayTracker = 0;
     int currentAnarchy;
+    float progressToNextAnarchyCharge;
+
     public int CurrentAnarchy { set { currentAnarchy = Mathf.RoundToInt(Mathf.Clamp(value, 0, MAX_ANARCHY)); } get => currentAnarchy; }
-    /// <summary>
-    /// Progress towards next anarchy charge in percentage
-    /// </summary>
-    float progressToAnarchy;
-    public float ProgressToAnarchy 
+    public float ProgressToNextAnarchyCharge 
     { 
         set
         {
-            progressToAnarchy = value;
+            progressToNextAnarchyCharge = value;
         }
-        get => progressToAnarchy; 
+        get => progressToNextAnarchyCharge; 
     }
 
     /// <summary>
@@ -40,7 +38,7 @@ public class AnarchyManager : MonoBehaviour
     /// </summary>
     
     Dictionary<ScaledGenerationMethod, float> scaledGenerationMethods = new();
-    Dictionary<UnscaledGenerationMethod, StatID> unscaledGenerationMethods = new();
+    Dictionary<UnscaledGenerationMethod, StatObject> unscaledGenerationMethods = new();
 
     private void Start()
     {
@@ -51,22 +49,23 @@ public class AnarchyManager : MonoBehaviour
         scaledGenerationMethods[ScaledGenerationMethod.Shadowstep] = 0;
         scaledGenerationMethods[ScaledGenerationMethod.WormThrow] = 0;
 
-        unscaledGenerationMethods[UnscaledGenerationMethod.JustYawn] = StatID.PlayerJustYawnAnarchyProgress;
-        unscaledGenerationMethods[UnscaledGenerationMethod.Yawn] = StatID.PlayerYawnAnarchyProgressPerFrame;
-        unscaledGenerationMethods[UnscaledGenerationMethod.Slash] = StatID.PlayerSlashAnarchyProgressAmount;
-        unscaledGenerationMethods[UnscaledGenerationMethod.Dragonslash] = StatID.PlayerDragonslashAnarchyRequirement;
+        unscaledGenerationMethods[UnscaledGenerationMethod.JustYawn] = StatDatabase.Instance.PlayerStats.PlayerJustYawnAnarchyProgress;
+        unscaledGenerationMethods[UnscaledGenerationMethod.Yawn] = StatDatabase.Instance.PlayerStats.PlayerYawnAnarchyProgress;
+        unscaledGenerationMethods[UnscaledGenerationMethod.Slash] = StatDatabase.Instance.PlayerStats.PlayerSlashAnarchyProgressAmount;
+        unscaledGenerationMethods[UnscaledGenerationMethod.Dragonslash] = StatDatabase.Instance.PlayerStats.PlayerDragonslashAnarchyRequirement;
 
         UpdateAnarchyDisplays();
     }
 
     public void GenerateAnarchy(ScaledGenerationMethod method)
     {
-        float scalingReduction = player.StatsManager.GetValueFromStat(StatID.PlayerAnarchyScalingGenerationReductionAmount);
-        float optionUseNumberToResetScaling = player.StatsManager.GetValueFromStat(StatID.PlayerUniqueAnarchyOptionCountToClearScaling);
-        float generationPerOption = player.StatsManager.GetValueFromStat(StatID.PlayerGenerationPerAnarchyOption);
+        float scalingReduction = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerAnarchyScalingGenerationReductionAmount);
+        float optionUseNumberToResetScaling = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerUniqueAnarchyOptionCountToClearScaling);
+        float generationPerOption = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerGenerationPerAnarchyOption);
 
         ScaleGenerationOptions(method, scalingReduction, optionUseNumberToResetScaling);
-        progressToAnarchy += generationPerOption * (1 - scaledGenerationMethods[method]);
+        var progress = generationPerOption * (1 - scaledGenerationMethods[method]);
+        ProgressToNextAnarchyCharge += progress;
         scaledGenerationMethods[method] = scalingReduction;
 
         int chargesGained = ConvertProgressToCharges();
@@ -87,31 +86,34 @@ public class AnarchyManager : MonoBehaviour
     }
     public void GenerateAnarchyUnscaled(UnscaledGenerationMethod method)
     {
-        progressToAnarchy += player.StatsManager.GetValueFromStat(unscaledGenerationMethods[method]);
+        var progress = player.StatsManager.GetValueFromStat(unscaledGenerationMethods[method]);
+
+        ProgressToNextAnarchyCharge += progress;
 
         int chargesGained = ConvertProgressToCharges();
         if (chargesGained > 0) anarchyGainedThroughUnscaledMethod.Invoke(method, chargesGained);
 
+        Debug.Log($"Generated {progress} anarchy through {method}");
         UpdateAnarchyDisplays();
     }
 
     public int ConvertProgressToCharges()
     {
-        var increasesToAnarchy = Mathf.FloorToInt(progressToAnarchy / 100);
+        var increasesToAnarchy = Mathf.FloorToInt(progressToNextAnarchyCharge / 100);
         currentAnarchy += increasesToAnarchy;
         player.WormManager.WormsRemaining += increasesToAnarchy;
-        ProgressToAnarchy -= increasesToAnarchy * 100;
+        ProgressToNextAnarchyCharge -= increasesToAnarchy * 100;
         return increasesToAnarchy;
     }
     void UpdateAnarchyDisplays()
     {
        if (anarchyDisplay != null) anarchyDisplay.text = "x" + currentAnarchy.ToString();
-       if (anarchyProgressDisplay != null) anarchyProgressDisplay.value = progressToAnarchy;
+       if (anarchyProgressDisplay != null) anarchyProgressDisplay.value = progressToNextAnarchyCharge;
     }
     int GetDecayRate()
     {
-        float baseDecayRate = player.StatsManager.GetValueFromStat(StatID.PlayerBaseAnarchyDecayRate);
-        float minDecayRate = player.StatsManager.GetValueFromStat(StatID.PlayerMinAnarchyDecayRate);
+        float baseDecayRate = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerBaseAnarchyDecayRate);
+        float minDecayRate = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinAnarchyDecayRate);
         return Mathf.RoundToInt(Mathf.Lerp(baseDecayRate, minDecayRate, CurrentAnarchy / MAX_ANARCHY));
     }
     void ResetAnarchy()

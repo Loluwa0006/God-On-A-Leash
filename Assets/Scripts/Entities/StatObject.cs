@@ -1,6 +1,5 @@
 using NaughtyAttributes;
 using UnityEngine;
-using static EntityStatsManager;
 
 [CreateAssetMenu(fileName = "StatObject", menuName = "Scriptable Objects/EntityStats/StatObject/BaseStat")]
 public class StatObject : ScriptableObject
@@ -12,9 +11,6 @@ public class StatObject : ScriptableObject
     [SerializeField, ShowIf(nameof(IsCurveValue))] protected AnimationCurve curveValue;
 
     [SerializeField, ShowIf(nameof(IsJumpInfoValue))] protected JumpInfo jumpInfoValue;
-    [SerializeField, ShowIf(nameof(IsJumpInfoValue))] protected StatID jumpGravityID;
-    [SerializeField, ShowIf(nameof(IsJumpInfoValue))] protected StatID fallGravityID;
-    [SerializeField, ShowIf(nameof(IsJumpInfoValue))] protected StatID jumpVelocityID;
 
     [SerializeField, ShowIf(nameof(IsPercentageValue)), Range(0.0f, 1.0f)] protected float percentageValue;
 
@@ -30,16 +26,15 @@ public class StatObject : ScriptableObject
                     return curveValue;
                 case StatValueType.JumpInfo:
                     return jumpInfoValue;
+                case StatValueType.Percentage:
+                    return percentageValue;
                 default:
+                    Debug.LogWarning($"StatObject {name} has an invalid StatValueType: {ValueType}. Returning floatValue as default.");
                     return floatValue;
             }
         }
 
     }
-
-    [SerializeField, HideIf(nameof(RequiresMultipleIDS))] StatID statID;
-
-    public StatID ID { get => statID; }
 
     [SerializeField] StatValueType statValueType;
 
@@ -60,13 +55,13 @@ public class StatObject : ScriptableObject
         switch (ValueType)
         {
             default:
-                stats[0] = new RuntimeStatObject(Value, Type, ID);
+                stats[0] = new RuntimeStatObject(Value, Type, ValueType);
                 break;
             case StatValueType.JumpInfo:
                 stats = new RuntimeStatObject[3];
-                stats[0] = new RuntimeStatObject(jumpInfoValue.JumpGravity, StatInfluenceType.FallSpeed, jumpGravityID);
-                stats[1] = new RuntimeStatObject(jumpInfoValue.FallGravity, StatInfluenceType.FallSpeed, fallGravityID);
-                stats[2] = new RuntimeStatObject(jumpInfoValue.JumpVelocity, StatInfluenceType.JumpPower, jumpVelocityID);
+                stats[0] = new RuntimeStatObject(jumpInfoValue.JumpGravity, StatInfluenceType.FallSpeed, StatValueType.Float);
+                stats[1] = new RuntimeStatObject(jumpInfoValue.FallGravity, StatInfluenceType.FallSpeed, StatValueType.Float);
+                stats[2] = new RuntimeStatObject(jumpInfoValue.JumpVelocity, StatInfluenceType.JumpPower, StatValueType.Float);
                 break;
 
         }
@@ -86,5 +81,9 @@ public struct JumpInfo
     public float JumpGravity { get => 2.0f * jumpHeight / (jumpTimeToPeak * jumpTimeToPeak); }
     public float FallGravity { get => 2.0f * jumpHeight / (jumpTimeToDecent * jumpTimeToDecent); }
     public float JumpVelocity { get => 2.0f * jumpHeight; }
+
+    public const int JUMP_GRAVITY_ID = 0;
+    public const int FALL_GRAVITY_ID = 1;
+    public const int JUMP_VELOCITY_ID = 2;
 
 }

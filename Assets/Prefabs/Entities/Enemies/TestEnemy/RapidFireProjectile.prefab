@@ -106,7 +106,8 @@ MonoBehaviour:
   idComponent: {fileID: 8564550619827520923}
   modifierHolder: {fileID: 6115555356107912996}
   rigidBody: {fileID: 8267344615652836179}
-  projectileCollider: {fileID: 9175763313394684376}
+  projectileColliders:
+  - {fileID: 9175763313394684376}
   meshObjects: {fileID: 6460488579097432311}
 --- !u!54 &8267344615652836179
 Rigidbody:
@@ -173,6 +174,7 @@ MonoBehaviour:
     damageSource: 3
   blacklistedTargets: []
   hitboxCollider: {fileID: 9175763313394684376}
+  postContactLogic: 0
 --- !u!114 &8564550619827520923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8b73511aa27605468744d3677198fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IDComponent
-  idType: 2
+  idType: 3
 --- !u!1 &6460488579097432311
 GameObject:
   m_ObjectHideFlags: 0

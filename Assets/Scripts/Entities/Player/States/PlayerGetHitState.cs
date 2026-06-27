@@ -32,7 +32,7 @@ public class PlayerGetHitState : PlayerAirState
 
         ApplyAttackKnockback();
         ApplyInvincibility();
-        invulnerablityTracker = (int)Player.StatsManager.GetValueFromStat(StatID.ExtraInvulnerabilityFramesAfterHit);
+        invulnerablityTracker = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ExtraInvulnerabilityFramesAfterHit);
     }
     void ApplyInvincibility()
     {
@@ -56,8 +56,8 @@ public class PlayerGetHitState : PlayerAirState
         }
         //Use jump gravity because it's more forgiving: the force is weaker and gives the player
         //more opportunity to recover.
-        ApplyGravity(Player.StatsManager.GetValueFromStat(StatID.PlayerJumpGravity));
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatID.PlayerAirAcceleration));
+        ApplyGravity(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerGroundedJumpInfo, JumpInfo.JUMP_GRAVITY_ID));
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerAirAcceleration));
     }
 
     public override void InactivePhysicsProcess()

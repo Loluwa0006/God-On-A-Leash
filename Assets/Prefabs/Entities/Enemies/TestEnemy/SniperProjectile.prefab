@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2569765946383941468}
   - component: {fileID: 3809078192718183567}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,8 @@ MonoBehaviour:
   idComponent: {fileID: 6132837562483315780}
   modifierHolder: {fileID: 1138496419796540292}
   rigidBody: {fileID: 7947073713133903600}
-  projectileCollider: {fileID: 3809078192718183567}
+  projectileColliders:
+  - {fileID: 3809078192718183567}
   meshObjects: {fileID: 4054444061763140079}
 --- !u!54 &7947073713133903600
 Rigidbody:
@@ -328,7 +329,7 @@ GameObject:
   - component: {fileID: 3664862607528088141}
   - component: {fileID: 5550888158754793748}
   - component: {fileID: 659719716874596421}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SplineColliderSegment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -486,7 +487,7 @@ GameObject:
   - component: {fileID: 1193233552250550313}
   - component: {fileID: 1759516565723920275}
   - component: {fileID: 7086035625057299044}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BeamSpline
   m_TagString: Untagged
   m_Icon: {fileID: 0}

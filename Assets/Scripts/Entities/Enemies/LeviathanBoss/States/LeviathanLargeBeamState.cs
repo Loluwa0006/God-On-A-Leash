@@ -38,7 +38,7 @@ public class LeviathanLargeBeamState : LeviathanBaseState
         ExitStateThisFrame = false;
         Leviathan.Animator.SetTrigger(Leviathan.GetAnimationParameterFormatted(LeviathanEntity.AnimationParameter.Trigger_IsAttacking));
         Leviathan.RigidBody.linearVelocity = Vector3.zero;
-        Leviathan.Animator.speed = Leviathan.StatsManager.GetValueFromStat(StatID.LeviathanLargeLaserAttackSpeed);
+        Leviathan.Animator.speed = Leviathan.StatsManager.GetValueFromStat(StatDatabase.Instance.LeviathanStats.LeviathanLargeLaserAttackSpeed);
     }
 
     public override void PhysicsProcess()
@@ -64,7 +64,7 @@ public class LeviathanLargeBeamState : LeviathanBaseState
 
     public void ExitState()
     {
-        cooldownRemaining = (int) Leviathan.StatsManager.GetValueFromStat(StatID.LeviathanLargeLaserCooldown);
+        cooldownRemaining = (int) Leviathan.StatsManager.GetValueFromStat(StatDatabase.Instance.LeviathanStats.LeviathanLargeLaserCooldown);
         StateMachine.TransitionTo<LeviathanIdleState>();
     }
 

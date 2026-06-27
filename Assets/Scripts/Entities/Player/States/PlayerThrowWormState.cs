@@ -22,13 +22,13 @@ public class PlayerThrowWormState : PlayerAirState
     {
         base.Enter(message);
         Vector3 newSpeed = Player.RigidBody.linearVelocity;
-        float wormJumpPower = Player.StatsManager.GetValueFromStat(StatID.WormJumpPower);
+        float wormJumpPower = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormJumpInfo);
         newSpeed.y = Mathf.Max(newSpeed.y + wormJumpPower, wormJumpPower);
         Player.RigidBody.linearVelocity = newSpeed;
-        durationTracker = (int) Player.StatsManager.GetValueFromStat(StatID.WormThrowDuration);
-        if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered && Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(StatID.WormsRequiredForRail))
+        durationTracker = (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormThrowDuration);
+        if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered && Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormsRequiredForRail))
         {
-            FireWorm(Player.WormManager.GetNewWormRail(), cost: (int)Player.StatsManager.GetValueFromStat(StatID.WormsRequiredForRail));
+            FireWorm(Player.WormManager.GetNewWormRail(), cost: (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormsRequiredForRail));
         }
         else
         {
@@ -41,7 +41,7 @@ public class PlayerThrowWormState : PlayerAirState
     void FireWorm(WormEntity worm, int cost)
     {
         var cameraRay = viewCamera.ScreenPointToRay(new Vector2(Screen.width / 2.0f, Screen.height / 2.0f));
-        float wormThrowRange = Player.StatsManager.GetValueFromStat(StatID.WormThrowRange);
+        float wormThrowRange = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormThrowRange);
         var raycast = Physics.Raycast(cameraRay, out var hitInfo, wormThrowRange, terrainMask, QueryTriggerInteraction.Collide);
         Vector3 wormTarget;
         if (raycast)
@@ -61,13 +61,13 @@ public class PlayerThrowWormState : PlayerAirState
         base.PhysicsProcess();
         if (Player.RigidBody.linearVelocity.y > 0)
         {
-            ApplyGravity(Player.StatsManager.GetValueFromStat(StatID.WormJumpGravity));
+            ApplyGravity(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormJumpInfo, JumpInfo.JUMP_GRAVITY_ID));
         }
         else
         {
-            ApplyGravity(Player.StatsManager.GetValueFromStat(StatID.WormFallGravity));
+            ApplyGravity(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormJumpInfo, JumpInfo.FALL_GRAVITY_ID));
         }
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatID.PlayerAirAcceleration));
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerAirAcceleration));
         durationTracker--;
         if (durationTracker == 0)
         {

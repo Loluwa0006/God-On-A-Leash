@@ -29,4 +29,9 @@ public class BaseShipAbility : BaseEntity
     {
         return AnarchyCost <= anarchyManager.CurrentAnarchy;
     }
+
+    public virtual void UpdateAbility()
+    {
+
+    }
 }

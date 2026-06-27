@@ -58,8 +58,8 @@ public class ShipManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (abilityOne != null && abilityOne.AbilityActive) abilityOne.PhysicsProcess();
-        if (abilityTwo != null && abilityTwo.AbilityActive) abilityTwo.PhysicsProcess();
+        if (abilityOne != null && abilityOne.AbilityActive) abilityOne.UpdateAbility();
+        if (abilityTwo != null && abilityTwo.AbilityActive) abilityTwo.UpdateAbility();
     }
 
     protected bool IsAbilityAvailable(BaseShipAbility ability, InputManager.BufferableInputs input)

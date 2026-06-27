@@ -18,15 +18,15 @@ public class PlayerJumpState : PlayerAirState
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
-        Player.RigidBody.AddForce(Vector3.up * Player.StatsManager.GetValueFromStat(StatID.PlayerGroundedJumpPower), ForceMode.VelocityChange);
+        Player.RigidBody.AddForce(Vector3.up * Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerGroundedJumpInfo, JumpInfo.JUMP_VELOCITY_ID), ForceMode.VelocityChange);
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Jump].Consume();
     }
 
     public override void PhysicsProcess()
     {
         Player.PlayerGrounded = IsGrounded();
-        ApplyGravity( Player.StatsManager.GetValueFromStat(StatID.PlayerJumpGravity));
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatID.PlayerAirAcceleration));
+        ApplyGravity( Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerGroundedJumpInfo, JumpInfo.JUMP_GRAVITY_ID));
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerAirAcceleration));
         if (Player.RigidBody.linearVelocity.y <= 0.0f)
         {
             StateMachine.TransitionTo<PlayerFallState>();

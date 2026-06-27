@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public class WormManager : MonoBehaviour
         set
         {
             wormsRemaining =
-            Mathf.Clamp(value, 0, player.StatsManager.GetValueFromStat(StatID.MaxWorms));
+            Mathf.Clamp(value, 0, player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.MaxWorms));
             if (wormDisplay != null) wormDisplay.text = wormsRemaining.ToString();
         }
     }
@@ -27,10 +28,19 @@ public class WormManager : MonoBehaviour
 
     public event Action<WormEntity> wormRequested;
 
-    private void Start()
+    public void InitializeManager()
     {
-        wormsRemaining = player.StatsManager.GetValueFromStat(StatID.MaxWorms);
-
+        wormsRemaining = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.MaxWorms);
+        foreach (var worm in wormPool)
+        {
+            Destroy(worm.gameObject);
+        }
+        foreach (var worm in wormRailPool)
+        {
+            Destroy(worm.gameObject);
+        }
+        wormPool.Clear();
+        wormRailPool.Clear();
         for (int i = 0; i < WormsRemaining; i++)
         {
             WormEntity newWorm = Instantiate(wormPrefab);

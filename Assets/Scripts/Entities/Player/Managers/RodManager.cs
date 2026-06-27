@@ -31,15 +31,15 @@ public class RodManager : MonoBehaviour
 
     float rodLength;
 
-    public float RodLength {
-
+    public float RodLength 
+    {
         set
         {
             if (rodLengthDisplay != null)
             {
                 rodLengthDisplay.text = Mathf.RoundToInt(value).ToString();
             }
-            rodLength = Mathf.Clamp(value, 0.0f, player.StatsManager.GetValueFromStat(StatID.PlayerMaxRodRange));
+            rodLength = Mathf.Clamp(value, 0.0f, player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxRodRange));
         }
 
         get => rodLength;
@@ -61,14 +61,14 @@ public class RodManager : MonoBehaviour
             grappleJoint.autoConfigureConnectedAnchor = false;
             grappleJoint.connectedAnchor = grappleInfo.GrapplePosition;
 
-            grappleJoint.massScale = player.StatsManager.GetValueFromStat(StatID.PlayerRodSwingMassScale);
-            grappleJoint.spring = player.StatsManager.GetValueFromStat(StatID.PlayerRodSpring);
-            grappleJoint.damper = player.StatsManager.GetValueFromStat(StatID.PlayerRodDamper);
+            grappleJoint.massScale = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodSwingMassScale);
+            grappleJoint.spring = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodSpring);
+            grappleJoint.damper = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodDamper);
 
             var distance = Vector3.Distance(grappleInfo.GrapplePosition, player.Collider.bounds.center);
 
-            grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatID.PlayerRodMaxDistanceWithNoSpring) * distance;
-            grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatID.PlayerRodMinDistanceWithNoSpring) * distance;
+            grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMaxDistanceWithNoSpring) * distance;
+            grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMinDistanceWithNoSpring) * distance;
 
             grappleActive = true;
             rodLine.enabled = true;

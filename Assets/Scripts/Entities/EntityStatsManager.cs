@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EntityStatsManager : BaseEntity
 {
@@ -9,7 +10,8 @@ public class EntityStatsManager : BaseEntity
     public const int INFINITE_DURATION_INFLUENCE = -69420;
     public const int INFINITE_PRIORITY = 69420;
     public const int MISSING_STAT_ID = -6969;
-    public const int MISSING_STAT_ARGUMENT = -6969420;
+    public const int MISSING_STAT_ARGUMENT = -696942069;
+    public const int NO_INDEX_IN_STAT = 0;
 
 
     public Dictionary<StatInfluenceSource, int> priorityIndex = new()
@@ -36,16 +38,14 @@ public class EntityStatsManager : BaseEntity
         { StatInfluenceType.AnarchyScaling, 4.0f },
         { StatInfluenceType.FallSpeed, 4.0f },
     };
-    protected Dictionary<StatID, RuntimeStatObject> statRegistry = new();
+    protected Dictionary<RegistryKey, RuntimeStatObject> statRegistry = new();
     protected Dictionary<StatInfluenceType, StatInfluence[]> influenceRegistry = new();
 
-    [SerializeField] protected StatsHolder statsHolder;
-
+    public UnityEvent<BaseEntity> managerInitialized = new();
     public void Start()
     {
-        InitializeRegistry();
+         InitializeRegistry();
     }
-
     protected virtual void InitializeRegistry()
     {
         foreach (var boostType in Enum.GetValues(typeof(StatInfluenceType)).Cast<StatInfluenceType>())
@@ -56,63 +56,40 @@ public class EntityStatsManager : BaseEntity
                 influenceRegistry[boostType][i] = new StatInfluence(0, 0, -1, StatInfluenceSource.Inactive, StatInfluenceValueType.Flat);
             }
         }
-        var statObjects = statsHolder.StatObjects;
-        for (int i = 0; i < statObjects.Count; i++)
+        var statObjects = StatDatabase.Instance.GetAllStatObjects();
+        for (int i = 0; i < statObjects.Length; i++)
         {
             RuntimeStatObject[] statObjectsToAdd = statObjects[i].CreateRuntimeStats();
             for (int x = 0; x < statObjectsToAdd.Length; x++)
             {
-                statRegistry[statObjectsToAdd[x].ID] = statObjectsToAdd[x];
+                var registryIndex = new RegistryKey(statObjects[i], x);
+                statRegistry[registryIndex] = statObjectsToAdd[x];
             }
         }
         CheckForErrorsInRegistry(statObjects);   
+        managerInitialized.Invoke(this);
     }
 
-    void CheckForErrorsInRegistry(List<StatObject> statObjects)
-    {
-        foreach (var statID in Enum.GetValues(typeof(StatID)).Cast<StatID>())
+    void CheckForErrorsInRegistry(StatObject[] statObjects) 
+    { 
+        for (int x = 0; x < statObjects.Length; x++)
         {
-            if (!statRegistry.ContainsKey(statID) && statID != StatID.Undefined)
-            {
-                Debug.LogWarning("Could not find stat ID " + statID.ToString());
-            }
-        }
-
-        for (int x = 0; x < statObjects.Count; x++)
-        {
-            if (statObjects[x].ID == StatID.Undefined && !statObjects[x].RequiresMultipleIDS())
-            {
-                Debug.LogWarning("ID at index " + x + " is undefined");
-                continue;
-            }
-            for (int y = 0; y < statObjects.Count; y++)
+            for (int y = 0; y < statObjects.Length; y++)
             {
                 if (x == y) continue;
                 if (statObjects[x] == statObjects[y])
                 {
                     Debug.LogWarning("Duplicate stat object found at indexes " + x + " and " + y);
                 }
-                else
-                {
-                    if (statObjects[x].ID == statObjects[y].ID)
-                    {
-                        Debug.LogWarning("Duplicate stat ID " + statObjects[x].ID + " found at indexes " + x + " and " + y);
-                    }
-                }
             }
         }
     }
 
-    public virtual float GetValueFromStat(StatID statID, float argument = MISSING_STAT_ARGUMENT)
+    float ParseValueFromStat(RegistryKey registryEntry, float argument)
     {
-        if (!statRegistry.ContainsKey(statID))
-        {
-            Debug.LogWarning("Could not find stat ID " + statID.ToString());
-            return MISSING_STAT_ID;
-        }
-        var stat = statRegistry[statID];
-
         float statValue = MISSING_STAT_ID;
+
+        var stat = statRegistry[registryEntry];
         switch (stat.valueType)
         {
             case StatValueType.Float:
@@ -125,10 +102,52 @@ public class EntityStatsManager : BaseEntity
                     return MISSING_STAT_ID;
                 }
                 var curve = (AnimationCurve)stat.value;
-                statValue = curve.Evaluate((float)argument);
+                statValue = curve.Evaluate(argument);
                 break;
-
+            case StatValueType.JumpInfo:
+                if (argument == MISSING_STAT_ARGUMENT)
+                {
+                    Debug.LogWarning("Could not find value to evaluate for jump info stat");
+                    return MISSING_STAT_ID;
+                }
+                switch (argument)
+                {
+                    case JumpInfo.JUMP_VELOCITY_ID:
+                        statValue = ((JumpInfo)stat.value).JumpVelocity;
+                        break;
+                    case JumpInfo.JUMP_GRAVITY_ID:
+                        statValue = ((JumpInfo)stat.value).JumpGravity;
+                        break;
+                    case JumpInfo.FALL_GRAVITY_ID:
+                        statValue = ((JumpInfo)stat.value).FallGravity;
+                        break;
+                    default:
+                        Debug.LogWarning("Could not find value to evaluate for jump info stat");
+                        return MISSING_STAT_ID;
+                }
+                break;
+            case StatValueType.Percentage:
+                statValue = (float)stat.value;
+                break;
+            default:
+                Debug.LogWarning("Could not find value to evaluate for stat " + registryEntry.StatObject.name);
+                return MISSING_STAT_ID;
         }
+        return statValue;
+    }
+
+    public virtual float GetValueFromStat(StatObject statObject, int index = NO_INDEX_IN_STAT, float argument = MISSING_STAT_ARGUMENT)
+    {
+        RegistryKey registryEntry = new(statObject, index);
+        if (!statRegistry.ContainsKey(registryEntry))
+        {
+            Debug.LogWarning("Could not find stat ID " + statObject.name.ToString());
+            return MISSING_STAT_ID;
+        }
+        var stat = statRegistry[registryEntry];
+
+        float statValue = ParseValueFromStat(registryEntry, argument);
+
         if (stat.type == StatInfluenceType.Uninfluenceable || !influenceRegistry.ContainsKey(stat.type))
         {
             return statValue;
@@ -208,12 +227,10 @@ public class EntityStatsManager : BaseEntity
             }
         }
     }
-
     public override void PhysicsProcess()
     {
         DecrementStatInfluencerDurations();
     }
-
     void DecrementStatInfluencerDurations()
     {
         foreach (var influenceArray in influenceRegistry.Values)
@@ -230,116 +247,6 @@ public class EntityStatsManager : BaseEntity
         }
     }
 }
-
-public enum StatID
-{
-    //Player Stats
-    Undefined,
-    //General Movement
-    PlayerMoveSpeed,
-    PlayerDecelerationDrag,
-    // Ground Movement
-    PlayerGroundAcceleration,
-    PlayerGroundedJumpPower,
-    //Air Movement
-    PlayerAirAcceleration,
-    PlayerMaxFallSpeed,
-    PlayerAngleToBeConsideredTurning,
-    PlayerFallGravity,
-    PlayerJumpGravity,
-    //Worms
-    MaxWorms,
-    WormsRequiredForRail,
-    WormThrowRange,
-    WormThrowDuration,
-    WormJumpPower,
-    WormJumpGravity,
-    WormFallGravity,
-    //Rod
-    PlayerMaxRodRange,
-    PlayerRodSwingMassScale,
-    PlayerRodSpring,
-    PlayerRodDamper,
-    PlayerRodMaxDistanceWithNoSpring,
-    PlayerRodMinDistanceWithNoSpring,
-    //Swinging
-    SwingAcceleration,
-    SwingJumpPower,
-    MinSwingJumpHeight,
-    SwingSpeedToJumpPowerRatio,
-    SwingRiseGravity,
-    SwingFallGravity,
-    //Dash
-    PlayerDashGravity,
-    PlayerDashPower,
-    PlayerDashLateralAcceleration,
-    PlayerMaxDashSpeed,
-    PlayerMinDistanceBeforeDashCancelled,
-    //Parry
-    ProperParryDuration,
-    PartialParryDuration,
-    ParryAccelerationInPercent,
-    ParryStrafeSpeed,
-    RodLengthAdditionalParrySize,
-    ParrySpeedIncrease,
-    PartialParrySpeedPenalty,
-    ParryBounceControl,
-    RailParryMinimumSpeed,
-    RailParryMinimumJump,
-    PreviousSpeedToRailSpeedRatio,
-    //Squashbuckler
-    PlayerChargesToEnterSquashbucklerMode,
-    PlayerMinimumShadowstepSpeed,
-    PlayerDurationPerSquashbucklerCharge,
-    PlayerDragonslashAnarchyRequirement,
-    PlayerDragonslashSpeedBonusFromRodLength,
-    //Anarchy
-    PlayerUniqueAnarchyOptionCountToClearScaling,
-    PlayerAnarchyScalingGenerationReductionAmount,
-    PlayerGenerationPerAnarchyOption,
-    PlayerBaseAnarchyDecayRate,
-    PlayerMinAnarchyDecayRate,
-    //Slash
-    PlayerMinSlashDamage,
-    PlayerMaxSlashDamage,
-    PlayerMinDragonslashDamage,
-    PlayerMaxDragonslashDamage,
-    PlayerSlashSpeed,
-    PlayerSlashAnarchyProgressAmount,
-    PlayerSlashRangeBonusFromRodLength,
-    PlayerSlashRodExtensionSpeed,
-    PlayerSpeedToDragonslashDamageCurve,
-    PlayerSpeedToSlashDamageCurve,
-    //Yawn
-    PlayerYawnAirAcceleration,
-    PlayerMinYawnTime,
-    PlayerMinJustYawnTime,
-    PlayerJustYawnWindow,
-    PlayerYawnAnarchyProgressPerFrame,
-    PlayerJustYawnAnarchyProgress,
-    PlayerRodRetractionSpeedWhileYawning,
-
-    //Misc
-    ExtraInvulnerabilityFramesAfterHit,
-    TurnAngleSpeedLostCurve,
-    PlayerDragonslashSpeed,
-
-
-    //Leviathan Stats
-
-    //Movement
-    LeviathanMoveSpeed,
-    LeviathanMoveAcceleration,
-    LeviathanMinMoveDuration,
-    LeviathanMaxMoveDuration,
-    LeviathanMinIdleDuration,
-    LeviathanMaxIdleDuration,
-    LeviathanDecelerationRate,
-    //Laser
-    LeviathanLargeLaserCooldown,
-    LeviathanLargeLaserAttackSpeed,
-}
-
 public enum StatInfluenceType
 {
     Uninfluenceable,
@@ -370,8 +277,6 @@ public enum StatInfluenceValueType
     Additive,
     Multiplicative,
 }
-
-
 public class StatInfluence
 {
     public float value;
@@ -379,7 +284,6 @@ public class StatInfluence
     public int priority;
     public StatInfluenceSource source;
     public StatInfluenceValueType valueType;
-
     public StatInfluence(float value, int duration, int priority, StatInfluenceSource source, StatInfluenceValueType valueType)
     {
         this.value = value;
@@ -392,16 +296,16 @@ public class StatInfluence
 [System.Serializable]
 public class RuntimeStatObject
 {
+    public static string UNDEFINED_ID = "Undefined";
     public StatInfluenceType type = StatInfluenceType.Uninfluenceable;
     public object value = 0;
-    public StatID ID = StatID.Undefined;
     public StatValueType valueType = StatValueType.Float;
 
-    public RuntimeStatObject(object value, StatInfluenceType type, StatID iD)
+    public RuntimeStatObject(object value, StatInfluenceType type, StatValueType valueType)
     {
         this.value = value;
         this.type = type;
-        ID = iD;
+        this.valueType = valueType;
     }
 }
 
@@ -411,4 +315,39 @@ public enum StatValueType
     AnimationCurve,
     JumpInfo,
     Percentage,
+}
+
+public struct RegistryKey
+{
+    public StatObject StatObject;
+    public int Index; 
+
+    public RegistryKey(StatObject statObject, int index)
+    {
+        this.StatObject = statObject;
+        this.Index = index;
+    }
+
+    override public bool Equals(object obj)
+    {
+        if (obj is RegistryKey other)
+        {
+            return this == other;
+        }
+        return false;
+    }
+    public static bool operator ==(RegistryKey a, RegistryKey b)
+    {
+        return a.StatObject == b.StatObject && a.Index == b.Index;
+    }
+
+    public static bool operator !=(RegistryKey a, RegistryKey b)
+    {
+        return !(a == b);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(StatObject, Index);
+    }
 }

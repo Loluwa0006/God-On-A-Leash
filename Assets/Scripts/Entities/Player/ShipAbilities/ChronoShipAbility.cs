@@ -32,9 +32,9 @@ public class ChronoShipAbility : BaseShipAbility
         player.RigidBody.linearVelocity *= 1 / Time.timeScale;
     }
 
-    public override void PhysicsProcess()
+    public override void UpdateAbility()
     {
-        base.PhysicsProcess();
+        base.UpdateAbility();
         durationTracker--;
         if (durationTracker == 0)
         {

@@ -45,9 +45,12 @@ public class ProjectileContactModifier : BaseProjectileModifier
             bool validContact = false;
             for (int i = 0; i < overlap; i++)
             {
-                if (DamageHealthComponent(hitboxResults[i], Projectile.ProjectileCollider))
+                for (int x = 0; x < Projectile.ProjectileColliders.Count; x++)
                 {
-                    validContact = true;
+                    if (DamageHealthComponent(hitboxResults[i], Projectile.ProjectileColliders[x]))
+                    {
+                        validContact = true;
+                    }
                 }
             }
             if (validContact) Projectile.DisableProjectile();

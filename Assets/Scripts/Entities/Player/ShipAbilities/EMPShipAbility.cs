@@ -16,9 +16,9 @@ public class EMPShipAbility : BaseShipAbility
         base.ActivateAbility();
         durationTracker = empAbilityData.EMPActiveFrames;
     }
-    public override void PhysicsProcess()
+    public override void UpdateAbility()
     {
-        base.PhysicsProcess();
+        base.UpdateAbility();
         durationTracker--;
         if (durationTracker == 0)
         {

@@ -37,15 +37,15 @@ public class PlayerParryState : PlayerAirState
         float gravity;
         if (Player.RigidBody.linearVelocity.y > 0)
         {
-            gravity = Player.StatsManager.GetValueFromStat(StatID.PlayerJumpGravity);
+            gravity = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerGroundedJumpInfo, JumpInfo.JUMP_GRAVITY_ID);
         }
         else
         {
-            gravity = Player.StatsManager.GetValueFromStat(StatID.PlayerFallGravity);
+            gravity = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerGroundedJumpInfo, JumpInfo.FALL_GRAVITY_ID);
         }
         ApplyGravity(gravity);
         Vector3 movementDirection = Player.PlayerInput.GetMovementDirection();
-        AirborneMovement(movementDirection, Player.StatsManager.GetValueFromStat(StatID.ParryStrafeSpeed));
+        AirborneMovement(movementDirection, Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ParryStrafeSpeed));
         durationTracker++;
         if (StateMachine.IsStateAvailable<PlayerRailParryState>())
         {
@@ -53,7 +53,7 @@ public class PlayerParryState : PlayerAirState
             return;
         }
         
-        if (durationTracker == Player.StatsManager.GetValueFromStat(StatID.ProperParryDuration) + Player.StatsManager.GetValueFromStat(StatID.PartialParryDuration))
+        if (durationTracker == Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ProperParryDuration) + Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PartialParryDuration))
         {
             StateMachine.TransitionTo<PlayerFallState>();
         }
@@ -67,7 +67,7 @@ public class PlayerParryState : PlayerAirState
 
     bool AttemptParry()
     {
-        float shapecastSize = Mathf.Lerp(1.0f, 1.0f + Player.StatsManager.GetValueFromStat(StatID.RodLengthAdditionalParrySize), Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(StatID.PlayerMaxRodRange));
+        float shapecastSize = Mathf.Lerp(1.0f, 1.0f + Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.RodLengthAdditionalParrySize), Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxRodRange));
         var shapecast = Physics.BoxCast(Player.Collider.bounds.center, Player.Collider.bounds.extents, Player.RigidBody.linearVelocity.normalized,  out RaycastHit hitinfo, Player.Collider.transform.rotation, shapecastSize, parryMask);
         if (shapecast)
         {
@@ -82,17 +82,18 @@ public class PlayerParryState : PlayerAirState
   
     void PerformParry(Vector3 movementDirection, Vector3 normal)
     {
-        float bounceVelocity = startingSpeed + (startingSpeed * Player.StatsManager.GetValueFromStat(StatID.ParrySpeedIncrease));
-        if (durationTracker > Player.StatsManager.GetValueFromStat(StatID.ProperParryDuration))
+        float bounceVelocity = startingSpeed + (startingSpeed * Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ParrySpeedIncrease));
+        if (durationTracker > Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ProperParryDuration))
         {
-            bounceVelocity *= Player.StatsManager.GetValueFromStat(StatID.PartialParrySpeedPenalty);
+            bounceVelocity *= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PartialParrySpeedPenalty);
         }
         Vector3 velocityReflected = Vector3.Reflect(Player.RigidBody.linearVelocity.normalized, normal).normalized;
         Vector3 movementAccountedForRotation = movementDirection.x * viewCamera.transform.right + movementDirection.y * viewCamera.transform.forward;
-        Vector3 velocityRotated = Vector3.Lerp(velocityReflected, movementAccountedForRotation.normalized, Player.StatsManager.GetValueFromStat(StatID.ParryBounceControl));
+        Vector3 velocityRotated = Vector3.Lerp(velocityReflected, movementAccountedForRotation.normalized, Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ParryBounceControl));
 
         Player.RigidBody.linearVelocity = velocityRotated * bounceVelocity;
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Parry);
+
     }
     public override void Exit()
     {

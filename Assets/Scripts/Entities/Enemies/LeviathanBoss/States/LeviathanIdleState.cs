@@ -6,13 +6,13 @@ public class LeviathanIdleState : LeviathanBaseState
     int idleDuration;
     public override void Enter(Dictionary<string, object> message = null)
     {
-        int minIdleDuration = Mathf.RoundToInt(Leviathan.StatsManager.GetValueFromStat(StatID.LeviathanMinIdleDuration));
-        int maxIdleDuration = Mathf.RoundToInt(Leviathan.StatsManager.GetValueFromStat(StatID.LeviathanMaxIdleDuration));
+        int minIdleDuration = Mathf.RoundToInt(Leviathan.StatsManager.GetValueFromStat(StatDatabase.Instance.LeviathanStats.LeviathanMinIdleDuration));
+        int maxIdleDuration = Mathf.RoundToInt(Leviathan.StatsManager.GetValueFromStat(StatDatabase.Instance.LeviathanStats.LeviathanMaxIdleDuration));
         idleDuration =  Random.Range(minIdleDuration, maxIdleDuration);
     }
     public override void PhysicsProcess()
     {
-        Leviathan.RigidBody.linearVelocity = Vector3.MoveTowards(Leviathan.RigidBody.linearVelocity, Vector3.zero, Leviathan.StatsManager.GetValueFromStat(StatID.LeviathanDecelerationRate));
+        Leviathan.RigidBody.linearVelocity = Vector3.MoveTowards(Leviathan.RigidBody.linearVelocity, Vector3.zero, Leviathan.StatsManager.GetValueFromStat(StatDatabase.Instance.LeviathanStats.LeviathanDecelerationRate));
         idleDuration--;
         if (idleDuration <= 0)
         {
