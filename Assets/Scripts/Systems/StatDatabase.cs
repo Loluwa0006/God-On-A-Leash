@@ -126,21 +126,24 @@ public class PlayerStats
 [System.Serializable]
 public class LeviathanStats
 {
-    public StatObject
-    LeviathanMoveSpeed,
-    LeviathanMoveAcceleration,
-    LeviathanMinMoveDuration,
-    LeviathanMaxMoveDuration,
-    LeviathanMinIdleDuration,
-    LeviathanMaxIdleDuration,
-    LeviathanDecelerationRate,
-    //Laser
-    LeviathanLargeLaserCooldown,
-    LeviathanLargeLaserAttackSpeed,
+    [Header("Movement")]
+    public StatObject LeviathanMoveSpeed;
+    public StatObject LeviathanMoveAcceleration;
+    public StatObject LeviathanMinMoveDuration;
+    public StatObject LeviathanMaxMoveDuration;
+    public StatObject LeviathanMinIdleDuration;
+    public StatObject LeviathanMaxIdleDuration;
+    public StatObject LeviathanDecelerationRate;
 
-    //Claw
-    LeviathanClawAttackSpeed,
-    LeviathanClawAttackCooldown;
+    [Header("Large Laser")]
+    public StatObject LeviathanLargeLaserCooldown;
+    public StatObject LeviathanLargeLaserAttackSpeed;
+
+    [Header("Claw Attack")]
+    public StatObject LeviathanClawAttackSpeed;
+    public StatObject LeviathanClawAttackCooldown;
+    public StatObject LeviathanClawAttackLungeDistance;
+    public StatObject LeviathanClawAttackRange;
 
 
 }

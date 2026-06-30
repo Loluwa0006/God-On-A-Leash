@@ -16,6 +16,11 @@ public class BaseActor : BaseEntity
     public UnityEvent<Collision> entityCollision = new();
     public UnityEvent<Collider> entityTriggerEntry = new();
 
+    public override void Initialize()
+    {
+        base.Initialize();
+        stateMachine.Initialize();
+    }
     private void OnCollisionEnter(Collision collision)
     {
         entityCollision.Invoke(collision);

@@ -7,22 +7,15 @@ public class ProjectileContactModifier : BaseProjectileModifier
     [SerializeField] LayerMask projectileMask;
     [SerializeField] DamageInfo hitboxInfo;
     [SerializeField] List<HealthComponent> blacklistedTargets = new();
-    [SerializeField] Collider hitboxCollider;
     [SerializeField] PostContactLogic postContactLogic;
 
     Collider[] hitboxResults = new Collider[MAX_CONTACTS_PER_FRAME];
 
-    List<HealthComponent> unallowedTargets = new();
+    HashSet<HealthComponent> unallowedTargets = new();
     public enum PostContactLogic
     {
         DisableProjectile,
         DisableHitbox,
-    }
-
-    public override void InitializeModifier(BaseProjectile owner)
-    {
-        base.InitializeModifier(owner);
-        if (hitboxCollider == null) hitboxCollider = GetComponent<Collider>();  
     }
     public override void OnProjectileFired()
     {
@@ -35,26 +28,24 @@ public class ProjectileContactModifier : BaseProjectileModifier
     }
     public override void UpdateModifier()
     {
-        for (int i = 0; i < MAX_CONTACTS_PER_FRAME; i++)
+        bool validContact = false;
+        for (int x = 0; x < Projectile.ProjectileColliders.Count; x++)
         {
-            hitboxResults[i] = null;
-        }
-        var overlap = Physics.OverlapSphereNonAlloc(hitboxCollider.bounds.center, hitboxCollider.bounds.extents.z, hitboxResults, projectileMask, QueryTriggerInteraction.Collide);
-        if (overlap > 0)
-        {
-            bool validContact = false;
-            for (int i = 0; i < overlap; i++)
+            for (int i = 0; i < MAX_CONTACTS_PER_FRAME; i++)
             {
-                for (int x = 0; x < Projectile.ProjectileColliders.Count; x++)
+                hitboxResults[i] = null;
+            }
+            var hitbox = Projectile.ProjectileColliders[x];
+            var overlap = Physics.OverlapSphereNonAlloc(hitbox.bounds.center, hitbox.bounds.extents.magnitude, hitboxResults, projectileMask, QueryTriggerInteraction.Collide);
+            for (int y = 0; y < overlap; y++)
+            {
+                if (DamageHealthComponent(hitboxResults[y], Projectile.ProjectileColliders[x]))
                 {
-                    if (DamageHealthComponent(hitboxResults[i], Projectile.ProjectileColliders[x]))
-                    {
-                        validContact = true;
-                    }
+                    validContact = true;
                 }
             }
-            if (validContact) Projectile.DisableProjectile();
         }
+        if (validContact) Projectile.DisableProjectile();
     }
     public bool DamageHealthComponent(Collider hurtbox, Collider hitbox)
     {

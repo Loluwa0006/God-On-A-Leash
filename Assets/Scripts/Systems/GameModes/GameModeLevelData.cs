@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameModeLevelData", menuName = "Scriptable Objects/GameModeData/GameModeLevelData")]
+[CreateAssetMenu(fileName = "GameModeLevelData", menuName = "Scriptable Objects/GameModeData/LevelData")]
 public class GameModeLevelData : ScriptableObject
 {
 

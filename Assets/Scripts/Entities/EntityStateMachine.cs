@@ -11,8 +11,8 @@ public class EntityStateMachine : MonoBehaviour
     List<BaseState> statesWithInactiveProcess = new();
     List<BaseState> statesWithInactivePhysicsProcess = new();
 
-
-    private void Start()
+    bool initialized = false;
+    public void Initialize()
     {
         foreach (var state in transform.GetComponentsInChildren<BaseState>())
         {
@@ -23,10 +23,13 @@ public class EntityStateMachine : MonoBehaviour
         }
 
         if (currentState == null) currentState = stateLookup.ElementAt(0).Value;
+        initialized = true;
     }
+
 
     public void Process()
     {
+        if (!initialized) return;
         if (currentState != null) currentState.Process();
         foreach (var state in statesWithInactiveProcess)
         {
@@ -37,6 +40,7 @@ public class EntityStateMachine : MonoBehaviour
 
     public void PhysicsProcess()
     {
+        if (!initialized) return;
         if (currentState != null) currentState.PhysicsProcess();
         foreach (var state in statesWithInactivePhysicsProcess)
         {
@@ -47,6 +51,7 @@ public class EntityStateMachine : MonoBehaviour
 
     public void TransitionTo<T>(Dictionary<string, object> message = null) where T : BaseState
     {
+        if (!initialized) return;
         if (!stateLookup.ContainsKey(typeof(T)))
         {
             Debug.LogWarning("Could not find object of type " + typeof(T));
@@ -65,6 +70,7 @@ public class EntityStateMachine : MonoBehaviour
 
     public void TransitionTo(System.Type state, Dictionary<string, object> message = null)
     {
+        if (!initialized) return;
         if (!stateLookup.ContainsKey(state))
         {
             Debug.LogWarning("Could not find object of type " + state);
@@ -86,6 +92,7 @@ public class EntityStateMachine : MonoBehaviour
 
     public bool IsStateAvailable<T>() where T : BaseState
     {
+        if (!initialized) return false;
         if (!stateLookup.ContainsKey(typeof(T)))
         {
             return false;
@@ -95,6 +102,7 @@ public class EntityStateMachine : MonoBehaviour
 
     public bool IsStateAvailable(System.Type type)
     {
+        if (!initialized) return false;
         if (!stateLookup.ContainsKey(type))
         {
             return false;

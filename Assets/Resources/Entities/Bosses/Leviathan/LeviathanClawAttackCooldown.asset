@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LeviathanClawAttackCooldown
   m_EditorClassIdentifier: Assembly-CSharp::StatObject
   type: 0
-  floatValue: 7
+  floatValue: 420
   curveValue:
     serializedVersion: 2
     m_Curve: []
@@ -24,9 +24,5 @@ MonoBehaviour:
     jumpHeight: 0
     jumpTimeToPeak: 0
     jumpTimeToDecent: 0
-  jumpGravityID: 
-  fallGravityID: 
-  jumpVelocityID: 
   percentageValue: 0
-  statID: ClawAttackCooldown
   statValueType: 0

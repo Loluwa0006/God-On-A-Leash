@@ -39,6 +39,7 @@ public class PlayerController : BaseActor
 
     public override void Initialize()
     {
+        base.Initialize();
         _shipManager.InitializeShipManager();
         EntityManager.Instance.PlayerID = IDComponent.ID;
     }

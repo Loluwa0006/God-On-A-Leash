@@ -29,7 +29,7 @@ public class PlayerBaseState : BaseState
 
     public bool IsGrounded()
     {
-
+        if (Player == null) return false;
         var ray = new Ray(Player.Collider.bounds.center, Vector3.down);
         bool hit = Physics.SphereCast
             (

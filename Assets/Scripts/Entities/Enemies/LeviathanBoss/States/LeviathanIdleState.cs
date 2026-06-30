@@ -16,6 +16,13 @@ public class LeviathanIdleState : LeviathanBaseState
         idleDuration--;
         if (idleDuration <= 0)
         {
+
+            if (StateMachine.IsStateAvailable<LeviathanClawSlashState>())
+            {
+                StateMachine.TransitionTo<LeviathanClawSlashState>();
+                return;
+            }
+
             if (StateMachine.IsStateAvailable<LeviathanLargeBeamState>())
             {
                 StateMachine.TransitionTo<LeviathanLargeBeamState>();

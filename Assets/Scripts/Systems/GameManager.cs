@@ -6,5 +6,4 @@ public class GameManager : MonoBehaviour
     [SerializeField]  GameModeData selectedGameMode;
 
     [SerializeField] List<GameModeData> registryEntries = new();
-
 }

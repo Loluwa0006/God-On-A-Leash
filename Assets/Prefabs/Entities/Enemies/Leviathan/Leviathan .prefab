@@ -1,5 +1,59 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &760890116794579936
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 732949330743658921}
+  - component: {fileID: 208930320715830466}
+  m_Layer: 0
+  m_Name: LeviathanClawSlashState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &732949330743658921
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760890116794579936}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 373.45084, y: -209.99977, z: -2769.3855}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8699297847793595693}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &208930320715830466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760890116794579936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 783facadbefc49247b7d24bf7dc119aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LeviathanClawSlashState
+  hasInactiveProcess: 0
+  hasInactivePhysicsProcess: 1
+  projectilePoolSize: 3
+  firePoint: {fileID: 4123819682710680348}
+  projectilePrefab: {fileID: 3756745552118015287, guid: 0143556e9342d35479d2880060f2acc9, type: 3}
+  animationClip: {fileID: 7400000, guid: e192c68d44f3a1a44a9ec8a6fde250b6, type: 2}
+  attackSpeedStat: {fileID: 11400000, guid: 31093d5715ece80408a13a4eaf1b630b, type: 2}
+  cooldownStat: {fileID: 11400000, guid: 32da015e1e122e9428420c1a89b33a11, type: 2}
+  FireProjectileThisFrame: 0
+  ExitStateThisFrame: 0
 --- !u!1 &938986083315498909
 GameObject:
   m_ObjectHideFlags: 0
@@ -46,7 +100,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityStatsManager
   idComponent: {fileID: 4875276999051435110}
-  statsHolder: {fileID: 11400000, guid: d28dab91b4573f147b3a71cf821a6f66, type: 2}
+  managerInitialized:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4875276999051435110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,9 +239,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LeviathanLargeBeamState
   hasInactiveProcess: 0
   hasInactivePhysicsProcess: 1
+  projectilePoolSize: 3
   firePoint: {fileID: 4034809319597035185}
   projectilePrefab: {fileID: 3776733223040418089, guid: 9f85be4c28da19c41bf3c1d553fd7b86, type: 3}
-  FireProjectile: 0
+  animationClip: {fileID: 7400000, guid: bddac2cee7596d34889a4b13cede9460, type: 2}
+  attackSpeedStat: {fileID: 11400000, guid: 0548251ddc975994583e69e1d807dcde, type: 2}
+  cooldownStat: {fileID: 11400000, guid: b74c66579a759554dab82e6f23fc7325, type: 2}
+  FireProjectileThisFrame: 0
   ExitStateThisFrame: 0
 --- !u!1 &3000469249260179960
 GameObject:
@@ -621,6 +681,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 732949330743658921}
   - {fileID: 7320833414732098252}
   - {fileID: 4191133786806417984}
   - {fileID: 7298655232842654098}

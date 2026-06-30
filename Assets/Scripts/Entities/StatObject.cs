@@ -1,7 +1,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "StatObject", menuName = "Scriptable Objects/EntityStats/StatObject/BaseStat")]
+[CreateAssetMenu(fileName = "StatObject", menuName = "Scriptable Objects/EntityStats/StatObject")]
 public class StatObject : ScriptableObject
 {
     [SerializeField, HideIf(nameof(RequiresMultipleIDS))] StatInfluenceType type;
