@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 2107915774276091421}
   - component: {fileID: 4159197923790612166}
   m_Layer: 0
-  m_Name: SniperProjectile
+  m_Name: BeamHeadProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,8 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d94fc2858869ca49a4f7d501e9d68e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileVelocityModifier
-  moveAcceleration: 80
-  moveSpeed: 650
+  moveAcceleration: 120
+  moveSpeed: 700
   rotationOffset: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
 --- !u!114 &5185180999352317941
 MonoBehaviour:
@@ -176,7 +176,6 @@ MonoBehaviour:
     hitstunFrames: 40
     damageSource: 3
   blacklistedTargets: []
-  hitboxCollider: {fileID: 3809078192718183567}
   postContactLogic: 0
 --- !u!114 &6132837562483315780
 MonoBehaviour:
