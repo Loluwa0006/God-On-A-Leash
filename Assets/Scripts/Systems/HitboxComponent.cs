@@ -138,6 +138,7 @@ public class HitboxComponent : MonoBehaviour
     }
     void DamageEntity(HealthComponent healthComponent)
     {
+        Debug.Log($"Damaging {healthComponent.name} for {damageInfo.damage} damage");
         HitboxContactInfo collisionInfo = new()
         {
             DamageInfo = damageInfo,

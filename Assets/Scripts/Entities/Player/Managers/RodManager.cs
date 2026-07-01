@@ -48,6 +48,7 @@ public class RodManager : MonoBehaviour
     private void Start()
     {
         DisableGrapple();
+        RodLength = 0.0f;
     }
 
     public void StartSwing()

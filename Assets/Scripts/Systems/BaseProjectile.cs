@@ -90,7 +90,7 @@ public class BaseProjectile : BaseEntity
         Active = false;
         for (int i = 0; i < projectileModifiers.Length; i++)
         {
-            projectileModifiers[i].OnProjectileDestroyed();
+            projectileModifiers[i].OnProjectileDisabled();
         }
     }
 

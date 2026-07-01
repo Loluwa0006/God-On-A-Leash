@@ -26,7 +26,7 @@ public class BaseProjectileModifier : MonoBehaviour
 
     }
 
-    public virtual void OnProjectileDestroyed()
+    public virtual void OnProjectileDisabled()
     {
 
     }

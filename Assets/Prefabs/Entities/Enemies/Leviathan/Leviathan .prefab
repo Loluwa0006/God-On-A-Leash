@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &732949330743658921
 Transform:
   m_ObjectHideFlags: 0
@@ -209,7 +209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7298655232842654098
 Transform:
   m_ObjectHideFlags: 0
@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: 8777084460353524851}
   - component: {fileID: 5517931677935432954}
   - component: {fileID: 4381427509788488829}
+  - component: {fileID: 6815850605297540781}
   m_Layer: 11
   m_Name: Body
   m_TagString: Untagged
@@ -281,7 +282,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3852092763435960826}
   - {fileID: 4123819682710680348}
   m_Father: {fileID: 4808646506579364738}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1656
+  m_VersionIndex: 2073
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -605,6 +605,32 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &6815850605297540781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3000469249260179960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31ca389ec8596a04fad08e3874084fb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
+  maxHealth: 10
+  hurtbox: {fileID: 4381427509788488829}
+  entityKilled:
+    m_PersistentCalls:
+      m_Calls: []
+  entityDamaged:
+    m_PersistentCalls:
+      m_Calls: []
+  entityHealed:
+    m_PersistentCalls:
+      m_Calls: []
+  componentInitialized:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3924399821927561446
 GameObject:
   m_ObjectHideFlags: 0
@@ -621,7 +647,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7320833414732098252
 Transform:
   m_ObjectHideFlags: 0
@@ -732,73 +758,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4982664754953213363}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6616515079970662660
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5781380740604486109}
-  - component: {fileID: 4950946929351737115}
-  m_Layer: 11
-  m_Name: HeadFragment
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5781380740604486109
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6616515079970662660}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4982664754953213363}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4950946929351737115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6616515079970662660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31ca389ec8596a04fad08e3874084fb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
-  maxHealth: 3
-  hurtbox: {fileID: 7925681697848827762}
-  entityKilled:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8944272891537366377}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  entityDamaged:
-    m_PersistentCalls:
-      m_Calls: []
-  entityHealed:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7646166458516138389
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,7 +771,7 @@ GameObject:
   - component: {fileID: 5565508132613779478}
   - component: {fileID: 2874179799048637325}
   - component: {fileID: 4481165815280072193}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 'Leviathan '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -863,8 +822,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   healthFragments:
-  - {fileID: 2112288241649770410}
-  - {fileID: 4950946929351737115}
+  - {fileID: 6815850605297540781}
+  - {fileID: 4817133652208827666}
 --- !u!54 &5565508132613779478
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -927,61 +886,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &7772663471187113243
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3852092763435960826}
-  - component: {fileID: 2112288241649770410}
-  m_Layer: 11
-  m_Name: BodyFragment
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3852092763435960826
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7772663471187113243}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3263512797009083471}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2112288241649770410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7772663471187113243}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31ca389ec8596a04fad08e3874084fb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
-  maxHealth: 10
-  hurtbox: {fileID: 4381427509788488829}
-  entityKilled:
-    m_PersistentCalls:
-      m_Calls: []
-  entityDamaged:
-    m_PersistentCalls:
-      m_Calls: []
-  entityHealed:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7917219669734890884
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,6 +1014,7 @@ GameObject:
   - component: {fileID: 1165176533828250866}
   - component: {fileID: 5625509931061171410}
   - component: {fileID: 7925681697848827762}
+  - component: {fileID: 4817133652208827666}
   m_Layer: 11
   m_Name: 'Head '
   m_TagString: Untagged
@@ -1130,7 +1035,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5781380740604486109}
   - {fileID: 4034809319597035185}
   m_Father: {fileID: 4808646506579364738}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1346,7 +1250,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 670
+  m_VersionIndex: 1087
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1454,3 +1358,41 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &4817133652208827666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8944272891537366377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31ca389ec8596a04fad08e3874084fb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
+  maxHealth: 3
+  hurtbox: {fileID: 7925681697848827762}
+  entityKilled:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8944272891537366377}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  entityDamaged:
+    m_PersistentCalls:
+      m_Calls: []
+  entityHealed:
+    m_PersistentCalls:
+      m_Calls: []
+  componentInitialized:
+    m_PersistentCalls:
+      m_Calls: []

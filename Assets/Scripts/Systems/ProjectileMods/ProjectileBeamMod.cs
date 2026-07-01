@@ -64,9 +64,9 @@ public class ProjectileBeamMod : BaseProjectileModifier
         splineCollider.Bake(); 
     }
 
-    public override void OnProjectileDestroyed()
+    public override void OnProjectileDisabled()
     {
-        base.OnProjectileDestroyed();
+        base.OnProjectileDisabled();
         lineRenderer.enabled = false;
         splineCollider.ClearBakedSegments();
     }

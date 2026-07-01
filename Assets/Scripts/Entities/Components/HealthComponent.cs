@@ -2,30 +2,33 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 [System.Serializable]
 public class HealthComponent : MonoBehaviour
 {
-    [SerializeField] int maxHealth;
-    public int MaxHealth { get => maxHealth; protected set => maxHealth = value;}
+    [SerializeField] float maxHealth;
+    public float MaxHealth { get => maxHealth; protected set => maxHealth = value;}
 
     [SerializeField] Collider hurtbox;
 
     public Collider Hurtbox { get => hurtbox; }
 
-    int health;
+    float health;
 
-    public int Health {  get => health; protected set => health = Mathf.Clamp(value, 0, maxHealth); }
+    public float Health {  get => health; protected set => health = Mathf.Clamp(value, 0, maxHealth); }
 
     public UnityEvent entityKilled = new();
     public UnityEvent<HitboxContactInfo> entityDamaged = new();
-    public UnityEvent<int> entityHealed = new();
+    public UnityEvent<float> entityHealed = new();
+    public UnityEvent<HealthComponent> componentInitialized = new();
 
     protected Dictionary<StatusEffectID, StatusEffect> statusEffects = new();
 
     public void Start()
     {
         health = MaxHealth;
+        componentInitialized.Invoke(this);
     }
 
     public virtual void Damage(HitboxContactInfo info)
@@ -35,24 +38,28 @@ public class HealthComponent : MonoBehaviour
             info = status.Value.ProcessDamage(info);
         }
         var previousHealth = health;    
-        Health -= info.DamageInfo.damage;
-        if (Health == 0)
+        health -= info.DamageInfo.damage;
+        if (Health <= 0)
         {
             Kill();
             return;
         }
-         entityDamaged.Invoke(info);
+        Debug.Log(name + " took " + (previousHealth - Health) + " damage from " + info.DamageInfo.damageSource + " and now has " + Health + "Health");
+        entityDamaged.Invoke(info);
     }
 
-    public virtual void Heal(int amount)
+    public virtual void Heal(float amount)
     {
         foreach (var status in statusEffects)
         {
             amount = status.Value.Heal(amount);
         }
-        Health += amount;
+        health += amount;
+        if (Health > MaxHealth)
+        {
+            Health = MaxHealth;
+        }
         entityHealed.Invoke(amount);
-
     }
     public virtual void Kill()
     {
@@ -95,7 +102,7 @@ public abstract class StatusEffect
     public abstract void PhysicsProcess();
     public abstract HitboxContactInfo ProcessDamage(HitboxContactInfo info);
 
-    public abstract int Heal(int amount);
+    public abstract float Heal(float amount);
 
     protected void RequestDelete() => removeStatus.Invoke(ID);
 }
@@ -135,7 +142,7 @@ public class InvulnerabilityEffect : StatusEffect
         return info;
     }
 
-    public override int Heal(int amount)
+    public override float Heal(float amount)
     {
         return amount;
     }

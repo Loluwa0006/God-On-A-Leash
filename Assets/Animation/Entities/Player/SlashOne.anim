@@ -61,7 +61,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: HitboxActive
-    path: StateMachine/Slash
+    path: PlayerStateMachine/Slash
     classID: 114
     script: {fileID: 11500000, guid: 51c8292e105d9644abe68605b8366174, type: 3}
     flags: 0
@@ -74,7 +74,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 1171275334
+      path: 278915986
       attribute: 3223869392
       script: {fileID: 11500000, guid: 51c8292e105d9644abe68605b8366174, type: 3}
       typeID: 114
@@ -148,7 +148,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: HitboxActive
-    path: StateMachine/Slash
+    path: PlayerStateMachine/Slash
     classID: 114
     script: {fileID: 11500000, guid: 51c8292e105d9644abe68605b8366174, type: 3}
     flags: 0

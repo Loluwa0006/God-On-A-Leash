@@ -84,6 +84,7 @@ public class PlayerSlashState : PlayerAirState
             }
         }
         var lateralSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
+
         CalculateDamageInfo(
             (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinSlashDamage),
             (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxSlashDamage), 
