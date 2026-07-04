@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+
 public class LeviathanEntity : BaseEnemy
 {
 
@@ -25,6 +27,17 @@ public class LeviathanEntity : BaseEnemy
         parameterString = parameterString.Substring(parameterString.IndexOf("_") + 1);
         return parameterString;
     }
+
+    public override void OnEntityDamaged(HitboxContactInfo info)
+    {
+        if (info.DamageInfo.damage <= 0) return;
+        Dictionary<string, object> getHitStateMessage = new()
+        {
+            [PlayerGetHitState.PlayerGetHitMessage.ContactInfo.ToString()] = info
+        };
+        stateMachine.TransitionTo<PlayerGetHitState>(getHitStateMessage);
+    }
+
 
 
 }

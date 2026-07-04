@@ -8,6 +8,11 @@ public class BaseEnemy : BaseActor
 
     public List<HealthComponent> HealthFragments { get => healthFragments; }
 
+    public virtual void OnEntityDamaged(HitboxContactInfo info)
+    {
+
+    }
+
     public override void Initialize()
     {
         base.Initialize();
