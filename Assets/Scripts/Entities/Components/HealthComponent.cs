@@ -25,26 +25,32 @@ public class HealthComponent : MonoBehaviour
 
     protected Dictionary<StatusEffectID, StatusEffect> statusEffects = new();
 
+
     public void Start()
     {
         health = MaxHealth;
         componentInitialized.Invoke(this);
     }
 
+    void FixedUpdate()
+    {
+        foreach (var status in statusEffects.Values)
+        {
+            status.PhysicsProcess();
+        }
+    }
     public virtual void Damage(HitboxContactInfo info)
     {
-        foreach (var status in statusEffects)
+        foreach (var status in statusEffects.Values)
         {
-            info = status.Value.ProcessDamage(info);
+            info = status.ProcessDamage(info);
         }
-        var previousHealth = health;    
         health -= info.DamageInfo.damage;
         if (Health <= 0)
         {
             Kill();
             return;
         }
-        Debug.Log(name + " took " + (previousHealth - Health) + " damage from " + info.DamageInfo.damageSource + " and now has " + Health + "Health");
         entityDamaged.Invoke(info);
     }
 
@@ -153,4 +159,5 @@ public enum StatusEffectID
 {
     PlayerGethitInvulnerability,
     ParryProjectileInvulnerability,
+    WormPlayerSlashInvulnerability,
 }  
