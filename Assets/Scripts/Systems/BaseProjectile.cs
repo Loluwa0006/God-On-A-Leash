@@ -42,7 +42,7 @@ public class BaseProjectile : BaseEntity
 
     void OrderModifiersByPriority()
     {
-        Array.Sort(projectileModifiers, (a, b) => a.priority.CompareTo(b.priority));
+        Array.Sort(projectileModifiers, (a, b) => a.Priority.CompareTo(b.Priority));
     }
 
     public override void PhysicsProcess()

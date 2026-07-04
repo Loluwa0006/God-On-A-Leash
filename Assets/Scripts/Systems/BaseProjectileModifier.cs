@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class BaseProjectileModifier : MonoBehaviour
 {
-    public readonly short priority;
+   [SerializeField] int priority;
+
+    public int Priority { get => priority; private set => priority = value; }
     public BaseProjectile Projectile { get; set; } 
     public virtual void InitializeModifier(BaseProjectile owner)
     {
