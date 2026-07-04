@@ -69,7 +69,7 @@ public class PlayerDragonslashState : PlayerBaseState
         //no automatic state transitions
     }
 
-    public void OnHitboxDeactivation(List<HealthComponent> victims)
+    public void OnHitboxDeactivation(HashSet<HealthComponent> victims)
     {
         for (int i = 0; i < victims.Count; i++)
         {

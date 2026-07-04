@@ -41,23 +41,11 @@ public class PlayerThrowWormState : PlayerAirState
     void FireWorm(WormEntity worm, int cost)
     {
         var cameraRay = viewCamera.ScreenPointToRay(new Vector2(Screen.width / 2.0f, Screen.height / 2.0f));
-        float wormThrowRange = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormThrowRange);
-        var raycast = Physics.Raycast(cameraRay, out var hitInfo, wormThrowRange, terrainMask, QueryTriggerInteraction.Collide);
-        Vector3 wormTarget;
-        if (raycast)
-        {
-            wormTarget = hitInfo.point;
-        }
-        else
-        {
-            wormTarget = cameraRay.GetPoint(wormThrowRange);
-        }
-        worm.Fire(wormTarget, Player.transform.position, Player.RigidBody.linearVelocity);
+        worm.Fire(cameraRay.direction, Player.transform.position, Player.RigidBody.linearVelocity);
         Player.WormManager.WormsRemaining -= cost;
     }
     public override void PhysicsProcess()
     {
-
         base.PhysicsProcess();
         if (Player.RigidBody.linearVelocity.y > 0)
         {

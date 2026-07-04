@@ -93,9 +93,9 @@ public class PlayerSlashState : PlayerAirState
             );
     }
 
-    public virtual void OnHitboxDeactivation(List<HealthComponent> victims)
+    public virtual void OnHitboxDeactivation(HashSet<HealthComponent> victims)
     {
-        for (int i = 0; i < victims.Count; i++)
+        foreach (var victim in victims)
         {
             Player.AnarchyManager.GenerateAnarchyUnscaled(UnscaledGenerationMethod.Slash);
         }

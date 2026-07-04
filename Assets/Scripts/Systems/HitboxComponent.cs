@@ -44,13 +44,13 @@ public class HitboxComponent : MonoBehaviour
     [SerializeField] HitboxDrawMode hitboxDrawMode = HitboxDrawMode.NoDraw;
 
     Collider[] struckTargets = new Collider[MAX_CONTACTS_PER_FRAME];
-    List<HealthComponent> previousTargets = new();
+    HashSet<HealthComponent> previousTargets = new();
 
 
     bool isBoxCollider;
     bool wasActive;
 
-    public Action<List<HealthComponent>> targetsStruck;
+    public Action<HashSet<HealthComponent>> targetsStruck;
     [HideInInspector] public bool HitboxActive = false;
     private void Start()
     {   
@@ -138,12 +138,12 @@ public class HitboxComponent : MonoBehaviour
     }
     void DamageEntity(HealthComponent healthComponent)
     {
-        Debug.Log($"Damaging {healthComponent.name} for {damageInfo.damage} damage");
         HitboxContactInfo collisionInfo = new()
         {
             DamageInfo = damageInfo,
             collisionPoint = hitboxCollider.bounds.ClosestPoint(healthComponent.Hurtbox.bounds.center),
             hurtbox = healthComponent.Hurtbox,
+            
         };
         healthComponent.Damage(collisionInfo);
         previousTargets.Add(healthComponent);
