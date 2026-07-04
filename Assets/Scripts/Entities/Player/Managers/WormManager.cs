@@ -44,6 +44,8 @@ public class WormManager : MonoBehaviour
         for (int i = 0; i < WormsRemaining; i++)
         {
             WormEntity newWorm = Instantiate(wormPrefab);
+            newWorm.Initialize();
+            EntityManager.Instance.RegisterEntity(newWorm);
             newWorm.Deactivate();
             wormPool.Enqueue(newWorm);
         }
@@ -51,6 +53,8 @@ public class WormManager : MonoBehaviour
         for (int i = 0; i < WormsRemaining; i++)
         {
             WormEntity newWorm = Instantiate(wormRailPrefab);
+            newWorm.Initialize();
+            EntityManager.Instance.RegisterEntity(newWorm);
             newWorm.Deactivate();
             wormRailPool.Enqueue(newWorm);
         }

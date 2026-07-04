@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 9062560815971836277}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 55.02055, y: 0, z: 13.22533}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -156,6 +156,9 @@ MonoBehaviour:
   entityHealed:
     m_PersistentCalls:
       m_Calls: []
+  componentInitialized:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &3715990513730362764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -166,19 +169,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b6af67e2b4ffdf846b6d8653a7b5f734, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b6af67e2b4ffdf846b6d8653a7b5f734, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b6af67e2b4ffdf846b6d8653a7b5f734, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b6af67e2b4ffdf846b6d8653a7b5f734, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.8127403
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b6af67e2b4ffdf846b6d8653a7b5f734, type: 3}
       propertyPath: m_LocalPosition.y
@@ -186,7 +189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b6af67e2b4ffdf846b6d8653a7b5f734, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.114370346
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b6af67e2b4ffdf846b6d8653a7b5f734, type: 3}
       propertyPath: m_LocalRotation.w
@@ -226,7 +229,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 2bbe992221386a24ea37f817ad589eb4, type: 2}
     - target: {fileID: 919132149155446097, guid: b6af67e2b4ffdf846b6d8653a7b5f734, type: 3}
       propertyPath: m_Name
-      value: Worm
+      value: Model
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
