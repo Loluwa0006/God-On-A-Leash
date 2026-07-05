@@ -2,12 +2,7 @@ using UnityEngine;
 
 public class WormEntity : BaseEntity
 {
-    [Header("Worm Settings")]
-    [SerializeField] int gravityFreeTime = 7 * 60;
-    [SerializeField] float flySpeed = 60.0f;
-    [SerializeField] float gravity = 8.0f;
-    [SerializeField] float maxFallSpeed = 30.0f;
-    [SerializeField] int hitsBeforeDeactivation = 2;
+    public EntityStatsManager StatsManager { get; set; }
 
     [Header("References")]
     [SerializeField] GameObject model;
@@ -20,7 +15,7 @@ public class WormEntity : BaseEntity
     public Rigidbody Rigidbody { get => rigidBody; }
     int remainingHitsBeforeDeactivation = 2;
 
-    public override void Initialize()
+    public void Initialize(EntityStatsManager statsManager)
     {
         base.Initialize();
         InvulnerabilityEffect invulnerabilityEffect = new(StatusEffectID.WormPlayerSlashInvulnerability, DamageSource.PlayerSlash, InvulnerabilityEffect.INFINITE_DURATION_VALUE);
@@ -29,18 +24,18 @@ public class WormEntity : BaseEntity
     public void Fire(Vector3 direction, Vector3 startingLocation, Vector3 ownerVelocity)
     {
         rigidBody.isKinematic = false;
-        gravityTracker = gravityFreeTime;
+        gravityTracker = (int) StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormGravityFreeTime);
         rigidBody.Move(startingLocation, Quaternion.LookRotation(direction));
         direction = direction.normalized;
         float velocityToInheritFromOwner = Vector3.Dot(direction, ownerVelocity.normalized);
 
-        rigidBody.linearVelocity = direction * flySpeed + ownerVelocity * velocityToInheritFromOwner;
+        rigidBody.linearVelocity = direction * StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormFlySpeed) + ownerVelocity * velocityToInheritFromOwner;
 
         wormActive = true;
         model.SetActive(true);
         if (swingbox != null) swingbox.enabled = true;
 
-        remainingHitsBeforeDeactivation = hitsBeforeDeactivation;
+        remainingHitsBeforeDeactivation = (int) StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormHitsBeforeDeactivation);
     }
 
     public void Deactivate()
@@ -59,7 +54,6 @@ public class WormEntity : BaseEntity
 
     public void OnHurtboxStruck(HitboxContactInfo contactInfo)
     {
-        Debug.Log("Worm hit by " + contactInfo.DamageInfo.damageSource);
         if (contactInfo.DamageInfo.damageSource == DamageSource.PlayerSlash)
         {
             remainingHitsBeforeDeactivation--;
@@ -68,7 +62,6 @@ public class WormEntity : BaseEntity
                 Deactivate();
                 return;
             }
-            Debug.Log("Worm hit by player slash");
             var directionAwayFromContactPoint = (transform.position - contactInfo.collisionPoint).normalized;
             var startingLocation = transform.position;
             var ownerVelocity =  directionAwayFromContactPoint * contactInfo.DamageInfo.horizontalKnockback;
@@ -83,8 +76,8 @@ public class WormEntity : BaseEntity
         if (gravityTracker == 0)
         {
 
-            var gravityForce = gravity;
-            float differenceBetweenCurrentSpeedAndMaxFallSpeed = Mathf.Abs(rigidBody.linearVelocity.y - maxFallSpeed);
+            var gravityForce = StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormGravity);
+            float differenceBetweenCurrentSpeedAndMaxFallSpeed = Mathf.Abs(rigidBody.linearVelocity.y - StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormMaxFallSpeed));
             if (differenceBetweenCurrentSpeedAndMaxFallSpeed < gravityForce)
             {
                 gravityForce = differenceBetweenCurrentSpeedAndMaxFallSpeed;

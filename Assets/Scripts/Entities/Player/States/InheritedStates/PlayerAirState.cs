@@ -33,7 +33,7 @@ public class PlayerAirState : PlayerBaseState
             //normalize the turn angle so we can sample it later
             float value01 = Mathf.InverseLerp(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerAngleToBeConsideredTurning) + 0.001f, 180, currentTurnAngle);
             //map the loss to a curve for more control
-            float scaler = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.TurnAngleSpeedLostCurve, 0, value01);
+            float scaler = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerTurnAngleSpeedLostCurve, 0, value01);
             lateralAddition *= scaler;
 		}
 

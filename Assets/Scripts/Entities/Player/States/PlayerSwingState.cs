@@ -49,7 +49,7 @@ public class PlayerSwingState : PlayerAirState
         base.PhysicsProcess();
         float gravity;
         if (Player.RigidBody.linearVelocity.y > 0) gravity = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.SwingJumpInfo, JumpInfo.JUMP_GRAVITY_ID);
-        else gravity = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormJumpInfo, JumpInfo.FALL_GRAVITY_ID);
+        else gravity = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormJumpInfo, JumpInfo.FALL_GRAVITY_ID);
         if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Jump].Buffered)
         {
             PerformSwingJump();

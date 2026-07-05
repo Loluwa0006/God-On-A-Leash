@@ -40,14 +40,21 @@ public class PlayerStats
     public StatObject PlayerAirAcceleration;
     public StatObject PlayerMaxFallSpeed;
     public StatObject PlayerAngleToBeConsideredTurning;
-    public StatObject TurnAngleSpeedLostCurve;
+    public StatObject PlayerTurnAngleSpeedLostCurve;
 
     [Header("Worms")]
-    public StatObject MaxWorms;
-    public StatObject WormsRequiredForRail;
-    public StatObject WormThrowRange;
-    public StatObject WormThrowDuration;
-    public StatObject WormJumpInfo;
+    public StatObject PlayerMaxWorms;
+    public StatObject PlayerWormsRequiredForRail;
+    public StatObject PlayerWormThrowRange;
+    public StatObject PlayerWormThrowDuration;
+    public StatObject PlayerWormJumpInfo;
+
+    public StatObject PlayerWormGravityFreeTime;
+    public StatObject PlayerWormFlySpeed;
+    public StatObject PlayerWormGravity;
+    public StatObject PlayerWormMaxFallSpeed;
+    public StatObject PlayerWormHitsBeforeDeactivation;
+
     [Header("Rod")]
     public StatObject PlayerMaxRodRange;
     public StatObject PlayerRodSwingMassScale;
@@ -116,6 +123,7 @@ public class PlayerStats
     public StatObject PlayerJustYawnAnarchyProgress;
     public StatObject PlayerYawnAnarchyProgress;
     public StatObject PlayerRodRetractionSpeedWhileYawning;
+
 
     [Header("GetHit")]
     public StatObject ExtraInvulnerabilityFramesAfterHit;

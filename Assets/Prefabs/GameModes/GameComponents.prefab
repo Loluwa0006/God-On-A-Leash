@@ -129,12 +129,17 @@ MonoBehaviour:
     PlayerAirAcceleration: {fileID: 11400000, guid: f1506030b3b7a4141a9b88d193a09931, type: 2}
     PlayerMaxFallSpeed: {fileID: 11400000, guid: fe9525db73fc08f48a02cdc92a88aca0, type: 2}
     PlayerAngleToBeConsideredTurning: {fileID: 11400000, guid: e410efc1760e8054db2aa5602cb16015, type: 2}
-    TurnAngleSpeedLostCurve: {fileID: 11400000, guid: a936dc2ee87073f4fa58f9930a58118f, type: 2}
-    MaxWorms: {fileID: 11400000, guid: a67cce4623932c945a4afeaeec5e41ae, type: 2}
-    WormsRequiredForRail: {fileID: 11400000, guid: bc65493fcd642d04091cab1855004adc, type: 2}
-    WormThrowRange: {fileID: 11400000, guid: b0f827fb20bd1de4ea704727d0e876c9, type: 2}
-    WormThrowDuration: {fileID: 11400000, guid: 1157e4c8ad5c9054d92c4a79766e219a, type: 2}
-    WormJumpInfo: {fileID: 11400000, guid: b68f096716dfcb6468e89fcee8ac7148, type: 2}
+    PlayerTurnAngleSpeedLostCurve: {fileID: 11400000, guid: a936dc2ee87073f4fa58f9930a58118f, type: 2}
+    PlayerMaxWorms: {fileID: 11400000, guid: a67cce4623932c945a4afeaeec5e41ae, type: 2}
+    PlayerWormsRequiredForRail: {fileID: 11400000, guid: bc65493fcd642d04091cab1855004adc, type: 2}
+    PlayerWormThrowRange: {fileID: 11400000, guid: b0f827fb20bd1de4ea704727d0e876c9, type: 2}
+    PlayerWormThrowDuration: {fileID: 11400000, guid: 1157e4c8ad5c9054d92c4a79766e219a, type: 2}
+    PlayerWormJumpInfo: {fileID: 11400000, guid: b68f096716dfcb6468e89fcee8ac7148, type: 2}
+    PlayerWormGravityFreeTime: {fileID: 11400000, guid: cee5256133c0f894b957d69b1a10b8cd, type: 2}
+    PlayerWormFlySpeed: {fileID: 11400000, guid: 6308b0aa0aeeda348a6cd45bd8d89ba6, type: 2}
+    PlayerWormGravity: {fileID: 11400000, guid: 07e05c25899f53745a26fa7f32802b64, type: 2}
+    PlayerWormMaxFallSpeed: {fileID: 11400000, guid: daca0767a8f6e3e488275adc1e0da0cf, type: 2}
+    PlayerWormHitsBeforeDeactivation: {fileID: 11400000, guid: 3db489a14d7f3574c8e899da1e3f4de9, type: 2}
     PlayerMaxRodRange: {fileID: 11400000, guid: d64d0867f4d8013498fbfd2fad1023fc, type: 2}
     PlayerRodSwingMassScale: {fileID: 11400000, guid: 0e8c450091d8dbf4fb99ecd8aa29f276, type: 2}
     PlayerRodSpring: {fileID: 11400000, guid: dfc80ec599802474881487f6bee6e363, type: 2}

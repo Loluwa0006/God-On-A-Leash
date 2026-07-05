@@ -18,7 +18,7 @@ public class WormManager : MonoBehaviour
         set
         {
             wormsRemaining =
-            Mathf.Clamp(value, 0, player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.MaxWorms));
+            Mathf.Clamp(value, 0, player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxWorms));
             if (wormDisplay != null) wormDisplay.text = wormsRemaining.ToString();
         }
     }
@@ -30,7 +30,7 @@ public class WormManager : MonoBehaviour
 
     public void InitializeManager()
     {
-        wormsRemaining = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.MaxWorms);
+        wormsRemaining = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxWorms);
         foreach (var worm in wormPool)
         {
             Destroy(worm.gameObject);
@@ -44,7 +44,7 @@ public class WormManager : MonoBehaviour
         for (int i = 0; i < WormsRemaining; i++)
         {
             WormEntity newWorm = Instantiate(wormPrefab);
-            newWorm.Initialize();
+            newWorm.Initialize(player.StatsManager);
             EntityManager.Instance.RegisterEntity(newWorm);
             newWorm.Deactivate();
             wormPool.Enqueue(newWorm);
@@ -53,7 +53,7 @@ public class WormManager : MonoBehaviour
         for (int i = 0; i < WormsRemaining; i++)
         {
             WormEntity newWorm = Instantiate(wormRailPrefab);
-            newWorm.Initialize();
+            newWorm.Initialize(player.StatsManager);
             EntityManager.Instance.RegisterEntity(newWorm);
             newWorm.Deactivate();
             wormRailPool.Enqueue(newWorm);

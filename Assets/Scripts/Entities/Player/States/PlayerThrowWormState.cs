@@ -22,13 +22,13 @@ public class PlayerThrowWormState : PlayerAirState
     {
         base.Enter(message);
         Vector3 newSpeed = Player.RigidBody.linearVelocity;
-        float wormJumpPower = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormJumpInfo);
+        float wormJumpPower = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormJumpInfo);
         newSpeed.y = Mathf.Max(newSpeed.y + wormJumpPower, wormJumpPower);
         Player.RigidBody.linearVelocity = newSpeed;
-        durationTracker = (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormThrowDuration);
-        if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered && Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormsRequiredForRail))
+        durationTracker = (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormThrowDuration);
+        if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered && Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail))
         {
-            FireWorm(Player.WormManager.GetNewWormRail(), cost: (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormsRequiredForRail));
+            FireWorm(Player.WormManager.GetNewWormRail(), cost: (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail));
         }
         else
         {
@@ -49,11 +49,11 @@ public class PlayerThrowWormState : PlayerAirState
         base.PhysicsProcess();
         if (Player.RigidBody.linearVelocity.y > 0)
         {
-            ApplyGravity(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormJumpInfo, JumpInfo.JUMP_GRAVITY_ID));
+            ApplyGravity(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormJumpInfo, JumpInfo.JUMP_GRAVITY_ID));
         }
         else
         {
-            ApplyGravity(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.WormJumpInfo, JumpInfo.FALL_GRAVITY_ID));
+            ApplyGravity(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormJumpInfo, JumpInfo.FALL_GRAVITY_ID));
         }
         AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerAirAcceleration));
         durationTracker--;

@@ -622,6 +622,7 @@ GameObject:
   - component: {fileID: 3284161404662106299}
   - component: {fileID: 8384797137715504468}
   - component: {fileID: 9152848233620166953}
+  - component: {fileID: 6281147105245565068}
   m_Layer: 15
   m_Name: ClawSlashProjectile
   m_TagString: Untagged
@@ -719,6 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a918ec58ad2017e4f91ea8ebc4fe0950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileContactModifier
+  priority: 0
   projectileMask:
     serializedVersion: 2
     m_Bits: 2048
@@ -742,9 +744,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d94fc2858869ca49a4f7d501e9d68e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileVelocityModifier
+  priority: 100
   moveAcceleration: 8
   moveSpeed: 120
   rotationOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6281147105245565068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6442050322951871676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43c8ca7e2aefeb84090e8bacbda7b1e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileHomingModifier
+  priority: 0
+  homingPower: 8
+  hasMaxDistanceForHoming: 0
+  maxDistanceForHoming: 1500
+  invertHoming: 0
+  homingTargetOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &6614102833908824368
 GameObject:
   m_ObjectHideFlags: 0
