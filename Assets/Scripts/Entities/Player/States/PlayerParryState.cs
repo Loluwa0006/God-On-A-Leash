@@ -5,10 +5,13 @@ using UnityEngine;
 public class PlayerParryState : PlayerAirState
 {
 
+    public const float PARRY_TERRAIN_RAYCAST_SAFE_MARGIN = 3f;
+    // Saved as a const not a float because this is a technical problem not a design one.
+    //if you were moving slower then this, then you might have not been moving at all.
+    public const float MINIMUM_SPEED_FOR_PARRY = 0.1f;
+
     [SerializeField] LayerMask parryMask;
     int durationTracker = 0;
-
-    float startingSpeed = 0.0f;
 
     RaycastHit parryRaycast;
 
@@ -20,11 +23,22 @@ public class PlayerParryState : PlayerAirState
          typeof(PlayerShadowstepState),   
         };
     }
+
+    public struct ParryData
+    {
+        public Vector3 previousSpeed;
+        public Vector3 previousLocation;
+        public ParryData(Vector3 previousSpeed, Vector3 previousLocation)
+        {
+            this.previousSpeed = previousSpeed;
+            this.previousLocation = previousLocation;
+        }
+    }
+
+    ParryData parryData;
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
-        startingSpeed = Player.RigidBody.linearVelocity.magnitude;
-        Player.entityCollision.AddListener(OnPlayerCollision);
         durationTracker = 0;
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Parry].Consume();
 
@@ -57,48 +71,48 @@ public class PlayerParryState : PlayerAirState
         {
             StateMachine.TransitionTo<PlayerFallState>();
         }
-        if (AttemptParry())
+        if (ParryPossible())
         {
             PerformParry(Player.PlayerInput.GetMovementDirection(), parryRaycast.normal);
             StateMachine.TransitionTo<PlayerFallState>();
             return;
         }
+        parryData = new ParryData(Player.RigidBody.linearVelocity, Player.RigidBody.position);
     }
 
-    bool AttemptParry()
+    bool ParryPossible()
     {
-        float shapecastSize = Mathf.Lerp(1.0f, 1.0f + Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.RodLengthAdditionalParrySize), Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxRodRange));
-        var shapecast = Physics.BoxCast(Player.Collider.bounds.center, Player.Collider.bounds.extents, Player.RigidBody.linearVelocity.normalized,  out RaycastHit hitinfo, Player.Collider.transform.rotation, shapecastSize, parryMask);
-        if (shapecast)
-        {
-            parryRaycast = hitinfo;
-        }
-        return shapecast;
+        if (parryData.previousSpeed.magnitude <= MINIMUM_SPEED_FOR_PARRY) return false;
+        var ray = new Ray(parryData.previousLocation, Player.RigidBody.position - parryData.previousLocation);
+        float maxBonusParryRange = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.RodLengthAdditionalParrySize);
+        //lerp unclamped so you get the bonus of a rod length stat boost even if you have a rod that is longer than the max length of the rod.
+        float bonusParryRange = Mathf.LerpUnclamped(0, maxBonusParryRange, Player.RodManager.RodLengthPercentage);
+        // needs to extend past the collider otherwise it will never hit anything due to the origin being the center of the collider in the previous frame.
+        bonusParryRange += Player.Collider.bounds.size.magnitude;
+        bool collision = Physics.Raycast(ray, out parryRaycast, (Player.RigidBody.position - parryData.previousLocation).magnitude + PARRY_TERRAIN_RAYCAST_SAFE_MARGIN + bonusParryRange, parryMask, QueryTriggerInteraction.Ignore);
+        return collision;
     }
-    void OnPlayerCollision(Collision collision)
-    {
-        //PerformParry(Player.PlayerInput.GetMovementDirection(), collision.GetContact(0).normal);
-    }
-  
+
+   
     void PerformParry(Vector3 movementDirection, Vector3 normal)
     {
-        float bounceVelocity = startingSpeed + (startingSpeed * Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ParrySpeedIncrease));
+        float previousSpeed = parryData.previousSpeed.magnitude;
+        Vector3 previousDirection = parryData.previousSpeed.normalized;
+        float bounceVelocity = previousSpeed + (previousSpeed * Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ParrySpeedIncrease));
         if (durationTracker > Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ProperParryDuration))
         {
             bounceVelocity *= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PartialParrySpeedPenalty);
         }
-        Vector3 velocityReflected = Vector3.Reflect(Player.RigidBody.linearVelocity.normalized, normal).normalized;
+        Vector3 velocityReflected = Vector3.Reflect(previousDirection, normal).normalized;
         Vector3 movementAccountedForRotation = movementDirection.x * viewCamera.transform.right + movementDirection.y * viewCamera.transform.forward;
         Vector3 velocityRotated = Vector3.Lerp(velocityReflected, movementAccountedForRotation.normalized, Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ParryBounceControl));
 
         Player.RigidBody.linearVelocity = velocityRotated * bounceVelocity;
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Parry);
-
     }
     public override void Exit()
     {
         base.Exit();
-        Player.entityCollision.RemoveListener(OnPlayerCollision);
         Player.HealthComponent.RemoveStatusEffect(StatusEffectID.ParryProjectileInvulnerability);
     }
     public override bool StateAvailable()

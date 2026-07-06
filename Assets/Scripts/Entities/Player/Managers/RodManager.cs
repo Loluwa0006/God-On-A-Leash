@@ -45,6 +45,10 @@ public class RodManager : MonoBehaviour
         get => rodLength;
     } 
 
+    public float RodLengthPercentage
+    {
+        get => RodLength / player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxRodRange);
+    }
     private void Start()
     {
         DisableGrapple();
