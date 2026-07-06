@@ -20,7 +20,9 @@ public class WormEntity : BaseEntity
         base.Initialize();
         InvulnerabilityEffect invulnerabilityEffect = new(StatusEffectID.WormPlayerSlashInvulnerability, DamageSource.PlayerSlash, InvulnerabilityEffect.INFINITE_DURATION_VALUE);
         healthComponent.AddStatusEffect(invulnerabilityEffect);
+        StatsManager = statsManager;
     }
+
     public void Fire(Vector3 direction, Vector3 startingLocation, Vector3 ownerVelocity)
     {
         rigidBody.isKinematic = false;

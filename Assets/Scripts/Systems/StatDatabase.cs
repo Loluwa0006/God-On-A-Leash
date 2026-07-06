@@ -22,10 +22,10 @@ public class StatDatabase : MonoBehaviour
         }
     }
 
-        public StatObject[] GetAllStatObjects()
-        {
-            return Resources.LoadAll<StatObject>("Entities");
-        }
+    public StatObject[] GetAllStatObjects()
+    {
+        return Resources.LoadAll<StatObject>("Entities");
+    }
 }
 [System.Serializable]
 public class PlayerStats
