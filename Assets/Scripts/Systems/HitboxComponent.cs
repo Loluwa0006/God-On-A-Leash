@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -150,13 +151,35 @@ public class HitboxComponent : MonoBehaviour
     }
 }
 [System.Serializable]
-public struct DamageInfo
+public class DamageInfo
 {
     public int damage;
-    public float horizontalKnockback;
-    public float verticalKnockback;
     public int hitstunFrames;
+    /// <summary>
+    /// For knockback that's determined designer side so attacks can have a specific knockback direction. 
+    /// </summary>
+    [SerializeField, HideIf(nameof(RequiresKnockbackPower))] public Vector3 knockbackVector;
+    /// <summary>
+    /// For knockback that's determined programmatically by the collision point and the center of the hurtbox. 
+    /// </summary>
+    [SerializeField, ShowIf(nameof(RequiresKnockbackPower))] public float knockbackPower;
     public DamageSource damageSource;
+    //if true, the knockback direction will be determined by the vector from the collision point to the center of the hurtbox. If false, the knockback direction will be determined by the knockbackVector in DamageInfo.
+    public bool useCollisionPointToDetermineKnockbackDirection;
+
+    public bool RequiresKnockbackPower() => useCollisionPointToDetermineKnockbackDirection;
+
+    public Vector3 GetKnockbackVector(Vector3 collisionPoint, Vector3 hurtboxCenter)
+    {
+        if (useCollisionPointToDetermineKnockbackDirection)
+        {
+            return (hurtboxCenter - collisionPoint).normalized * knockbackPower;
+        }
+        else
+        {
+            return knockbackVector;
+        }
+    }
 }
 
 public struct HitboxContactInfo

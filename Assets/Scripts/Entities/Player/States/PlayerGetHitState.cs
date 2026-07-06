@@ -41,10 +41,7 @@ public class PlayerGetHitState : PlayerAirState
     }
     void ApplyAttackKnockback()
     {
-        Vector3 knockbackDirection = (contactInfo.hurtbox.bounds.center - contactInfo.collisionPoint).normalized;
-        Vector3 knockbackForce = knockbackDirection * contactInfo.DamageInfo.horizontalKnockback;
-        knockbackForce.y = contactInfo.DamageInfo.verticalKnockback;
-        Player.RigidBody.linearVelocity = knockbackForce;
+       Player.RigidBody.linearVelocity = contactInfo.DamageInfo.GetKnockbackVector(contactInfo.collisionPoint, contactInfo.hurtbox.bounds.center);
     }
     public override void PhysicsProcess()
     {

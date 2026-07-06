@@ -105,7 +105,8 @@ public class PlayerSlashState : PlayerAirState
     {
         var info = slashHitbox.DamageInfo;
         info.damage = Mathf.RoundToInt(Mathf.Lerp(minDamage, maxDamage, speedSampled));
-        info.horizontalKnockback = lateralSpeed;
+        info.knockbackPower = lateralSpeed;
+        info.knockbackVector = Player.RigidBody.linearVelocity.normalized;
         slashHitbox.DamageInfo = info;
 
     }

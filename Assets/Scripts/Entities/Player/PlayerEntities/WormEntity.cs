@@ -23,13 +23,14 @@ public class WormEntity : BaseEntity
         StatsManager = statsManager;
     }
 
-    public void Fire(Vector3 direction, Vector3 startingLocation, Vector3 ownerVelocity)
+    public void Fire(Vector3 direction, Vector3 startingLocation, Vector3 ownerVelocity, bool refired = false)
     {
         rigidBody.isKinematic = false;
         gravityTracker = (int) StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormGravityFreeTime);
         rigidBody.Move(startingLocation, Quaternion.LookRotation(direction));
         direction = direction.normalized;
-        float velocityToInheritFromOwner = Vector3.Dot(direction, ownerVelocity.normalized);
+        //Change the range from -1,1 to 0,1 because the worm should never move slower then fire direction
+        float velocityToInheritFromOwner = (Vector3.Dot(direction, ownerVelocity.normalized) + 1) / 2.0f;
 
         rigidBody.linearVelocity = direction * StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormFlySpeed) + ownerVelocity * velocityToInheritFromOwner;
 
@@ -37,7 +38,7 @@ public class WormEntity : BaseEntity
         model.SetActive(true);
         if (swingbox != null) swingbox.enabled = true;
 
-        remainingHitsBeforeDeactivation = (int) StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormHitsBeforeDeactivation);
+        if (!refired) remainingHitsBeforeDeactivation = (int) StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormHitsBeforeDeactivation);
     }
 
     public void Deactivate()
@@ -58,16 +59,18 @@ public class WormEntity : BaseEntity
     {
         if (contactInfo.DamageInfo.damageSource == DamageSource.PlayerSlash)
         {
-            remainingHitsBeforeDeactivation--;
             if (remainingHitsBeforeDeactivation <= 0)
             {
                 Deactivate();
                 return;
             }
-            var directionAwayFromContactPoint = (transform.position - contactInfo.collisionPoint).normalized;
-            var startingLocation = transform.position;
-            var ownerVelocity =  directionAwayFromContactPoint * contactInfo.DamageInfo.horizontalKnockback;
-            Fire(directionAwayFromContactPoint, startingLocation, ownerVelocity);
+            remainingHitsBeforeDeactivation--;
+
+            var startingLocation = rigidBody.position;
+            var knockbackDirection = contactInfo.DamageInfo.knockbackVector.normalized;
+            //knockback power is determined by owner velocity, we multiply by direction to make it a vector for the fire function.
+            var ownerVelocity = contactInfo.DamageInfo.knockbackPower * knockbackDirection;
+            Fire(knockbackDirection, startingLocation, ownerVelocity, refired: true);
             
         }
     }

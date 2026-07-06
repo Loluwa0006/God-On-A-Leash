@@ -34,10 +34,7 @@ public class LeviathanGetHitState : LeviathanBaseState
 
     void ApplyAttackKnockback()
     {
-        Vector3 knockbackDirection = (contactInfo.hurtbox.bounds.center - contactInfo.collisionPoint).normalized;
-        Vector3 knockbackForce = knockbackDirection * contactInfo.DamageInfo.horizontalKnockback;
-        knockbackForce.y = contactInfo.DamageInfo.verticalKnockback;
-        Leviathan.RigidBody.linearVelocity = knockbackForce;
+        Leviathan.RigidBody.linearVelocity = contactInfo.DamageInfo.GetKnockbackVector(contactInfo.collisionPoint, contactInfo.hurtbox.bounds.center);
     }
     public override void PhysicsProcess()
     {
