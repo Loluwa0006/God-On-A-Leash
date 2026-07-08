@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerWormFlySpeed
   m_EditorClassIdentifier: Assembly-CSharp::StatObject
   type: 0
-  floatValue: 95
+  floatValue: 325
   curveValue:
     serializedVersion: 2
     m_Curve: []

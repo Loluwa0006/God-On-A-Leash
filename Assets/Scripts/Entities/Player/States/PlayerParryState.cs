@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerParryState : PlayerAirState
 {
 
-    public const float PARRY_TERRAIN_RAYCAST_SAFE_MARGIN = 3f;
+    public const float PARRY_TERRAIN_RAYCAST_SAFE_MARGIN = 8f;
     // Saved as a const not a float because this is a technical problem not a design one.
     //if you were moving slower then this, then you might have not been moving at all.
     public const float MINIMUM_SPEED_FOR_PARRY = 0.1f;

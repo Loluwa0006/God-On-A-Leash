@@ -4,6 +4,7 @@ public class WormEntity : BaseEntity
 {
     public EntityStatsManager StatsManager { get; set; }
 
+
     [Header("References")]
     [SerializeField] GameObject model;
     [SerializeField] Collider swingbox;
@@ -15,6 +16,11 @@ public class WormEntity : BaseEntity
     public Rigidbody Rigidbody { get => rigidBody; }
     int remainingHitsBeforeDeactivation = 2;
 
+    Vector3 startingLocation;
+
+    float additionalDistanceToTarget = 0; //Used to make the worm fly further if the player is moving really fast.
+
+    bool inFlight = false;
     public void Initialize(EntityStatsManager statsManager)
     {
         base.Initialize();
@@ -39,6 +45,10 @@ public class WormEntity : BaseEntity
         if (swingbox != null) swingbox.enabled = true;
 
         if (!refired) remainingHitsBeforeDeactivation = (int) StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormHitsBeforeDeactivation);
+
+        inFlight = true;
+        this.startingLocation = startingLocation;
+        additionalDistanceToTarget = ownerVelocity.magnitude;
     }
 
     public void Deactivate()
@@ -53,6 +63,7 @@ public class WormEntity : BaseEntity
     {
         if (!wormActive) return;
         GravityLogic();
+        TargetLogic();
     }
 
     public void OnHurtboxStruck(HitboxContactInfo contactInfo)
@@ -91,5 +102,14 @@ public class WormEntity : BaseEntity
         }
     }
 
-
+    void TargetLogic()
+    {
+        if (!inFlight) return;
+        if (Vector3.Distance(rigidBody.position, startingLocation) >= StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormThrowRange) + additionalDistanceToTarget)
+        {
+            rigidBody.linearVelocity = Vector3.zero; //Make it hover at the target location instead of falling down.
+            inFlight = false;
+            Debug.Log("Worm has reached target location, hovering.");
+        }
+    }
 }

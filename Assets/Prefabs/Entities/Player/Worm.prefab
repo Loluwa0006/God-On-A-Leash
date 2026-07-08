@@ -71,12 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WormEntity
   idComponent: {fileID: 1610769942815114598}
-  gravityFreeTime: 180
-  distanceWhereTargetConsideredReached: 8
-  flySpeed: 95
-  gravity: 9
-  maxFallSpeed: 30
-  hitsBeforeDeactivation: 2
+  distanceToBeConsideredAtTargetLocation: 25
   model: {fileID: 4562340481959436509}
   swingbox: {fileID: 4482398490604426576}
   rigidBody: {fileID: 6987743295247668556}

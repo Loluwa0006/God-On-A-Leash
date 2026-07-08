@@ -54,7 +54,6 @@ public class PlayerStats
     public StatObject PlayerWormGravity;
     public StatObject PlayerWormMaxFallSpeed;
     public StatObject PlayerWormHitsBeforeDeactivation;
-
     [Header("Rod")]
     public StatObject PlayerMaxRodRange;
     public StatObject PlayerRodSwingMassScale;

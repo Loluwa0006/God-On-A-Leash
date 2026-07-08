@@ -16,6 +16,7 @@ public class EntityStatsManager : BaseEntity
 
     public Dictionary<StatInfluenceSource, int> priorityIndex = new()
     {
+        //needs infinite priority because the slow should never effect the player .
         { StatInfluenceSource.ChronoTimeSlowOffset, INFINITE_PRIORITY },
         { StatInfluenceSource.Inactive, 0 },
     };

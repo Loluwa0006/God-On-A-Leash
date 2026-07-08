@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerWormGravityFreeTime
   m_EditorClassIdentifier: Assembly-CSharp::StatObject
   type: 0
-  floatValue: 180
+  floatValue: 600
   curveValue:
     serializedVersion: 2
     m_Curve: []
