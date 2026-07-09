@@ -5,7 +5,9 @@ public class PlayerController : BaseActor
     public enum AnimationParameter
     {
         Trigger_IsAttacking,
-        Bool_InSquashbuckler
+        Bool_InSquashbuckler,
+        Bool_IsFalling,
+        Trigger_ThrowingWorm
     }
 
 

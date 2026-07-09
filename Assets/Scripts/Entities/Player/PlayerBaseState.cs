@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class PlayerBaseState : BaseState
 {
@@ -9,7 +10,7 @@ public class PlayerBaseState : BaseState
 
     const float SHAPECAST_RATIO = 0.8f;
 
-   protected static LayerMask groundMask;
+    protected static LayerMask groundMask;
 
     public PlayerController Player { private set; get; }
 
@@ -19,6 +20,8 @@ public class PlayerBaseState : BaseState
 
     protected static Camera viewCamera;
 
+
+  
     public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
     {
         base.InitializeState(stateMachine, owner);
@@ -26,7 +29,6 @@ public class PlayerBaseState : BaseState
         groundMask = LayerMask.GetMask("Ground", "Swingable");
         if (viewCamera == null ) viewCamera = Camera.main;
     }
-
     public bool IsGrounded()
     {
         if (Player == null) return false;

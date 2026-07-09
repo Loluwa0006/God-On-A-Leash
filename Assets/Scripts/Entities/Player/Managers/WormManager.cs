@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
@@ -41,6 +42,14 @@ public class WormManager : MonoBehaviour
         }
         wormPool.Clear();
         wormRailPool.Clear();
+
+        StartCoroutine(ConfigureWormPools());
+
+    }
+
+    IEnumerator ConfigureWormPools()
+    {
+        yield return new WaitForFixedUpdate();
         for (int i = 0; i < WormsRemaining; i++)
         {
             WormEntity newWorm = Instantiate(wormPrefab);

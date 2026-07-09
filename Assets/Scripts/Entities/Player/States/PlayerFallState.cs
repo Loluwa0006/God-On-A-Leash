@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class PlayerFallState : PlayerAirState
 {
@@ -24,6 +25,12 @@ public class PlayerFallState : PlayerAirState
             typeof(PlayerIdleState),
 
         };
+    }
+
+    public override void Enter(Dictionary<string, object> message = null)
+    {
+        base.Enter(message);
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsFalling), true);
     }
 
     public override void PhysicsProcess()
