@@ -3,7 +3,18 @@ using UnityEngine;
 
 public class PlayerGetHitState : PlayerAirState
 {
-   
+    [SerializeField] int lowHitstunReactionHitstunFrames = 10;
+    [SerializeField] int midHitstunReactionHitstunFrames = 25;
+    [SerializeField] int highHitstunReactionHitstunFrames = 40;
+
+
+    public enum HitstunReactionLevel
+    {
+        None = 0,
+        Low = 1,
+        Mid = 2,
+        High = 3,
+    }
     public enum PlayerGetHitMessage
     {
         ContactInfo,
@@ -33,6 +44,28 @@ public class PlayerGetHitState : PlayerAirState
         ApplyAttackKnockback();
         ApplyInvincibility();
         invulnerablityTracker = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ExtraInvulnerabilityFramesAfterHit);
+        SetAnimation();
+    }
+
+    void SetAnimation()
+    {
+        //Determines what animation to player based on hitstun frames.
+        HitstunReactionLevel hitstunReactionLevel;
+        int hitstunFrames = contactInfo.DamageInfo.hitstunFrames;    
+        if (hitstunFrames <= lowHitstunReactionHitstunFrames)
+        {
+            hitstunReactionLevel = HitstunReactionLevel.Low;
+        }
+        else if (hitstunFrames <= midHitstunReactionHitstunFrames)
+        {
+            hitstunReactionLevel = HitstunReactionLevel.Mid;
+        }
+        else
+        {
+            hitstunReactionLevel = HitstunReactionLevel.High;
+        }
+        Debug.Log($"PlayerGetHitState: Setting hitstun reaction level to {(int)hitstunReactionLevel} for {hitstunFrames} hitstun frames.");
+        Player.Animator.SetInteger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Int_HitstunReactionLevel), (int)hitstunReactionLevel);
     }
     void ApplyInvincibility()
     {
@@ -73,5 +106,11 @@ public class PlayerGetHitState : PlayerAirState
     public override bool StateAvailable()
     {
         return false; //special exception, only player controller handles transitions to this state
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        Player.Animator.SetInteger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Int_HitstunReactionLevel), (int)HitstunReactionLevel.None);
     }
 }

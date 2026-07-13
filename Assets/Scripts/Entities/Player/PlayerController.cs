@@ -7,7 +7,9 @@ public class PlayerController : BaseActor
         Trigger_IsAttacking,
         Bool_InSquashbuckler,
         Bool_IsFalling,
-        Trigger_ThrowingWorm
+        Trigger_ThrowingWorm,
+        Bool_InHitstun,
+        Int_HitstunReactionLevel,
     }
 
 

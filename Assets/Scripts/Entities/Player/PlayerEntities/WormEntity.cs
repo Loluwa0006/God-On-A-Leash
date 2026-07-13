@@ -109,7 +109,6 @@ public class WormEntity : BaseEntity
         {
             rigidBody.linearVelocity = Vector3.zero; //Make it hover at the target location instead of falling down.
             inFlight = false;
-            Debug.Log("Worm has reached target location, hovering.");
         }
     }
 }

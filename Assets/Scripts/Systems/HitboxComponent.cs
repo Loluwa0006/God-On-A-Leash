@@ -36,7 +36,7 @@ public class HitboxComponent : MonoBehaviour
     [SerializeField] LayerMask hitboxMask;
     [SerializeField] List<HealthComponent> blacklistedTargets;
     [SerializeField] DamageInfo damageInfo;
-
+    [SerializeField] bool activeOnStart = false;
     public DamageInfo DamageInfo { get { return damageInfo; } set { damageInfo = value; } }
 
     [Header("Editor")]
@@ -57,6 +57,7 @@ public class HitboxComponent : MonoBehaviour
     {   
         if (hitboxCollider == null) hitboxCollider = GetComponent<Collider>();
         isBoxCollider = hitboxCollider is BoxCollider;
+        HitboxActive = activeOnStart;
     }
     public void OnActivate()
     {
@@ -91,6 +92,7 @@ public class HitboxComponent : MonoBehaviour
     }
     void CheckForCollisions()
     {
+        Debug.Log("Hitbox " + name + " is checking for collisions");
         for (int i = 0; i < struckTargets.Length; i++)
         {
             struckTargets[i] = null;

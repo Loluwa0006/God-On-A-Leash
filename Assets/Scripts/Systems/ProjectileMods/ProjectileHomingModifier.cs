@@ -33,7 +33,10 @@ public class ProjectileHomingModifier : BaseProjectileModifier
         var directionTowardsTarget = (homeTarget - Projectile.RigidBody.position).normalized;
 
 
-        var directionRotated = Vector3.RotateTowards(currentDirection, directionTowardsTarget, homingPower, 0.001f);
+        Vector3 directionRotated;
+        
+        if (!invertHoming) directionRotated = Vector3.RotateTowards(currentDirection, directionTowardsTarget, homingPower, 0.001f);
+        else directionRotated = Vector3.RotateTowards(currentDirection, directionTowardsTarget, -homingPower, 0.001f);
 
         Projectile.RigidBody.linearVelocity = directionRotated.normalized * Projectile.RigidBody.linearVelocity.magnitude;
     }
