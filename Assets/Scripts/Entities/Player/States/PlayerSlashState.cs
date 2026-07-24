@@ -99,7 +99,6 @@ public class PlayerSlashState : PlayerAirState
         {
             Player.AnarchyManager.GenerateAnarchyUnscaled(UnscaledGenerationMethod.Slash);
         }
-        Debug.Log("Struck " + victims.Count + " targets with slash");
     }
 
     protected void CalculateDamageInfo(int minDamage, int maxDamage, float speedSampled, float lateralSpeed)

@@ -16,6 +16,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "0c4f0941-4ac8-4515-8d9b-22d91b85aa23",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Aim",
                     "type": "Value",
                     "id": "46e020b3-3a4a-4c42-a0c9-e24d22f1a228",
@@ -234,6 +243,17 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "8cea2256-779b-4769-b2b6-c216551db86a",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardAndMouse;Gamepad",
+                    "action": "Restart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "Mouse",
