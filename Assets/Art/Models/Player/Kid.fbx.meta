@@ -40,7 +40,7 @@ ModelImporter:
       takeName: rig|FallLoop
       internalID: 1909068164314378901
       firstFrame: 0
-      lastFrame: 0
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -98,7 +98,7 @@ ModelImporter:
       takeName: rig|TPose
       internalID: 3418075285133375222
       firstFrame: 0
-      lastFrame: 0
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -185,7 +185,36 @@ ModelImporter:
       takeName: rig|SwingSimpleHang
       internalID: 3783461309695360198
       firstFrame: 0
-      lastFrame: 4
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: SwingSimpleThrow
+      takeName: rig|SwingSimpleThrow
+      internalID: -8253146631479769911
+      firstFrame: 0
+      lastFrame: 3
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -210,11 +239,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: SwingSimpleThrow
-      takeName: rig|SwingSimpleThrow
-      internalID: -8253146631479769911
+      name: SwingJumpOne
+      takeName: rig|SwingJump
+      internalID: 8369732783193258434
       firstFrame: 0
-      lastFrame: 3
+      lastFrame: 47
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

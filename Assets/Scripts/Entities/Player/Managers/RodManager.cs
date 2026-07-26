@@ -6,7 +6,7 @@ public class RodManager : MonoBehaviour
     [SerializeField] LineRenderer rodLine;
     [SerializeField] LayerMask grappleMask;
     [SerializeField] PlayerController player;
-
+    [SerializeField] Transform GrappleLineStartPoint;
     [SerializeField] Transform grapplePoint;
 
 
@@ -115,7 +115,7 @@ public class RodManager : MonoBehaviour
     {
         if (grappleActive)
         {
-            rodLine.SetPosition(0, player.transform.position);
+            rodLine.SetPosition(0, GrappleLineStartPoint.position);
             rodLine.SetPosition(1, grappleInfo.GrapplePosition);
             grapplePoint.position = grappleInfo.GrapplePosition;
         }

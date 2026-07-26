@@ -10,6 +10,8 @@ public class PlayerController : BaseActor
         Trigger_ThrowingWorm,
         Bool_InHitstun,
         Int_HitstunReactionLevel,
+        Bool_IsSwinging,
+        Trigger_SwingJumpPerformed,
     }
 
 

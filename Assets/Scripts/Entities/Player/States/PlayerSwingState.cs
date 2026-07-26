@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerSwingState : PlayerAirState
 {
+    [SerializeField] MultiAimConstraint swingIKConstraint;
+    [SerializeField] Transform swingIKTarget;
     [SerializeField] float cameraTransitionTime = 0.35f;
 
     public override Type[] statesToAttemptToTransitionTo
@@ -26,6 +29,9 @@ public class PlayerSwingState : PlayerAirState
         Player.RodManager.StartSwing();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Swing].Consume();
         Player.CameraManager.TransitionToCamera(Player.CameraManager.WideFollowCamera, cameraTransitionTime);
+        swingIKTarget.position = Player.RodManager.GrappleInfo.GrapplePosition;
+        swingIKConstraint.weight = 1f;
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsSwinging), true);
     }
 
     public override void Process()
@@ -57,6 +63,7 @@ public class PlayerSwingState : PlayerAirState
         }
         ApplyGravity(gravity);
         AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.SwingAcceleration));
+        swingIKTarget.position = Player.RodManager.GrappleInfo.GrapplePosition;
     }
 
     void PerformSwingJump()
@@ -67,7 +74,8 @@ public class PlayerSwingState : PlayerAirState
         if (jumpVelocity.y < minSwingJumpHeight) jumpVelocity.y = minSwingJumpHeight;
         Player.RigidBody.AddForce(jumpVelocity, ForceMode.VelocityChange);
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Jump].Consume();
-        StateMachine.TransitionTo<PlayerFallState>();        
+        StateMachine.TransitionTo<PlayerFallState>();
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_SwingJumpPerformed));
     }
   
     public override void Exit()
@@ -76,6 +84,8 @@ public class PlayerSwingState : PlayerAirState
         Player.RodManager.DisableGrapple();
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Swing);
         Player.CameraManager.TransitionToCamera(Player.CameraManager.DefaultCamera, cameraTransitionTime);
+        swingIKConstraint.weight = 0f;
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsSwinging), false);
     }
 
     public override bool StateAvailable()
