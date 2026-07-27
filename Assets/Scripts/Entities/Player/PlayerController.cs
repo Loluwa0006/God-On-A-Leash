@@ -12,6 +12,7 @@ public class PlayerController : BaseActor
         Int_HitstunReactionLevel,
         Bool_IsSwinging,
         Trigger_SwingJumpPerformed,
+        Bool_IsDashing,
     }
 
 
