@@ -23,12 +23,6 @@ public class PlayerYawnState : PlayerAirState
         base.InitializeState(stateMachine, owner);
         Player.AnarchyManager.anarchyGainedThroughScaledMethod.AddListener((method, charges) => OnAnarchyGenerated());
     }
-    void OnAnarchyGenerated()
-    {
-        justYawnTracker = (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerJustYawnWindow);
-        Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerJustYawnWindow);
-    }
-
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
@@ -42,6 +36,7 @@ public class PlayerYawnState : PlayerAirState
         }
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Yawn].Consume();
         elaspedYawnTime = 0;
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsYawning), true);
     }
     void OnJustYawn()
     {
@@ -66,12 +61,25 @@ public class PlayerYawnState : PlayerAirState
         AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerYawnAirAcceleration));
         Player.RodManager.RodLength = Mathf.MoveTowards(Player.RodManager.RodLength, 0.0f, Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodRetractionSpeedWhileYawning));
     }
+
     public override void InactivePhysicsProcess()
     {
         justYawnTracker = (int) Mathf.MoveTowards(justYawnTracker, 0, 1);     
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsYawning), false);
     }
     public override bool StateAvailable()
     {
         return !Player.PlayerGrounded && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Yawn].Buffered;
     }
+    void OnAnarchyGenerated()
+    {
+        justYawnTracker = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerJustYawnWindow);
+        Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerJustYawnWindow);
+    }
+
 }

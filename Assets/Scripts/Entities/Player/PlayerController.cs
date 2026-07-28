@@ -13,6 +13,9 @@ public class PlayerController : BaseActor
         Bool_IsSwinging,
         Trigger_SwingJumpPerformed,
         Bool_IsDashing,
+        Bool_IsYawning,
+        Bool_IsParrying,
+        Trigger_ParryPerformed,
     }
 
 

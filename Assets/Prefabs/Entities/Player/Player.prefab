@@ -612,6 +612,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSwingState
   hasInactiveProcess: 0
   hasInactivePhysicsProcess: 0
+  swingIKConstraint: {fileID: 0}
   swingIKTarget: {fileID: 2208307568620612114}
   cameraTransitionTime: 0.35
 --- !u!1 &2771309624535348827
@@ -653,12 +654,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2771309624535348827}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3c430f382484144e925c097c2d33cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Animation.Rigging::UnityEngine.Animations.Rigging.MultiAimConstraint
-  m_Weight: 1
+  m_Weight: 0
   m_Data:
     m_ConstrainedObject: {fileID: 777057940667945748}
     m_SourceObjects:
@@ -1291,6 +1292,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 34560
   player: {fileID: 1870535501843506831}
+  GrappleLineStartPoint: {fileID: 0}
   grapplePoint: {fileID: 6271263608659458738}
   rodLengthDisplay: {fileID: 0}
 --- !u!1 &5401427390679268989

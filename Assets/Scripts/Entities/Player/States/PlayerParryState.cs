@@ -44,6 +44,7 @@ public class PlayerParryState : PlayerAirState
 
         InvulnerabilityEffect invulnerabilityEffect = new(StatusEffectID.ParryProjectileInvulnerability, DamageSource.EnemySmallProjectile, InvulnerabilityEffect.INFINITE_DURATION_VALUE);
         Player.HealthComponent.AddStatusEffect(invulnerabilityEffect);
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsParrying), true);
     }
 
     public override void PhysicsProcess()
@@ -109,10 +110,12 @@ public class PlayerParryState : PlayerAirState
 
         Player.RigidBody.linearVelocity = velocityRotated * bounceVelocity;
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Parry);
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_ParryPerformed));
     }
     public override void Exit()
     {
         base.Exit();
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsParrying), false);
         Player.HealthComponent.RemoveStatusEffect(StatusEffectID.ParryProjectileInvulnerability);
     }
     public override bool StateAvailable()
