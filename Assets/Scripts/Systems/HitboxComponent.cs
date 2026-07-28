@@ -92,7 +92,6 @@ public class HitboxComponent : MonoBehaviour
     }
     void CheckForCollisions()
     {
-        Debug.Log("Hitbox " + name + " is checking for collisions");
         for (int i = 0; i < struckTargets.Length; i++)
         {
             struckTargets[i] = null;

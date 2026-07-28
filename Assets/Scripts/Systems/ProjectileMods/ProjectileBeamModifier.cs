@@ -5,7 +5,7 @@ using UnityEngine.Splines;
 /// Mod that handles the rendering and collision of beam attacks
 /// </summary>
 [RequireComponent(typeof(ProjectileContactModifier))]
-public class ProjectileBeamMod : BaseProjectileModifier
+public class ProjectileBeamModifier : BaseProjectileModifier
 {
     [SerializeField]  LineRenderer lineRenderer;
     [SerializeField] ProjectileContactModifier contactModifier;
@@ -67,6 +67,13 @@ public class ProjectileBeamMod : BaseProjectileModifier
     public override void OnProjectileDisabled()
     {
         base.OnProjectileDisabled();
+        lineRenderer.enabled = false;
+        splineCollider.ClearBakedSegments();
+    }
+
+    public override void OnProjectileLanded(HealthComponent victim)
+    {
+        base.OnProjectileLanded(victim);
         lineRenderer.enabled = false;
         splineCollider.ClearBakedSegments();
     }

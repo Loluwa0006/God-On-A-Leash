@@ -6,24 +6,31 @@ public class ProjectileContactModifier : BaseProjectileModifier
 
     [SerializeField] LayerMask projectileMask;
     [SerializeField] DamageInfo hitboxInfo;
-    [SerializeField] List<HealthComponent> blacklistedTargets = new();
     [SerializeField] PostContactLogic postContactLogic;
 
     Collider[] hitboxResults = new Collider[MAX_CONTACTS_PER_FRAME];
 
-    HashSet<HealthComponent> unallowedTargets = new();
+    List<HealthComponent> permanentBlacklistedTargets = new();
+    HashSet<HealthComponent> blacklistedTargets = new();
     public enum PostContactLogic
     {
         DisableProjectile,
         DisableHitbox,
     }
+
+    public override void InitializeModifier(BaseProjectile owner)
+    {
+        base.InitializeModifier(owner);
+
+        permanentBlacklistedTargets.AddRange(owner.ProjectileOwner.GetComponentsInChildren<HealthComponent>());
+    }
     public override void OnProjectileFired()
     {
         base.OnProjectileFired();
-        unallowedTargets.Clear();
-        for (int i = 0; i < blacklistedTargets.Count; i++)
+        blacklistedTargets.Clear();
+        for (int i = 0; i < permanentBlacklistedTargets.Count; i++)
         {
-            unallowedTargets.Add(blacklistedTargets[i]);
+            blacklistedTargets.Add(permanentBlacklistedTargets[i]);
         }
     }
     public override void UpdateModifier()
@@ -50,7 +57,7 @@ public class ProjectileContactModifier : BaseProjectileModifier
     public bool DamageHealthComponent(Collider hurtbox, Collider hitbox)
     {
         if (!hurtbox.TryGetComponent(out HealthComponent healthComponent)) return false;      
-        if (unallowedTargets.Contains(healthComponent)) return false;
+        if (blacklistedTargets.Contains(healthComponent)) return false;
         
         HitboxContactInfo contactInfo = new()
         {
@@ -60,7 +67,7 @@ public class ProjectileContactModifier : BaseProjectileModifier
         };
         healthComponent.Damage(contactInfo);
         Projectile.ProjectileLanded.Invoke(healthComponent);
-        unallowedTargets.Add(healthComponent);
+        blacklistedTargets.Add(healthComponent);
         return true;
     }
 }

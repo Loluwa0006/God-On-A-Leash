@@ -23,7 +23,6 @@ public class BaseEntity : MonoBehaviour
     {
 
     }
-
     private void OnEnable()
     {
       if (EntityManager.Instance != null)  EntityManager.Instance.RegisterEntity(this);
@@ -33,4 +32,6 @@ public class BaseEntity : MonoBehaviour
     {
         entityDestroyed?.Invoke(this);
     }
+
+
 }
