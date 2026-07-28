@@ -31,11 +31,7 @@ public class LeviathanEntity : BaseEnemy
     public override void OnEntityDamaged(HitboxContactInfo info)
     {
         if (info.DamageInfo.damage <= 0) return;
-        Dictionary<string, object> getHitStateMessage = new()
-        {
-            [PlayerGetHitState.PlayerGetHitMessage.ContactInfo.ToString()] = info
-        };
-        stateMachine.TransitionTo<PlayerGetHitState>(getHitStateMessage);
+        stateMachine.TransitionTo<LeviathanMoveState>();
     }
 
 
