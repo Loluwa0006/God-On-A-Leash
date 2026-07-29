@@ -26,6 +26,7 @@ public class ProjectileBeamModifier : BaseProjectileModifier
         beamSpline.Spline.SetKnot(1, knotTwo);
         lineRenderer.positionCount = 2;
         splineCollider.OnTriggerEnter += OnBeamCollision;
+        lineRenderer.enabled = false;
     }
     void OnBeamCollision(Collider hurtbox)
     {
@@ -69,6 +70,7 @@ public class ProjectileBeamModifier : BaseProjectileModifier
         base.OnProjectileDisabled();
         lineRenderer.enabled = false;
         splineCollider.ClearBakedSegments();
+        Debug.Log("Projectile disabled, line renderer disabled and spline collider cleared.");
     }
 
     public override void OnProjectileLanded(HealthComponent victim)
@@ -76,6 +78,7 @@ public class ProjectileBeamModifier : BaseProjectileModifier
         base.OnProjectileLanded(victim);
         lineRenderer.enabled = false;
         splineCollider.ClearBakedSegments();
+        Debug.Log("Projectile disabled, line renderer disabled and spline collider cleared.");
     }
 
     private void OnDestroy()

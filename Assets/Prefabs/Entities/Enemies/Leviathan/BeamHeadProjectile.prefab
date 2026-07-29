@@ -111,7 +111,8 @@ MonoBehaviour:
   rigidBody: {fileID: 7947073713133903600}
   projectileColliders:
   - {fileID: 3809078192718183567}
-  meshObjects: {fileID: 4054444061763140079}
+  meshObjects:
+  - {fileID: 4054444061763140079}
 --- !u!54 &7947073713133903600
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -151,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d94fc2858869ca49a4f7d501e9d68e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileVelocityModifier
+  priority: 0
   moveAcceleration: 120
   moveSpeed: 700
   rotationOffset: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
@@ -166,16 +168,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a918ec58ad2017e4f91ea8ebc4fe0950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileContactModifier
+  priority: 0
   projectileMask:
     serializedVersion: 2
     m_Bits: 2752
   hitboxInfo:
     damage: 1
-    horizontalKnockback: 50
-    verticalKnockback: 100
     hitstunFrames: 40
+    knockbackVector: {x: 0, y: 0, z: 0}
+    knockbackPower: 0
     damageSource: 3
-  blacklistedTargets: []
+    useCollisionPointToDetermineKnockbackDirection: 0
   postContactLogic: 0
 --- !u!114 &6132837562483315780
 MonoBehaviour:
@@ -202,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1882a2a2214acaa458f084640f50dbb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileTracerMod
+  priority: 0
   lineRenderer: {fileID: 4159197923790612166}
   contactModifier: {fileID: 5185180999352317941}
   beamSpline: {fileID: 1759516565723920275}

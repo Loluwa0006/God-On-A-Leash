@@ -1,15 +1,18 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class BaseProjectile : BaseEntity
 {
     [SerializeField] GameObject modifierHolder;
     [SerializeField] protected Rigidbody rigidBody;
     [SerializeField] protected List<Collider> projectileColliders;
-    [SerializeField] protected GameObject meshObjects;
+    [SerializeField] protected List<GameObject> meshObjects;
+    [SerializeField] OwnerType ownerEntityType = OwnerType.Enemy;
 
     public Rigidbody RigidBody { get => rigidBody; }
+    public OwnerType OwnerEntityType => ownerEntityType;
     public List<Collider> ProjectileColliders { get => projectileColliders; }
     BaseProjectileModifier[] projectileModifiers;
 
@@ -22,6 +25,13 @@ public class BaseProjectile : BaseEntity
     public bool Active { set; get; } = false;
 
     public BaseEntity ProjectileOwner { set; get; }
+
+    public enum OwnerType
+    {
+        Player,
+        Enemy,
+        Other
+    }
     public void InitializeProjectile(BaseEntity entity)
     {
         ProjectileOwner = entity;
@@ -67,7 +77,7 @@ public class BaseProjectile : BaseEntity
     {
         rigidBody.MovePosition(start);
         Target = target;
-        meshObjects.SetActive(true);
+        foreach (var mesh in meshObjects) mesh.SetActive(true);
         ProjectileFired?.Invoke();
         for (int i = 0; i < projectileColliders.Count; i++)
         {
@@ -81,7 +91,7 @@ public class BaseProjectile : BaseEntity
     }
     public void DisableProjectile()
     {
-        meshObjects.SetActive(false);
+        foreach (var mesh in meshObjects) mesh.SetActive(false);
         ProjectileDestroyed?.Invoke();
         for (int i = 0; i < projectileColliders.Count; i++)
         {

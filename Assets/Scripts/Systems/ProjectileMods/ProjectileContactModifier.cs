@@ -18,11 +18,25 @@ public class ProjectileContactModifier : BaseProjectileModifier
         DisableHitbox,
     }
 
+    bool checkForContacts = true;
     public override void InitializeModifier(BaseProjectile owner)
     {
         base.InitializeModifier(owner);
 
-        permanentBlacklistedTargets.AddRange(owner.ProjectileOwner.GetComponentsInChildren<HealthComponent>());
+        switch (Projectile.OwnerEntityType)
+        {
+            case BaseProjectile.OwnerType.Player:
+                PlayerController player = (PlayerController)Projectile.ProjectileOwner;
+                permanentBlacklistedTargets.Add(player.HealthComponent);
+                break;
+            case BaseProjectile.OwnerType.Enemy:
+                BaseEnemy enemy = (BaseEnemy)Projectile.ProjectileOwner;
+                permanentBlacklistedTargets.AddRange(enemy.HealthFragments);
+                break;
+            default:
+                permanentBlacklistedTargets.AddRange(Projectile.ProjectileOwner.GetComponentsInChildren<HealthComponent>());
+                break;
+        }
     }
     public override void OnProjectileFired()
     {
@@ -32,9 +46,11 @@ public class ProjectileContactModifier : BaseProjectileModifier
         {
             blacklistedTargets.Add(permanentBlacklistedTargets[i]);
         }
+        checkForContacts = true;
     }
     public override void UpdateModifier()
     {
+        if (!checkForContacts) return;
         bool validContact = false;
         for (int x = 0; x < Projectile.ProjectileColliders.Count; x++)
         {
@@ -51,8 +67,19 @@ public class ProjectileContactModifier : BaseProjectileModifier
                     validContact = true;
                 }
             }
+            if (validContact)
+            {
+                switch (postContactLogic)
+                {
+                    case PostContactLogic.DisableHitbox:
+                        checkForContacts = false;
+                        break;
+                    case PostContactLogic.DisableProjectile:
+                        Projectile.DisableProjectile();
+                        break;
+                }
+            }
         }
-        if (validContact) Projectile.DisableProjectile();
     }
     public bool DamageHealthComponent(Collider hurtbox, Collider hitbox)
     {

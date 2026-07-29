@@ -174,8 +174,10 @@ MonoBehaviour:
   idComponent: {fileID: 6416407280116297385}
   modifierHolder: {fileID: 2913355568139821857}
   rigidBody: {fileID: 7250767610126268265}
-  projectileCollider: {fileID: 8377834744018633101}
-  meshObjects: {fileID: 7355682756305888722}
+  projectileColliders: []
+  meshObjects:
+  - {fileID: 7355682756305888722}
+  ownerEntityType: 1
 --- !u!114 &6416407280116297385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d94fc2858869ca49a4f7d501e9d68e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileVelocityModifier
+  priority: 0
   moveAcceleration: 15
   moveSpeed: 90
   rotationOffset: {x: 0, y: 0, z: 0, w: 0}
@@ -243,6 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43c8ca7e2aefeb84090e8bacbda7b1e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileHomingModifier
+  priority: 0
   homingPower: 20
   hasMaxDistanceForHoming: 0
   maxDistanceForHoming: 1500
