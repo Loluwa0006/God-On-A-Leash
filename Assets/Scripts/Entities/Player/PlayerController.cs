@@ -16,6 +16,7 @@ public class PlayerController : BaseActor
         Bool_IsYawning,
         Bool_IsParrying,
         Trigger_ParryPerformed,
+        Bool_IsShadowstepping,
     }
 
 

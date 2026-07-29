@@ -18,6 +18,7 @@ public class PlayerShadowstepState : PlayerBaseState
         Player.SquashbucklerManager.SquashbucklerCharge -= (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerChargesToEnterSquashbucklerMode);
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Squashbuckler].Consume();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].Consume(); //prevent accidental dragonslashes
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsShadowstepping), true);
     }
     public override void PhysicsProcess()
     {
@@ -61,6 +62,7 @@ public class PlayerShadowstepState : PlayerBaseState
     {
         base.Exit();
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Shadowstep);
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsShadowstepping), false);
     }
     public override bool StateAvailable()
     {
