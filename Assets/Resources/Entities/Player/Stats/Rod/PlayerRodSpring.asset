@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerRodSpring
   m_EditorClassIdentifier: Assembly-CSharp::StatObject
   type: 0
-  floatValue: 525
+  floatValue: 4.5
   curveValue:
     serializedVersion: 2
     m_Curve: []

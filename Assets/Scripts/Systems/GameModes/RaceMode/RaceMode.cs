@@ -1,8 +1,13 @@
 using UnityEngine;
 public class RaceMode : BaseGameMode
 {
-    [SerializeField] int timeToReachNextCheckpoint = 60 * 20;
+
+    public const int SHOW_ALL_CHECKPOINTS = -1;
+
+    [SerializeField] int raceDuration = 60 * 20;
     [SerializeField] RaceUI raceUI;
+    [SerializeField] TimerStyle timerStyle = TimerStyle.PerCheckpoint;
+    [SerializeField] int numberOfCheckpointsToShow = SHOW_ALL_CHECKPOINTS;
     float timerTracker = 0;
 
     /// <summary>
@@ -11,7 +16,16 @@ public class RaceMode : BaseGameMode
     public float TimeRemaining { get => timerTracker / 60.0f; set { timerTracker = value * 60; } }
     RaceCheckpoint[] checkpoints;
 
+    enum TimerStyle
+    {
+        PerCheckpoint, // Time resets after each checkpoint
+        TotalTime, 
+    }
+
+    
     public int CheckpointsRemaining { get; private set; }
+    public int CheckpointsReached { get; private set; } = 0;
+
     public override void InitializeMode()
     {
         base.InitializeMode();
@@ -21,17 +35,32 @@ public class RaceMode : BaseGameMode
         {
             checkpoints[i].checkpointReached += OnCheckpointReached;
         }
-        timerTracker = timeToReachNextCheckpoint;
+        for (int i = 0; i < checkpoints.Length; i++)
+        {
+            if (numberOfCheckpointsToShow != SHOW_ALL_CHECKPOINTS && i >= numberOfCheckpointsToShow)
+            {
+                checkpoints[i].Hide();
+            }
+        }
+        timerTracker = raceDuration;
         raceUI.InitializeUI(checkpoints, this);
     }
 
     void OnCheckpointReached(RaceCheckpoint checkpoint)
     {
         CheckpointsRemaining--;
-        timerTracker = timeToReachNextCheckpoint;
+        CheckpointsReached++;
+        if (timerStyle == TimerStyle.PerCheckpoint)
+        {
+            timerTracker = raceDuration;
+        }
         if (CheckpointsRemaining == 0 && !gameOver)
         {
             EndGame(won: true);
+        }
+        for (int i = CheckpointsReached; i < CheckpointsReached + numberOfCheckpointsToShow && i < checkpoints.Length; i++)
+        {
+            checkpoints[i].Show();
         }
         raceUI.UpdateCheckpointsRemainingDisplay(CheckpointsRemaining);
     }
