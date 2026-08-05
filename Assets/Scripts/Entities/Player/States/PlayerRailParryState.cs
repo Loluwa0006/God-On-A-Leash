@@ -52,6 +52,12 @@ public class PlayerRailParryState : PlayerBaseState
         Player.CameraManager.TransitionToCamera(Player.CameraManager.CloseFollowCamera, cameraTransitionTime);
     }
 
+    public override void AnimationSetup()
+    {
+        base.AnimationSetup();
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_RailParryPerformed));
+    }
+
     void InitializeSplineMovement()
     {
         var pointInLocalSpace = splineToFollow.transform.InverseTransformPoint(Player.Collider.bounds.center);

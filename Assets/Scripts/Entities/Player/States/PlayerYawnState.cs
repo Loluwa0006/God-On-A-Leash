@@ -36,8 +36,12 @@ public class PlayerYawnState : PlayerAirState
         }
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Yawn].Consume();
         elaspedYawnTime = 0;
+    }
+
+    public override void AnimationSetup()
+    {
+        base.AnimationSetup();
         Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsYawning), true);
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsFalling), false); //prevents auto transitions to fall state
     }
     void OnJustYawn()
     {
@@ -72,7 +76,12 @@ public class PlayerYawnState : PlayerAirState
     {
         base.Exit();
         Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsYawning), false);
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsFalling), true); 
+    }
+
+    public override void AnimationTeardown()
+    {
+        base.AnimationTeardown();
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsYawning), false);
     }
     public override bool StateAvailable()
     {

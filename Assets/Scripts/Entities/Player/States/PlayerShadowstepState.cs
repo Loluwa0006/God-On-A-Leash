@@ -18,7 +18,12 @@ public class PlayerShadowstepState : PlayerBaseState
         Player.SquashbucklerManager.SquashbucklerCharge -= (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerChargesToEnterSquashbucklerMode);
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Squashbuckler].Consume();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].Consume(); //prevent accidental dragonslashes
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsShadowstepping), true);
+    }
+
+    public override void AnimationSetup()
+    {
+        base.AnimationSetup();
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedShadowstep));
     }
     public override void PhysicsProcess()
     {
@@ -49,7 +54,6 @@ public class PlayerShadowstepState : PlayerBaseState
 
     void FallFromShadowstep()
     {
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_InSquashbuckler), false);
         StateMachine.TransitionTo<PlayerFallState>();
     }
 
@@ -62,7 +66,12 @@ public class PlayerShadowstepState : PlayerBaseState
     {
         base.Exit();
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Shadowstep);
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsShadowstepping), false);
+    }
+
+    public override void AnimationTeardown()
+    {
+        base.AnimationTeardown();
+        Player.Animator.ResetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedShadowstep));
     }
     public override bool StateAvailable()
     {

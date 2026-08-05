@@ -4,19 +4,24 @@ public class PlayerController : BaseActor
 {
     public enum AnimationParameter
     {
-        Trigger_IsAttacking,
-        Bool_InSquashbuckler,
-        Bool_IsFalling,
-        Trigger_ThrowingWorm,
-        Bool_InHitstun,
-        Int_HitstunReactionLevel,
-        Bool_IsSwinging,
-        Trigger_SwingJumpPerformed,
-        Bool_IsDashing,
+        Trigger_StartedSlash,
+        Trigger_StartedDragonslash,
+        Trigger_StartedThrowingWorm,
+        Trigger_StartedSwing,
+        Trigger_StartedShadowstep,
         Bool_IsYawning,
-        Bool_IsParrying,
+        Trigger_StartedFalling,
+        Trigger_StartedDashing,
+        Trigger_RailParryPerformed,
         Trigger_ParryPerformed,
-        Bool_IsShadowstepping,
+        Trigger_EnteredHitstun,
+        Trigger_JumpPerformed,
+
+        Bool_IsParrying,
+
+        Int_HitstunReactionLevel,
+
+        Bool_AtHighSpeed,
     }
 
 

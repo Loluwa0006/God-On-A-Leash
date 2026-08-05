@@ -27,10 +27,11 @@ public class PlayerFallState : PlayerAirState
         };
     }
 
-    public override void Enter(Dictionary<string, object> message = null)
+
+    public override void AnimationSetup()
     {
-        base.Enter(message);
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsFalling), true);
+        base.AnimationSetup();
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedFalling));
     }
 
     public override void PhysicsProcess()
@@ -52,6 +53,11 @@ public class PlayerFallState : PlayerAirState
         }
     }
 
+    public override void AnimationTeardown()
+    {
+        base.AnimationTeardown();
+        Player.Animator.ResetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedFalling));
+    }
     public override bool StateAvailable()
     {
         return !Player.PlayerGrounded;

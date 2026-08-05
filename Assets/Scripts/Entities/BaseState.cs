@@ -12,6 +12,11 @@ public class BaseState : MonoBehaviour
     {
         StateMachine = stateMachine;
     }
+
+    public virtual void AnimationSetup()
+    {
+
+    }
     public virtual void Enter(Dictionary<string, object> message = null)
     {
 
@@ -43,6 +48,10 @@ public class BaseState : MonoBehaviour
     }
 
     public virtual void Exit()
+    {
+
+    }
+    public virtual void AnimationTeardown()
     {
 
     }

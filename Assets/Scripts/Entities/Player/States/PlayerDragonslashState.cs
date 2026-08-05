@@ -31,8 +31,6 @@ public class PlayerDragonslashState : PlayerBaseState
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_InSquashbuckler), true);
-        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_IsAttacking));
         dragonslashSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
         float rodLengthAsPercent = Player.RodManager.RodLength / Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxRodRange);
         dragonslashSpeed += Mathf.Lerp(0, Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerDragonslashSpeedBonusFromRodLength), 1.0f - rodLengthAsPercent);
@@ -46,6 +44,12 @@ public class PlayerDragonslashState : PlayerBaseState
         Player.SquashbucklerManager.SquashbucklerCharge = 0;
         Player.CameraManager.TransitionToCamera(Player.CameraManager.CloseFollowCamera, cameraTransitionTime);
         Player.Animator.speed = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerDragonslashSpeed);
+    }
+
+    public override void AnimationSetup()
+    {
+        base.AnimationSetup();
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedDragonslash));
     }
 
     public override void PhysicsProcess()
@@ -92,7 +96,6 @@ public class PlayerDragonslashState : PlayerBaseState
     public override void Exit()
     {
         base.Exit();
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_InSquashbuckler), false);
         Player.CameraManager.TransitionToCamera(Player.CameraManager.DefaultCamera, cameraTransitionTime);
         Player.Animator.speed = 1;
     }

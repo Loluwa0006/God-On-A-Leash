@@ -36,7 +36,7 @@ public class PlayerThrowWormState : PlayerAirState
         }
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Consume();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Consume();
-        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_ThrowingWorm));
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedThrowingWorm));
     }
 
     void FireWorm(WormEntity worm, int cost)

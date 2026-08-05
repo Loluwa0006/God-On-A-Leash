@@ -31,9 +31,15 @@ public class PlayerSwingState : PlayerAirState
         Player.CameraManager.TransitionToCamera(Player.CameraManager.WideFollowCamera, cameraTransitionTime);
         swingIKTarget.position = Player.RodManager.GrappleInfo.GrapplePosition;
         swingIKConstraint.weight = 1f;
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsSwinging), true);
     }
 
+
+    public override void AnimationSetup()
+    {
+        base.AnimationSetup();
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedSwing));
+        Player.Animator.ResetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_JumpPerformed));
+    }
     public override void Process()
     {
         
@@ -75,7 +81,7 @@ public class PlayerSwingState : PlayerAirState
         Player.RigidBody.AddForce(jumpVelocity, ForceMode.VelocityChange);
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Jump].Consume();
         StateMachine.TransitionTo<PlayerFallState>();
-        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_SwingJumpPerformed));
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_JumpPerformed));
     }
   
     public override void Exit()
@@ -85,7 +91,6 @@ public class PlayerSwingState : PlayerAirState
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Swing);
         Player.CameraManager.TransitionToCamera(Player.CameraManager.DefaultCamera, cameraTransitionTime);
         swingIKConstraint.weight = 0f;
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsSwinging), false);
     }
 
     public override bool StateAvailable()

@@ -126,6 +126,9 @@ public class PlayerStats
 
     [Header("GetHit")]
     public StatObject ExtraInvulnerabilityFramesAfterHit;
+
+    [Header("Misc")]
+    public StatObject PlayerSpeedToBeConsideredFast;
 }
 //Leviathan Stats
 

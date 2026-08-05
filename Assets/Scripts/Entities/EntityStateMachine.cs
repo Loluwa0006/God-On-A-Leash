@@ -62,10 +62,13 @@ public class EntityStateMachine : MonoBehaviour
         {
             return;
         }
-
+        var previousState = currentState;   
         currentState.Exit();
         currentState = newState;
         currentState.Enter(message);
+
+        previousState.AnimationTeardown();
+        currentState.AnimationSetup();
     }
 
     public void TransitionTo(System.Type state, Dictionary<string, object> message = null)
@@ -81,9 +84,13 @@ public class EntityStateMachine : MonoBehaviour
         {
             return;
         }
+        var previousState = currentState;
         currentState.Exit();
         currentState = newState;
         currentState.Enter(message);
+
+        previousState.AnimationTeardown();
+        currentState.AnimationSetup();
     }
     public BaseState GetCurrentState()
     {

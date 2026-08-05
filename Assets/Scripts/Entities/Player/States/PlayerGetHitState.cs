@@ -44,10 +44,9 @@ public class PlayerGetHitState : PlayerAirState
         ApplyAttackKnockback();
         ApplyInvincibility();
         invulnerablityTracker = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ExtraInvulnerabilityFramesAfterHit);
-        SetAnimation();
     }
 
-    void SetAnimation()
+    public override void AnimationSetup()
     {
         //Determines what animation to player based on hitstun frames.
         HitstunReactionLevel hitstunReactionLevel;
@@ -64,7 +63,6 @@ public class PlayerGetHitState : PlayerAirState
         {
             hitstunReactionLevel = HitstunReactionLevel.High;
         }
-        Debug.Log($"PlayerGetHitState: Setting hitstun reaction level to {(int)hitstunReactionLevel} for {hitstunFrames} hitstun frames.");
         Player.Animator.SetInteger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Int_HitstunReactionLevel), (int)hitstunReactionLevel);
     }
     void ApplyInvincibility()

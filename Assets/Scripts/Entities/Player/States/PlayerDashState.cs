@@ -22,7 +22,13 @@ public class PlayerDashState : PlayerAirState
         Player.RodManager.StartDash();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Dash].Consume();
         Player.CameraManager.TransitionToCamera(Player.CameraManager.CloseFollowCamera, cameraTransitionTime);
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsDashing), true);
+    }
+
+    public override void AnimationSetup()
+    {
+        base.AnimationSetup();
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedDashing));
+
     }
 
     public override void PhysicsProcess()
@@ -91,7 +97,12 @@ public class PlayerDashState : PlayerAirState
         Player.RodManager.DisableGrapple();
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Dash);
         Player.CameraManager.TransitionToCamera(Player.CameraManager.DefaultCamera, cameraTransitionTime);
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsDashing), false);
+    }
+    public override void AnimationTeardown()
+    {
+        base.AnimationTeardown();
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_JumpPerformed)); 
+        Player.Animator.ResetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedDashing));
     }
     public override bool StateAvailable()
     {
