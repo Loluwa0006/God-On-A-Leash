@@ -24,7 +24,7 @@ public class RaceUI : MonoBehaviour
        
         this.racemodeManager = modeManager;
         racemodeManager.GameEnding += OnGameOver;
-        checkpointsRemainingDisplay.text = checkpoints.Length.ToString();
+        checkpointsRemainingDisplay.text = checkpoints.Length.ToString() + " Left";
         gameRunning = true;
         completionTimeDisplay.gameObject.SetActive(false);
     }
@@ -32,7 +32,7 @@ public class RaceUI : MonoBehaviour
     public void UpdateCheckpointsRemainingDisplay(int checkpointsRemaining) 
     {
         if (!gameRunning) return;
-        checkpointsRemainingDisplay.text = checkpointsRemaining.ToString();
+        checkpointsRemainingDisplay.text = checkpointsRemaining.ToString() + " Left";
     }
 
     private void FixedUpdate()

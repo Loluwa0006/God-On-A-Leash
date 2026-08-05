@@ -20,8 +20,8 @@ public class AnarchyManager : MonoBehaviour
     public UnityEvent<UnscaledGenerationMethod, int> anarchyGainedThroughUnscaledMethod = new();
 
     int decayTracker = 0;
-    int currentAnarchy;
-    float progressToNextAnarchyCharge;
+    int currentAnarchy = 0;
+    float progressToNextAnarchyCharge = 0.0f;
 
     public int CurrentAnarchy { set { currentAnarchy = Mathf.RoundToInt(Mathf.Clamp(value, 0, MAX_ANARCHY)); } get => currentAnarchy; }
     public float ProgressToNextAnarchyCharge 

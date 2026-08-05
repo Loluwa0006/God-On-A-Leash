@@ -2465,6 +2465,10 @@ MonoBehaviour:
   maxCharge: 10
   anarchyManager: {fileID: 5114671140808074405}
   squashbucklerMeter: {fileID: 0}
+  squashbucklerMeterFill: {fileID: 0}
+  playerStatManager: {fileID: 6676928779841109646}
+  squashbucklerAvailableColor: {r: 0.023529412, g: 0.8392157, b: 0.627451, a: 1}
+  squashbucklerUnavailableColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1 &7589547966762801291
 GameObject:
   m_ObjectHideFlags: 0

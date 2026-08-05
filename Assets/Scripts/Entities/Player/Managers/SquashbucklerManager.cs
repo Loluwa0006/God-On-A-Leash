@@ -7,6 +7,10 @@ public class SquashbucklerManager : MonoBehaviour
     [SerializeField] int maxCharge = 10;
     [SerializeField] AnarchyManager anarchyManager;
     [SerializeField] Slider squashbucklerMeter;
+    [SerializeField] Image squashbucklerMeterFill;
+    [SerializeField] EntityStatsManager playerStatManager;
+    [SerializeField] Color squashbucklerAvailableColor = Color.green;
+    [SerializeField] Color squashbucklerUnavailableColor = Color.gray;
     int squashbucklerCharge;
     public int SquashbucklerCharge { get => squashbucklerCharge;
         set
@@ -37,5 +41,7 @@ public class SquashbucklerManager : MonoBehaviour
     void UpdateSquashbucklerDisplays()
     {
         squashbucklerMeter.value = squashbucklerCharge;
+        var squashbucklerRequirement = playerStatManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerChargesToEnterSquashbucklerMode);
+        squashbucklerMeterFill.color = squashbucklerCharge >= squashbucklerRequirement ? squashbucklerAvailableColor : squashbucklerUnavailableColor;
     }
 }
