@@ -26,6 +26,8 @@ public class RaceMode : BaseGameMode
     public int CheckpointsRemaining { get; private set; }
     public int CheckpointsReached { get; private set; } = 0;
 
+    public float TimeElapsed { get; private set;  }
+
     RaceCheckpoint previousCheckpoint;
 
     public override void InitializeMode()
@@ -93,4 +95,8 @@ public class RaceMode : BaseGameMode
         }
     }
 
+    void Update()
+    {
+       if (!gameOver) TimeElapsed += Time.deltaTime;
+    }
 }
