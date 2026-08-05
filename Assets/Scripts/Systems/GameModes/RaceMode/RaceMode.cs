@@ -26,6 +26,8 @@ public class RaceMode : BaseGameMode
     public int CheckpointsRemaining { get; private set; }
     public int CheckpointsReached { get; private set; } = 0;
 
+    RaceCheckpoint previousCheckpoint;
+
     public override void InitializeMode()
     {
         base.InitializeMode();
@@ -50,6 +52,12 @@ public class RaceMode : BaseGameMode
     {
         CheckpointsRemaining--;
         CheckpointsReached++;
+        if (previousCheckpoint != null)
+        {
+            previousCheckpoint.Hide(); // prevents too much clutter
+        }
+        previousCheckpoint = checkpoint;
+            
         if (timerStyle == TimerStyle.PerCheckpoint)
         {
             timerTracker = raceDuration;
