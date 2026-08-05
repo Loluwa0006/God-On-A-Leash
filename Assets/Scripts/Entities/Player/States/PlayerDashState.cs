@@ -27,6 +27,7 @@ public class PlayerDashState : PlayerAirState
     public override void AnimationSetup()
     {
         base.AnimationSetup();
+        Player.Animator.ResetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_JumpPerformed));
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedDashing));
 
     }

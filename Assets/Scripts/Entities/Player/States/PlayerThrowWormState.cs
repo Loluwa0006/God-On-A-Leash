@@ -26,14 +26,14 @@ public class PlayerThrowWormState : PlayerAirState
         newSpeed.y = Mathf.Max(newSpeed.y + wormJumpPower, wormJumpPower);
         Player.RigidBody.linearVelocity = newSpeed;
         durationTracker = (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormThrowDuration);
-        if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered && Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail))
-        {
-            FireWorm(Player.WormManager.GetNewWormRail(), cost: (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail));
-        }
-        else
-        {
+    //    if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered && Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail))
+    //    {
+         //   FireWorm(Player.WormManager.GetNewWormRail(), cost: (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail));
+    //    }
+     //   else
+     //   {
             FireWorm(Player.WormManager.GetNewWorm(), cost: 1);
-        }
+    //    }
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Consume();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Consume();
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedThrowingWorm));
@@ -74,11 +74,13 @@ public class PlayerThrowWormState : PlayerAirState
             {
                 StateMachine.TransitionTo<PlayerIdleState>();
             }
+            return;
         }
 
         if (StateMachine.IsStateAvailable<PlayerShadowstepState>())
         {
             StateMachine.TransitionTo<PlayerShadowstepState>();
+            return;
         }
     }
 

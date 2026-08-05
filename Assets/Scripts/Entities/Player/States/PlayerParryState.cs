@@ -94,7 +94,7 @@ public class PlayerParryState : PlayerAirState
         float bonusParryRange = Mathf.LerpUnclamped(0, maxBonusParryRange, Player.RodManager.RodLengthPercentage);
         // needs to extend past the collider otherwise it will never hit anything due to the origin being the center of the collider in the previous frame.
         bonusParryRange += Player.Collider.bounds.size.magnitude;
-        bool collision = Physics.Raycast(ray, out parryRaycast, (Player.RigidBody.position - parryData.previousLocation).magnitude + PARRY_TERRAIN_RAYCAST_SAFE_MARGIN + bonusParryRange, parryMask, QueryTriggerInteraction.Ignore);
+        bool collision = Physics.Raycast(ray, out parryRaycast, (Player.RigidBody.position - parryData.previousLocation).magnitude + PARRY_TERRAIN_RAYCAST_SAFE_MARGIN + bonusParryRange, parryMask, QueryTriggerInteraction.Collide);
         return collision;
     }
 

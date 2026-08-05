@@ -40,7 +40,6 @@ public class PlayerGetHitState : PlayerAirState
             StateMachine.TransitionTo<PlayerFallState>();
             return;
         }
-
         ApplyAttackKnockback();
         ApplyInvincibility();
         invulnerablityTracker = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ExtraInvulnerabilityFramesAfterHit);
@@ -74,6 +73,7 @@ public class PlayerGetHitState : PlayerAirState
     {
         var knockbackVector = contactInfo.DamageInfo.GetKnockbackVector(contactInfo.collisionPoint, contactInfo.hurtbox.bounds.center);
         Player.RigidBody.linearVelocity = knockbackVector;
+        Player.Model.transform.rotation = Quaternion.LookRotation(-knockbackVector, Vector3.up);
     }
     public override void PhysicsProcess()
     {
@@ -107,9 +107,14 @@ public class PlayerGetHitState : PlayerAirState
         return false; //special exception, only player controller handles transitions to this state
     }
 
+    public override void AnimationTeardown()
+    {
+        base.AnimationTeardown();
+        Player.Animator.SetInteger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Int_HitstunReactionLevel), (int)HitstunReactionLevel.None);
+    }
     public override void Exit()
     {
         base.Exit();
-        Player.Animator.SetInteger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Int_HitstunReactionLevel), (int)HitstunReactionLevel.None);
+        Player.Model.transform.rotation = Quaternion.identity;
     }
 }

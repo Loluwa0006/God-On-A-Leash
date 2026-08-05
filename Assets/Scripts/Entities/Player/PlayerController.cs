@@ -9,7 +9,6 @@ public class PlayerController : BaseActor
         Trigger_StartedThrowingWorm,
         Trigger_StartedSwing,
         Trigger_StartedShadowstep,
-        Bool_IsYawning,
         Trigger_StartedFalling,
         Trigger_StartedDashing,
         Trigger_RailParryPerformed,
@@ -18,6 +17,8 @@ public class PlayerController : BaseActor
         Trigger_JumpPerformed,
 
         Bool_IsParrying,
+                Bool_IsYawning,
+
 
         Int_HitstunReactionLevel,
 
@@ -34,9 +35,10 @@ public class PlayerController : BaseActor
     [SerializeField] CameraManager _cameraManager;
     [SerializeField] ShipManager _shipManager;
     [SerializeField] HealthComponent _healthComponent;
-    [SerializeField] Collider _collider;
 
-    [Header("Components")]
+    [Header("Misc")]
+    [SerializeField] Collider _collider;
+    [SerializeField] GameObject _model;
 
 
     public InputManager PlayerInput { get => _playerInput; }
@@ -51,6 +53,8 @@ public class PlayerController : BaseActor
     public CameraManager CameraManager { get => _cameraManager; }
     public HealthComponent HealthComponent { get => _healthComponent; }
     public Collider Collider { get => _collider; }
+
+    public GameObject Model { get => _model; }
     public bool PlayerGrounded { get; set; }
 
     public override void Initialize()
