@@ -12,6 +12,8 @@ public class RaceUI : MonoBehaviour
     public TMP_Text CheckpointsRemainingDisplay { get => checkpointsRemainingDisplay; private set => checkpointsRemainingDisplay = value; }
 
     [SerializeField] TMP_Text completionTimeDisplay;
+    [SerializeField] Color successColor = Color.green;
+    [SerializeField] Color failureColor = Color.red;
 
     RaceMode racemodeManager;
 
@@ -47,13 +49,14 @@ public class RaceUI : MonoBehaviour
         if (won)
         {
             timerDisplay.text = "WIN";
-            completionTimeDisplay.text = racemodeManager.TimeElapsed.ToString("F2");
-            completionTimeDisplay.gameObject.SetActive(true);
         }
         else
         {
             timerDisplay.text = "LOSE";
         }
+        completionTimeDisplay.text = racemodeManager.TimeElapsed.ToString("F2");
+        completionTimeDisplay.gameObject.SetActive(true);
+        completionTimeDisplay.color = won ? successColor : failureColor;
         gameRunning = false;
     }
 }
