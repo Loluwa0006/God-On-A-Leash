@@ -75,6 +75,11 @@ public class PlayerThrowWormState : PlayerAirState
                 StateMachine.TransitionTo<PlayerIdleState>();
             }
         }
+
+        if (StateMachine.IsStateAvailable<PlayerShadowstepState>())
+        {
+            StateMachine.TransitionTo<PlayerShadowstepState>();
+        }
     }
 
     public override void Exit()
