@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RaceCheckpoint
   checkpointMaterial: {fileID: 2100000, guid: 9fa82c19be040274a84de9f6296b0f8f, type: 2}
+  checkpointModel: {fileID: 3685529287741319427}
 --- !u!65 &4822399139934436791
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HitboxComponent : MonoBehaviour
@@ -37,6 +38,7 @@ public class HitboxComponent : MonoBehaviour
     [SerializeField] List<HealthComponent> blacklistedTargets;
     [SerializeField] DamageInfo damageInfo;
     [SerializeField] bool activeOnStart = false;
+    [SerializeField] bool blacklistOnHit = true;
     public DamageInfo DamageInfo { get { return damageInfo; } set { damageInfo = value; } }
 
     [Header("Editor")]
@@ -140,6 +142,7 @@ public class HitboxComponent : MonoBehaviour
     }
     void DamageEntity(HealthComponent healthComponent)
     {
+        Debug.Log($"Hitbox {gameObject.name} struck {healthComponent.name}");
         HitboxContactInfo collisionInfo = new()
         {
             DamageInfo = damageInfo,
@@ -148,7 +151,7 @@ public class HitboxComponent : MonoBehaviour
             
         };
         healthComponent.Damage(collisionInfo);
-        previousTargets.Add(healthComponent);
+        if (blacklistOnHit) previousTargets.Add(healthComponent);
     }
 }
 [System.Serializable]
@@ -196,6 +199,7 @@ public enum DamageSource : short
     EnemyWall,
     EnemySmallProjectile,
     EnemyHeavyProjectile,
-    AnySource
+    AnySource,
+    Water,
 }
 
