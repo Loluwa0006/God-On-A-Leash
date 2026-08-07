@@ -75,7 +75,7 @@ public class PlayerShadowstepState : PlayerBaseState
     }
     public override bool StateAvailable()
     {
-        return Player.SquashbucklerManager.SquashbucklerCharge > (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerChargesToEnterSquashbucklerMode) 
+        return Player.SquashbucklerManager.SquashbucklerCharge >= (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerChargesToEnterSquashbucklerMode) 
                && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Squashbuckler].Buffered;
     }
 }
