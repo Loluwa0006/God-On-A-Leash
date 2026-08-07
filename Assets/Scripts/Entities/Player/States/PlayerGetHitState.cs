@@ -22,8 +22,6 @@ public class PlayerGetHitState : PlayerAirState
     int hitstunTracker = 0;
     int invulnerablityTracker = 0;
     HitboxContactInfo contactInfo;
-
-    Quaternion previousRotation;
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
@@ -75,7 +73,6 @@ public class PlayerGetHitState : PlayerAirState
     {
         var knockbackVector = contactInfo.DamageInfo.GetKnockbackVector(contactInfo.collisionPoint, contactInfo.hurtbox.bounds.center);
         Player.RigidBody.linearVelocity = knockbackVector;
-        previousRotation = Player.Model.transform.rotation;
         Player.Model.transform.rotation = Quaternion.LookRotation(-knockbackVector, Vector3.up);
     }
     public override void PhysicsProcess()
@@ -118,6 +115,6 @@ public class PlayerGetHitState : PlayerAirState
     public override void Exit()
     {
         base.Exit();
-        Player.Model.transform.rotation = previousRotation;
+        Player.Model.transform.rotation = Quaternion.LookRotation(viewCamera.transform.forward, Vector3.up);
     }
 }

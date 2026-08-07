@@ -142,7 +142,6 @@ public class HitboxComponent : MonoBehaviour
     }
     void DamageEntity(HealthComponent healthComponent)
     {
-        Debug.Log($"Hitbox {gameObject.name} struck {healthComponent.name}");
         HitboxContactInfo collisionInfo = new()
         {
             DamageInfo = damageInfo,

@@ -86,6 +86,7 @@ public class PlayerStats
     public StatObject RailParryMinimumSpeed;
     public StatObject RailParryMinimumJump;
     public StatObject PreviousSpeedToRailSpeedRatio;
+    public StatObject PlayerSuccessfulParryHitstopDuration;
 
     [Header("Squashbuckler")]
     public StatObject PlayerChargesToEnterSquashbucklerMode;

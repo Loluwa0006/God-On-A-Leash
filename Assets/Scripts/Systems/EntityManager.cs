@@ -9,8 +9,8 @@ public class EntityManager : MonoBehaviour
     Dictionary<IDComponent.IDType, List<BaseEntity>> entityTypes = new ();
     List<BaseEntity> entityList = new();
     public int PlayerID { get; set; }
-    public float TimeScale { get; private set; }
 
+    float durationOfTimeScaleChange = 0f;
     private void Start()
     {
         if (Instance != null && Instance != this)
@@ -52,7 +52,7 @@ public class EntityManager : MonoBehaviour
         foreach (var entity in entityList)
         {
             if (entity.enabled) entity.PhysicsProcess();
-        }       
+        }
     }
 
     private void Update()
@@ -60,6 +60,16 @@ public class EntityManager : MonoBehaviour
         foreach (var entity in entityList)
         {
             if (entity.enabled) entity.Process();
+        } 
+        if (durationOfTimeScaleChange > 0.001f)
+        {
+            durationOfTimeScaleChange = Mathf.MoveTowards(durationOfTimeScaleChange, 0, Time.unscaledDeltaTime);
+            Debug.Log($"Time scale will reset in " + durationOfTimeScaleChange.ToString("F2") + " seconds.");
+            if (durationOfTimeScaleChange <= 0.001f)
+            {
+                Time.timeScale = 1f;
+                Debug.Log("Time scale reset to 1.0");
+            }
         }
     }
 
@@ -96,5 +106,20 @@ public class EntityManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    /// <summary>
+    /// Sets the update rate for the game. This will affect all entities and systems that rely on Time.deltaTime for their updates.
+    /// </summary>
+    /// <param name="timeScale"></param>
+    /// <param name="requestor"> The entity requesting the time scale change. </param>
+    /// <param name="duration"> The duration in frames for which the time scale should be applied. </param>
+    public void SetTimeScale(float timeScale, BaseEntity requestor, int duration)
+    {
+        if (duration <= 0) return;
+        Time.timeScale = timeScale;
+        durationOfTimeScaleChange = (float) duration / 60; // converts frames to seconds 
+        Debug.Log("Duration is " + duration + " in frames.") ;
+        Debug.Log($"Time scale set to {timeScale} by {requestor.name} for {durationOfTimeScaleChange.ToString()} seconds.");
     }
 }

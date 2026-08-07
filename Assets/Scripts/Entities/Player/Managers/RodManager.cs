@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class RodManager : MonoBehaviour
+public class RodManager : BaseEntity
 {
     [SerializeField] LineRenderer rodLine;
     [SerializeField] LayerMask grappleMask;
@@ -49,8 +49,9 @@ public class RodManager : MonoBehaviour
     {
         get => RodLength / player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxRodRange);
     }
-    private void Start()
+    public override void Initialize()
     {
+        base.Initialize();
         DisableGrapple();
         RodLength = 0.0f;
     }

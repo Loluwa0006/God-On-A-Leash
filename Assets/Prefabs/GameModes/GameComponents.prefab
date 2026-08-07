@@ -211,6 +211,7 @@ MonoBehaviour:
     RailParryMinimumSpeed: {fileID: 11400000, guid: 86fbba41ea2af3b4ab9e4b68552fbe91, type: 2}
     RailParryMinimumJump: {fileID: 11400000, guid: 23ad958202896f54ab63aa897b626d10, type: 2}
     PreviousSpeedToRailSpeedRatio: {fileID: 11400000, guid: 2ee3e7bdb5056c840852f1f21f16d8d3, type: 2}
+    PlayerSuccessfulParryHitstopDuration: {fileID: 11400000, guid: ed767a78c9467b54596da257834c7d05, type: 2}
     PlayerChargesToEnterSquashbucklerMode: {fileID: 11400000, guid: 39a3a2af312b2da47ab14096560505f7, type: 2}
     PlayerMinimumShadowstepSpeed: {fileID: 11400000, guid: e4b8545b033030247827535e99213e45, type: 2}
     PlayerDurationPerSquashbucklerCharge: {fileID: 11400000, guid: c11b3616a3556734ba127680e07d9d12, type: 2}

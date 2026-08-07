@@ -23,6 +23,13 @@ public class BaseEntity : MonoBehaviour
     {
 
     }
+    /// <summary>
+    /// Method is called every fixed update, regardless of the time scale. Use this for physics calculations that need to be consistent even when the game is paused or slowed down.
+    /// </summary>
+    public virtual void PhysicsProcessConstant()
+    {
+
+    }
     private void OnEnable()
     {
       if (EntityManager.Instance != null)  EntityManager.Instance.RegisterEntity(this);

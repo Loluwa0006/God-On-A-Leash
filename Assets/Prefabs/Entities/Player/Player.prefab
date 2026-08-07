@@ -584,7 +584,7 @@ VisualEffect:
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: 9b8cf23f1466fc541afc5c4cd93c4bf0, type: 3}
   m_InitialEventName: 
-  m_InitialEventNameOverriden: 0
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1
@@ -1269,6 +1269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a240b9dba9f341478b19dd14d896db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RodManager
+  idComponent: {fileID: 0}
   rodLine: {fileID: 8496726179433166469}
   grappleMask:
     serializedVersion: 2
@@ -2443,6 +2444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9cba579494a5b646a930ced74bbc20c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SquashbucklerManager
+  idComponent: {fileID: 0}
   maxCharge: 10
   anarchyManager: {fileID: 5114671140808074405}
   squashbucklerMeter: {fileID: 0}

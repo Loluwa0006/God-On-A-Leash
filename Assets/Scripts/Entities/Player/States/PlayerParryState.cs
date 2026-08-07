@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+
 public class PlayerParryState : PlayerAirState
 {
 
@@ -12,6 +13,7 @@ public class PlayerParryState : PlayerAirState
     public const float MINIMUM_SPEED_FOR_PARRY = 0.1f;
 
     [SerializeField] LayerMask parryMask;
+    [SerializeField] UnityEvent parryPerformed;
     int durationTracker = 0;
 
     RaycastHit parryRaycast;
@@ -38,7 +40,8 @@ public class PlayerParryState : PlayerAirState
 
     ParryData parryData;
 
-    [SerializeField] UnityEvent parryPerformed;
+    public readonly DamageSource[] ParriableSources = { DamageSource.EnemySmallProjectile, DamageSource.Water, DamageSource.EnemyWall };
+
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
@@ -101,15 +104,44 @@ public class PlayerParryState : PlayerAirState
         return collision;
     }
 
+    public override void OnPlayerStruck(HitboxContactInfo info)
+    {
+        bool containsSource = false;
+        for (int i = 0; i < 3; i++)
+        {
+            if (info.DamageInfo.damageSource == ParriableSources[i])
+            {
+                containsSource = true;
+                break;
+            }
+        }
+        if (containsSource)
+        {
+            PerformParry(Player.PlayerInput.GetMovementDirection(), (info.collisionPoint - Player.RigidBody.position).normalized);
+            StateMachine.TransitionTo<PlayerFallState>();
+        }
+        else
+        {
+            base.OnPlayerStruck(info);
+        }
+    }
+
    
     void PerformParry(Vector3 movementDirection, Vector3 normal)
     {
         float previousSpeed = parryData.previousSpeed.magnitude;
         Vector3 previousDirection = parryData.previousSpeed.normalized;
         float bounceVelocity = previousSpeed + (previousSpeed * Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ParrySpeedIncrease));
+        var hitstopDuration = (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSuccessfulParryHitstopDuration);
         if (durationTracker > Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ProperParryDuration))
         {
             bounceVelocity *= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PartialParrySpeedPenalty);
+            hitstopDuration = 0;
+        } 
+        else
+        {
+            Debug.Log("Performed proper parry, hitstop duration is " + hitstopDuration);
+            EntityManager.Instance.SetTimeScale(0, Player, hitstopDuration);
         }
         Vector3 velocityReflected = Vector3.Reflect(previousDirection, normal).normalized;
         Vector3 movementAccountedForRotation = movementDirection.x * viewCamera.transform.right + movementDirection.y * viewCamera.transform.forward;

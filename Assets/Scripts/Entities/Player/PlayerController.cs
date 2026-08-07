@@ -75,12 +75,13 @@ public class PlayerController : BaseActor
 
     public void OnPlayerDamaged(HitboxContactInfo info)
     {
-        if (info.DamageInfo.damage <= 0) return;
+//        if (info.DamageInfo.damage <= 0) return;
         Dictionary<string, object> getHitStateMessage = new()
         {
             [PlayerGetHitState.PlayerGetHitMessage.ContactInfo.ToString()] = info
         };
-        stateMachine.TransitionTo<PlayerGetHitState>(getHitStateMessage);
+        var currentState = (PlayerBaseState)stateMachine.GetCurrentState();
+        currentState.OnPlayerStruck(info);
     }
 
     public string GetAnimationParameterFormatted(AnimationParameter parameter)

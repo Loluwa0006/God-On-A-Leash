@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SquashbucklerManager : MonoBehaviour
+public class SquashbucklerManager : BaseEntity
 {
 
     [SerializeField] int maxCharge = 10;
@@ -24,8 +24,9 @@ public class SquashbucklerManager : MonoBehaviour
     public int MaxCharge { get => maxCharge; }
 
 
-    private void Start()
+    public override void Initialize()
     {
+        base.Initialize();
         squashbucklerMeter.maxValue = maxCharge;
         anarchyManager.anarchyGainedThroughScaledMethod.AddListener((method, charges) => OnAnarchyGained(charges));
         anarchyManager.anarchyGainedThroughUnscaledMethod.AddListener((method, charges) => OnAnarchyGained(charges));

@@ -1,6 +1,6 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerBaseState : BaseState
 {
@@ -62,5 +62,13 @@ public class PlayerBaseState : BaseState
         }
     }
 
+    public virtual void OnPlayerStruck(HitboxContactInfo info)
+    {
+        Dictionary<string, object> getHitStateMessage = new()
+        {
+            [PlayerGetHitState.PlayerGetHitMessage.ContactInfo.ToString()] = info
+        };
+        StateMachine.TransitionTo<PlayerGetHitState>(getHitStateMessage);
+    }
     
 }
