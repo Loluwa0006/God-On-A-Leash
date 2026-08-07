@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerParryState : PlayerAirState
 {
@@ -36,6 +37,8 @@ public class PlayerParryState : PlayerAirState
     }
 
     ParryData parryData;
+
+    [SerializeField] UnityEvent parryPerformed;
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
@@ -117,6 +120,7 @@ public class PlayerParryState : PlayerAirState
         Vector2 lateralSpeed = new (Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z);
         Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_AtHighSpeed), lateralSpeed.magnitude >= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSpeedToBeConsideredFast));
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_ParryPerformed));
+        parryPerformed.Invoke();
     }
     public override void Exit()
     {
