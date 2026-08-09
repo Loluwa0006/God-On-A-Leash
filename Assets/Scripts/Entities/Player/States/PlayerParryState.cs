@@ -142,7 +142,6 @@ public class PlayerParryState : PlayerAirState
         } 
         else
         {
-            Debug.Log("Performed proper parry, hitstop duration is " + hitstopDuration);
             EntityManager.Instance.SetTimeScale(0, Player, hitstopDuration);
         }
         Vector3 velocityReflected = Vector3.Reflect(previousDirection, normal).normalized;

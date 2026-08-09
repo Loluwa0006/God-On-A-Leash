@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 public class PlayerThrowWormState : PlayerAirState
 { 
     [SerializeField] LayerMask terrainMask;
-    
-    int durationTracker = 0;
+    [SerializeField] UnityEvent wormThrown = new();
 
     public override Type[] statesToAttemptToTransitionTo
     {
@@ -25,7 +25,6 @@ public class PlayerThrowWormState : PlayerAirState
         float wormJumpPower = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormJumpInfo);
         newSpeed.y = Mathf.Max(newSpeed.y + wormJumpPower, wormJumpPower);
         Player.RigidBody.linearVelocity = newSpeed;
-        durationTracker = (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormThrowDuration);
     //    if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered && Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail))
     //    {
          //   FireWorm(Player.WormManager.GetNewWormRail(), cost: (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail));
@@ -37,6 +36,7 @@ public class PlayerThrowWormState : PlayerAirState
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Consume();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Consume();
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedThrowingWorm));
+        wormThrown.Invoke();
     }
 
     void FireWorm(WormEntity worm, int cost)
@@ -57,8 +57,7 @@ public class PlayerThrowWormState : PlayerAirState
             ApplyGravity(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormJumpInfo, JumpInfo.FALL_GRAVITY_ID));
         }
         AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerAirAcceleration));
-        durationTracker--;
-        if (durationTracker == 0)
+        if (Player.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.99f)
         {
             StateMachine.TransitionTo<PlayerFallState>();
             return;
