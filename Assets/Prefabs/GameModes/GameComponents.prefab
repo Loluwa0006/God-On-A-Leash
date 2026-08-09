@@ -245,6 +245,7 @@ MonoBehaviour:
     PlayerJustYawnAnarchyProgress: {fileID: 11400000, guid: 8b2ed554bb63ef049b21cd6a0245c7cb, type: 2}
     PlayerYawnAnarchyProgress: {fileID: 11400000, guid: af07d77aca327c34caacd4f06d6d5097, type: 2}
     PlayerRodRetractionSpeedWhileYawning: {fileID: 11400000, guid: 669cb08e5bbfcaa46a9fd2a13f723ded, type: 2}
+    PlayerJustYawnSpecialStop: {fileID: 11400000, guid: 0523b2f7c21b56d4987cd2a45a696b83, type: 2}
     ExtraInvulnerabilityFramesAfterHit: {fileID: 11400000, guid: d958481ccee97954e8878cfc0d472dd7, type: 2}
     PlayerSpeedToBeConsideredFast: {fileID: 11400000, guid: 278826680b2f0bf47af705551f05f7de, type: 2}
   leviathanStats:

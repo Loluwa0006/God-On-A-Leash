@@ -54,6 +54,8 @@ public class PlayerYawnState : PlayerAirState
         Player.AnarchyManager.GenerateAnarchyUnscaled(UnscaledGenerationMethod.JustYawn);
         Player.RodManager.RodLength = 0.0f;
         justYawnPerformed.Invoke();
+        int hitstopDuration = (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerJustYawnSpecialStop);
+        EntityManager.Instance.SetTimeScale(0.0f, Player, hitstopDuration);
     }
 
     public override void PhysicsProcess()

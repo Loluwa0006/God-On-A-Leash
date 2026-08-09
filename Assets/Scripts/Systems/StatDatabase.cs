@@ -128,6 +128,7 @@ public class PlayerStats
     public StatObject PlayerJustYawnAnarchyProgress;
     public StatObject PlayerYawnAnarchyProgress;
     public StatObject PlayerRodRetractionSpeedWhileYawning;
+    public StatObject PlayerJustYawnSpecialStop;
 
 
     [Header("GetHit")]
