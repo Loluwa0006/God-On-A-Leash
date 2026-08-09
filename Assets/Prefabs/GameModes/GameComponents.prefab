@@ -197,10 +197,15 @@ MonoBehaviour:
     MinSwingJumpHeight: {fileID: 11400000, guid: edc7153cf1780814b8cdbc644fbcea9c, type: 2}
     SwingSpeedToJumpPowerRatio: {fileID: 11400000, guid: b74034d093166aa40b18e258de698666, type: 2}
     PlayerDashGravity: {fileID: 11400000, guid: 1ee9b07cc75bb1e4988658fb80ddea28, type: 2}
-    PlayerDashPower: {fileID: 11400000, guid: 671567b174d7f4b4297e75535e36d3f3, type: 2}
+    PlayerMinimumDashPower: {fileID: 11400000, guid: 671567b174d7f4b4297e75535e36d3f3, type: 2}
+    PlayerMaximumDashPower: {fileID: 11400000, guid: 88b150efc629bbf49a17ff33f11ef1b1, type: 2}
     PlayerDashLateralAcceleration: {fileID: 11400000, guid: b621c6bb4bbd3b941999fa68f64b5d23, type: 2}
     PlayerMaxDashSpeed: {fileID: 11400000, guid: 9c59ec811eaa5be4d8b14dad619147b9, type: 2}
     PlayerMinDistanceBeforeDashCancelled: {fileID: 11400000, guid: 01c50fbf1de123e45a2aa4c4ff5b5a28, type: 2}
+    PlayerRodSpringWhileDashing: {fileID: 11400000, guid: 1644b1f030e8d334f8b27a4b861d5b87, type: 2}
+    PlayerRodDamperWhileDashing: {fileID: 11400000, guid: 73cf4f7c8b412c848aa312a6c72d3a42, type: 2}
+    PlayerRodMaxDistanceWithNoSpringWhileDashing: {fileID: 11400000, guid: 2e9f2927a01eca948a7b4a9760c328fa, type: 2}
+    PlayerRodMinDistanceWithNoSpringWhileDashing: {fileID: 11400000, guid: f8affc6c096aad44a9ed4f15bc72fc22, type: 2}
     ProperParryDuration: {fileID: 11400000, guid: ffcc52e25415d1641bf982e17c35b1ff, type: 2}
     PartialParryDuration: {fileID: 11400000, guid: 42737ae82f5f47a4e9e0a42d6fb031aa, type: 2}
     ParryStrafeSpeed: {fileID: 11400000, guid: a6959959299bbc14f872db62753917ba, type: 2}

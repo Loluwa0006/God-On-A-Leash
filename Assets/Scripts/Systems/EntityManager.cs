@@ -64,11 +64,9 @@ public class EntityManager : MonoBehaviour
         if (durationOfTimeScaleChange > 0.001f)
         {
             durationOfTimeScaleChange = Mathf.MoveTowards(durationOfTimeScaleChange, 0, Time.unscaledDeltaTime);
-            Debug.Log($"Time scale will reset in " + durationOfTimeScaleChange.ToString("F2") + " seconds.");
             if (durationOfTimeScaleChange <= 0.001f)
             {
                 Time.timeScale = 1f;
-                Debug.Log("Time scale reset to 1.0");
             }
         }
     }
@@ -119,7 +117,5 @@ public class EntityManager : MonoBehaviour
         if (duration <= 0) return;
         Time.timeScale = timeScale;
         durationOfTimeScaleChange = (float) duration / 60; // converts frames to seconds 
-        Debug.Log("Duration is " + duration + " in frames.") ;
-        Debug.Log($"Time scale set to {timeScale} by {requestor.name} for {durationOfTimeScaleChange.ToString()} seconds.");
     }
 }

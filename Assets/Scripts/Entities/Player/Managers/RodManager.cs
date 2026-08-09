@@ -93,6 +93,20 @@ public class RodManager : BaseEntity
             grappleInfo.collider = GrappleUtilities.RaycastResult.collider;
             grappleInfo.offset = GrappleUtilities.RaycastResult.point - grappleInfo.collider.bounds.center;
 
+            grappleJoint = player.gameObject.AddComponent<SpringJoint>();
+            grappleJoint.autoConfigureConnectedAnchor = false;
+            grappleJoint.connectedAnchor = grappleInfo.GrapplePosition;
+
+            grappleJoint.massScale = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodSwingMassScale);
+            grappleJoint.spring = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodSpringWhileDashing);
+            grappleJoint.damper = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodDamperWhileDashing);
+
+            var distance = Vector3.Distance(grappleInfo.GrapplePosition, player.Collider.bounds.center);
+
+            grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMaxDistanceWithNoSpringWhileDashing) * distance;
+            grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMinDistanceWithNoSpringWhileDashing) * distance;
+
+
             RodLength = Vector3.Distance(player.RigidBody.position, GrappleUtilities.RaycastResult.point);
         }
     }

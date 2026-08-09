@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -34,7 +35,7 @@ public class HealthComponent : MonoBehaviour
 
     void FixedUpdate()
     {
-        foreach (var status in statusEffects.Values)
+        foreach (var status in statusEffects.Values.ToList())
         {
             status.PhysicsProcess();
         }
@@ -157,7 +158,8 @@ public class InvulnerabilityEffect : StatusEffect
 
 public enum StatusEffectID
 {
-    PlayerGethitInvulnerability,
-    ParryProjectileInvulnerability,
-    WormPlayerSlashInvulnerability,
+    PlayerGethitInvulnerability = 0,
+    ParryProjectileInvulnerability = 100,
+    ParryWaterInvulnerability = 200,
+    WormPlayerSlashInvulnerability = 300,
 }  

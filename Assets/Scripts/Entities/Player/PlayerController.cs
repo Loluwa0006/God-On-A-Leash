@@ -17,7 +17,7 @@ public class PlayerController : BaseActor
         Trigger_JumpPerformed,
 
         Bool_IsParrying,
-                Bool_IsYawning,
+        Bool_IsYawning,
 
 
         Int_HitstunReactionLevel,

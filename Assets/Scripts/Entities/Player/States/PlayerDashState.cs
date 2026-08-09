@@ -22,6 +22,7 @@ public class PlayerDashState : PlayerAirState
         Player.RodManager.StartDash();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Dash].Consume();
         Player.CameraManager.TransitionToCamera(Player.CameraManager.CloseFollowCamera, cameraTransitionTime);
+        Vector3 lateralSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z);
     }
 
     public override void AnimationSetup()
@@ -34,17 +35,21 @@ public class PlayerDashState : PlayerAirState
 
     public override void PhysicsProcess()
     {
+
         var dashDirection = Player.PlayerInput.GetMovementDirection().y;
 
         var dashDirectionCorrected = Mathf.Clamp(dashDirection, 0, 1); //makes neutral and holding back the same value
-        base.PhysicsProcess();
-        float gravity = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerDashGravity) * (1.0f - dashDirectionCorrected);
 
-        ApplyGravity(gravity);
-        var movementCorrected = new Vector2(Player.PlayerInput.GetMovementDirection().x, 0); //force 0 because forward/backward movement is completely handled by dash functionality
-        AirborneMovement(movementCorrected, Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerDashLateralAcceleration));
+
+        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerDashLateralAcceleration));
 
         var directionToGrapple = (Player.RodManager.GrappleInfo.GrapplePosition - Player.Collider.bounds.center).normalized;
+
+        float minDashPower = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinimumDashPower);
+        float maxDashPower = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaximumDashPower);
+        float dashPower = Mathf.Lerp(minDashPower, maxDashPower, dashDirectionCorrected);
+
+        Player.RigidBody.AddForce(directionToGrapple * dashPower, ForceMode.VelocityChange);
 
         float distanceFromGrapplePoint = Vector3.Distance(Player.RodManager.GrappleInfo.GrapplePosition, Player.Collider.bounds.center);
         float distanceBeforeCancel = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinDistanceBeforeDashCancelled);
@@ -62,35 +67,9 @@ public class PlayerDashState : PlayerAirState
         }
 
         Player.RodManager.RodLength = distanceFromGrapplePoint;
-        
-        var speedToAdd = GetSpeedToAdd(directionToGrapple);
-        Player.RigidBody.AddForce(speedToAdd, ForceMode.VelocityChange);
-        var strippedLateral = StripLateralMovementBasedOnInput(directionToGrapple, dashDirectionCorrected);
-        Player.RigidBody.AddForce(strippedLateral, ForceMode.VelocityChange);
     }
 
-    Vector3 GetSpeedToAdd(Vector3 directionToGrapple)
-    {
-        Vector3 speedToAdd = directionToGrapple * Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerDashPower);
-        var currentSpeed = new Vector3(Player.RigidBody.linearVelocity.x, 0, Player.RigidBody.linearVelocity.z); //don't use y when clamping lateral movement
-        if (currentSpeed.magnitude >= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxDashSpeed))
-        {
-            var speedNormalized = currentSpeed.normalized;
-            var extraSpeed = Vector2.Dot(speedToAdd, speedNormalized);
-            if (extraSpeed > 0)
-            {
-                speedToAdd -= extraSpeed * speedNormalized;
-            }
-        }
-        return speedToAdd;
-    }
-
-    Vector3 StripLateralMovementBasedOnInput(Vector3 directionToGrapple, float yAxis)
-    {
-        var velocityProjected = Vector3.Dot(Player.RigidBody.linearVelocity, directionToGrapple) * directionToGrapple;
-        var lateralMovement = Player.RigidBody.linearVelocity - velocityProjected; //subtract aligned velocity
-        return -lateralMovement * yAxis;
-    }
+ 
 
     public override void Exit()
     {

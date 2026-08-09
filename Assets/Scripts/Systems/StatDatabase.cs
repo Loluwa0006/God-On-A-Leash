@@ -70,10 +70,15 @@ public class PlayerStats
 
     [Header("Dash")]
     public StatObject PlayerDashGravity;
-    public StatObject PlayerDashPower;
+    public StatObject PlayerMinimumDashPower;
+    public StatObject PlayerMaximumDashPower;
     public StatObject PlayerDashLateralAcceleration;
     public StatObject PlayerMaxDashSpeed;
     public StatObject PlayerMinDistanceBeforeDashCancelled;
+    public StatObject PlayerRodSpringWhileDashing;
+    public StatObject PlayerRodDamperWhileDashing;
+    public StatObject PlayerRodMaxDistanceWithNoSpringWhileDashing;
+    public StatObject PlayerRodMinDistanceWithNoSpringWhileDashing;
 
     [Header("Parry")]
     public StatObject ProperParryDuration;

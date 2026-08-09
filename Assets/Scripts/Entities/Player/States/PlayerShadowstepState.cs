@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerShadowstepState : PlayerBaseState
 {
-    float initialSpeed;
+    float shadowstepSpeed;
 
     int durationTracker = 0;
 
@@ -12,8 +12,8 @@ public class PlayerShadowstepState : PlayerBaseState
     {
         base.Enter(message);
         startedAtMaxCharge = Player.SquashbucklerManager.SquashbucklerCharge == Player.SquashbucklerManager.MaxCharge;
-        initialSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z).magnitude;
-        if (initialSpeed < Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinimumShadowstepSpeed)) initialSpeed = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinimumShadowstepSpeed);
+        shadowstepSpeed = Player.RigidBody.linearVelocity.magnitude;
+        if (shadowstepSpeed < Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinimumShadowstepSpeed)) shadowstepSpeed = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinimumShadowstepSpeed);
         durationTracker = (int)(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerDurationPerSquashbucklerCharge) * Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerChargesToEnterSquashbucklerMode));
         Player.SquashbucklerManager.SquashbucklerCharge -= (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerChargesToEnterSquashbucklerMode);
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Squashbuckler].Consume();
@@ -23,12 +23,13 @@ public class PlayerShadowstepState : PlayerBaseState
     public override void AnimationSetup()
     {
         base.AnimationSetup();
+        Player.Animator.ResetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedFalling));
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedShadowstep));
     }
     public override void PhysicsProcess()
     {
         base.PhysicsProcess();
-        Player.RigidBody.linearVelocity = initialSpeed * viewCamera.transform.forward;
+        Player.RigidBody.linearVelocity = shadowstepSpeed * viewCamera.transform.forward;
         durationTracker--;
         if (durationTracker == 0)
         {

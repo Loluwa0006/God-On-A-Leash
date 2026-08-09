@@ -49,7 +49,9 @@ public class PlayerParryState : PlayerAirState
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Parry].Consume();
 
         InvulnerabilityEffect invulnerabilityEffect = new(StatusEffectID.ParryProjectileInvulnerability, DamageSource.EnemySmallProjectile, InvulnerabilityEffect.INFINITE_DURATION_VALUE);
+        InvulnerabilityEffect invulnerabilityEffect2 = new(StatusEffectID.ParryWaterInvulnerability, DamageSource.Water, InvulnerabilityEffect.INFINITE_DURATION_VALUE);
         Player.HealthComponent.AddStatusEffect(invulnerabilityEffect);
+        Player.HealthComponent.AddStatusEffect(invulnerabilityEffect2);
     }
 
     public override void AnimationSetup()
@@ -157,7 +159,19 @@ public class PlayerParryState : PlayerAirState
     public override void Exit()
     {
         base.Exit();
+        Player.HealthComponent.RemoveStatusEffect(StatusEffectID.ParryWaterInvulnerability);
         Player.HealthComponent.RemoveStatusEffect(StatusEffectID.ParryProjectileInvulnerability);
+
+
+        // temporary invuln to guarantee that player isn't hit because of hitstop.
+
+        var hitstopDuration = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSuccessfulParryHitstopDuration);
+
+        InvulnerabilityEffect invulnerabilityEffect = new(StatusEffectID.ParryProjectileInvulnerability, DamageSource.EnemySmallProjectile, hitstopDuration + 1);
+        InvulnerabilityEffect invulnerabilityEffect2 = new(StatusEffectID.ParryWaterInvulnerability, DamageSource.Water, hitstopDuration + 1);
+        Player.HealthComponent.AddStatusEffect(invulnerabilityEffect);
+        Player.HealthComponent.AddStatusEffect(invulnerabilityEffect2);
+
     }
 
     public override void AnimationTeardown()
