@@ -17,10 +17,14 @@ public class PlayerThrowWormState : PlayerAirState
         };
         protected set => base.statesToAttemptToTransitionTo = value;
     }
- 
+
+    bool stateCancellable = false;
+
+    int durationTracker = 0;
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
+        durationTracker = 0;
         Vector3 newSpeed = Player.RigidBody.linearVelocity;
         float wormJumpPower = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormJumpInfo);
         newSpeed.y = Mathf.Max(newSpeed.y + wormJumpPower, wormJumpPower);
@@ -48,6 +52,7 @@ public class PlayerThrowWormState : PlayerAirState
     public override void PhysicsProcess()
     {
         base.PhysicsProcess();
+        durationTracker++;
         if (Player.RigidBody.linearVelocity.y > 0)
         {
             ApplyGravity(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormJumpInfo, JumpInfo.JUMP_GRAVITY_ID));
@@ -56,8 +61,11 @@ public class PlayerThrowWormState : PlayerAirState
         {
             ApplyGravity(Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormJumpInfo, JumpInfo.FALL_GRAVITY_ID));
         }
-        AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerAirAcceleration));
-        if (Player.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.99f)
+        var movementInput = Player.PlayerInput.GetMovementDirection();
+        stateCancellable = durationTracker > (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormThrowDuration);
+        AirborneMovement(movementInput, Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerAirAcceleration));
+        if (Player.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.99f 
+           || stateCancellable && movementInput.magnitude > MOVEMENT_DEADZONE)
         {
             StateMachine.TransitionTo<PlayerFallState>();
             return;
