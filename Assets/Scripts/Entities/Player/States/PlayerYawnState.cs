@@ -1,14 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 public class PlayerYawnState : PlayerAirState
 {
 
-    int justYawnTracker = 0;
+    float timeRemainingAfterAnarchyGenerated = 0;
 
     int elaspedYawnTime;
     int minYawnTime;
+
+    [SerializeField] UnityEvent justYawnPerformed = new();
 
     public override Type[] statesToAttemptToTransitionTo
     {
@@ -26,7 +29,8 @@ public class PlayerYawnState : PlayerAirState
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
-        if (justYawnTracker > 0)
+        //no holding, cheater!
+        if (timeRemainingAfterAnarchyGenerated > 0 && !Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Parry].ActionPressed)
         {
             OnJustYawn();
         }
@@ -34,6 +38,7 @@ public class PlayerYawnState : PlayerAirState
         {
             minYawnTime = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinYawnTime);
         }
+  
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Yawn].Consume();
         elaspedYawnTime = 0;
     }
@@ -48,12 +53,13 @@ public class PlayerYawnState : PlayerAirState
         minYawnTime = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinJustYawnTime);
         Player.AnarchyManager.GenerateAnarchyUnscaled(UnscaledGenerationMethod.JustYawn);
         Player.RodManager.RodLength = 0.0f;
+        justYawnPerformed.Invoke();
     }
 
     public override void PhysicsProcess()
     {
         elaspedYawnTime++;
-        if (elaspedYawnTime >= minYawnTime  && !Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Yawn].ActionPressed) 
+        if (elaspedYawnTime >= minYawnTime && !Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Yawn].ActionPressed)
         {
             StateMachine.TransitionTo<PlayerFallState>();
             return;
@@ -69,14 +75,10 @@ public class PlayerYawnState : PlayerAirState
 
     public override void InactivePhysicsProcess()
     {
-        justYawnTracker = (int) Mathf.MoveTowards(justYawnTracker, 0, 1);     
+        //timeRemainingAfterAnarchyGenerated = Mathf.MoveTowards(timeRemainingAfterAnarchyGenerated, 0, 1);
+        timeRemainingAfterAnarchyGenerated--;
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsYawning), false);
-    }
 
     public override void AnimationTeardown()
     {
@@ -85,12 +87,15 @@ public class PlayerYawnState : PlayerAirState
     }
     public override bool StateAvailable()
     {
-        return !Player.PlayerGrounded && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Yawn].Buffered;
+        var yawnBuffer = Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Yawn];
+        return !Player.PlayerGrounded
+            && yawnBuffer.Buffered || yawnBuffer.ActionPressed;
     }
     void OnAnarchyGenerated()
     {
-        justYawnTracker = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerJustYawnWindow);
+        timeRemainingAfterAnarchyGenerated = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerJustYawnWindow);
         Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerJustYawnWindow);
+
     }
 
 }

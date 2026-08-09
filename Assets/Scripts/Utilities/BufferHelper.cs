@@ -18,6 +18,10 @@ public class BufferHelper : MonoBehaviour
 
     public bool ActionPressed => actionReference.action.IsPressed();
 
+    public bool WasPerformedThisFrame => actionReference.action.WasPerformedThisFrame();
+
+    public int Window => window;
+
 
     private void Update()
     {

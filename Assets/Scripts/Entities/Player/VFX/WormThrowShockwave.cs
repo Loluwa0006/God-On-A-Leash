@@ -22,6 +22,5 @@ public class WormThrowShockwave : MonoBehaviour
         if (rb == null) return;
         shockwaveAnimator.Play("PlayShockwave", 0, 0f);
       //  shockwaveAnimator.transform.position = rb.position + positionOffset;
-        Debug.Log("worm thrown");
     }
 }
