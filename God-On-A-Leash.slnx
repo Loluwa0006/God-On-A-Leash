@@ -5,6 +5,7 @@
   <Project Path="NaughtyAttributes.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="SplineCollider.csproj" />
+  <Project Path="sc.skyboxes.demo.runtime.csproj" />
   <Project Path="ShaderGraphVariables.csproj" />
   <Project Path="SplineColliderEditor.csproj" />
   <Project Path="UberWaterPlannerReflection.csproj" />

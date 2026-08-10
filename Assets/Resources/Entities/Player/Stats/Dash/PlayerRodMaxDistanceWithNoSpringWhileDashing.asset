@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerRodMaxDistanceWithNoSpringWhileDashing
   m_EditorClassIdentifier: Assembly-CSharp::StatObject
   type: 0
-  floatValue: 15
+  floatValue: 30
   curveValue:
     serializedVersion: 2
     m_Curve: []
@@ -25,4 +25,4 @@ MonoBehaviour:
     jumpTimeToPeak: 0
     jumpTimeToDecent: 0
   percentageValue: 0
-  statValueType: 3
+  statValueType: 0

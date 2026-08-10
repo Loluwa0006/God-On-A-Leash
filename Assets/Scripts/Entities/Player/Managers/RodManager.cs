@@ -73,8 +73,8 @@ public class RodManager : BaseEntity
 
             var distance = Vector3.Distance(grappleInfo.GrapplePosition, player.Collider.bounds.center);
 
-            grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMaxDistanceWithNoSpring) * distance;
-            grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMinDistanceWithNoSpring) * distance;
+            grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMaxDistanceWithNoSpring);
+            grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMinDistanceWithNoSpring);
 
             grappleActive = true;
             rodLine.enabled = true;
@@ -103,8 +103,8 @@ public class RodManager : BaseEntity
 
             var distance = Vector3.Distance(grappleInfo.GrapplePosition, player.Collider.bounds.center);
 
-            grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMaxDistanceWithNoSpringWhileDashing) * distance;
-            grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMinDistanceWithNoSpringWhileDashing) * distance;
+            grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMaxDistanceWithNoSpringWhileDashing);
+            grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMinDistanceWithNoSpringWhileDashing);
 
 
             RodLength = Vector3.Distance(player.RigidBody.position, GrappleUtilities.RaycastResult.point);

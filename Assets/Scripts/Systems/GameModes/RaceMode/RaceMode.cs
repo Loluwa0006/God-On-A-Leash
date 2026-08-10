@@ -35,6 +35,7 @@ public class RaceMode : BaseGameMode
         base.InitializeMode();
         checkpoints = GetComponentsInChildren<RaceCheckpoint>(true);
         CheckpointsRemaining = checkpoints.Length;
+        if (checkpoints.Length == 0) return;
         for (int i = 0; i < checkpoints.Length; i++)
         {
             checkpoints[i].checkpointReached += OnCheckpointReached;

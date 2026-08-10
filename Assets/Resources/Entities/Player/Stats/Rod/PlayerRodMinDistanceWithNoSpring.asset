@@ -25,4 +25,4 @@ MonoBehaviour:
     jumpTimeToPeak: 0
     jumpTimeToDecent: 0
   percentageValue: 0
-  statValueType: 3
+  statValueType: 0

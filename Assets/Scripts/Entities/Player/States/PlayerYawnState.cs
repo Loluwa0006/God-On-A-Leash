@@ -50,6 +50,7 @@ public class PlayerYawnState : PlayerAirState
     }
     void OnJustYawn()
     {
+        Player.Animator.updateMode = AnimatorUpdateMode.UnscaledTime; //yawn during specialstop
         minYawnTime = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMinJustYawnTime);
         Player.AnarchyManager.GenerateAnarchyUnscaled(UnscaledGenerationMethod.JustYawn);
         Player.RodManager.RodLength = 0.0f;
@@ -82,6 +83,11 @@ public class PlayerYawnState : PlayerAirState
     }
 
 
+    public override void Exit()
+    {
+        base.Exit();
+        Player.Animator.updateMode = AnimatorUpdateMode.Fixed;
+    }
     public override void AnimationTeardown()
     {
         base.AnimationTeardown();
@@ -97,7 +103,6 @@ public class PlayerYawnState : PlayerAirState
     {
         timeRemainingAfterAnarchyGenerated = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerJustYawnWindow);
         Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerJustYawnWindow);
-
     }
 
 }
