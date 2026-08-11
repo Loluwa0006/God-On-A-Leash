@@ -4,47 +4,59 @@ using UnityEngine.VFX;
 public class WaterWaveManager : MonoBehaviour
 {
 
-    [SerializeField] float distanceBeforeWavesShow = 25.0f;
-    [SerializeField] float safeMargin = 5.0f;
-    [SerializeField] VisualEffect waveLeft;
-    [SerializeField] VisualEffect waveRight;
+    [SerializeField] Rigidbody player;
+    [SerializeField] Transform water;
+    [SerializeField] VisualEffect waveEffect;
 
-    [SerializeField] PlayerController player;
-    [SerializeField] GameObject water;
+    [SerializeField] float rayLength = 25.0f;
+    //how far in front of the player the waves should spawn;
+    [SerializeField] float moveaheadDistance = 20.0f;
+    [SerializeField] LayerMask waveMask;
 
-    Vector3 positionOffset;
     bool emitting = false;
+
+    Vector3 baseRotation;
+
     private void Start()
     {
-        positionOffset = waveLeft.transform.localPosition;
-        waveLeft.transform.SetParent(null);
-        waveRight.transform.SetParent(null);
-       // can't be in local space if we want it to lock to the water.
+        waveEffect.transform.SetParent(null);
+        waveEffect.Stop();
+        baseRotation = waveEffect.GetVector3("Angle");
     }
-
-
-   
     private void FixedUpdate()
     {
-        var distance = Mathf.Abs(player.RigidBody.position.y - water.transform.position.y);
-        if (distance > distanceBeforeWavesShow)
+        CheckForWater();
+        
+        if (emitting)
         {
-            emitting = false;
-            return;
-        }
-        Vector3 lateralSpeed = new Vector2(player.RigidBody.linearVelocity.x, player.RigidBody.linearVelocity.z);
-        //must be moving fairly fast;
-        if (lateralSpeed.magnitude < player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMoveSpeed)) return;
-        if (!emitting)
-        {
-            waveLeft.Play();
-            waveRight.Play();
-        }
+            var wavePosition = new Vector3(player.position.x, water.position.y, player.position.z);
+            wavePosition += player.transform.forward * moveaheadDistance;
+            var velocityRotation = Quaternion.LookRotation(player.linearVelocity.normalized);
+            
 
-        var lockOnPoint = new Vector3(player.RigidBody.position.x, water.transform.position.y + safeMargin , player.RigidBody.position.z);
-        waveLeft.transform.position = new Vector3(lockOnPoint.x, lockOnPoint.y, lockOnPoint.z);
-        waveRight.transform.position = new Vector3(lockOnPoint.x, lockOnPoint.y, lockOnPoint.z);
-        emitting = true;
+            waveEffect.transform.SetPositionAndRotation(wavePosition, velocityRotation);
+            waveEffect.transform.position = wavePosition;
+            waveEffect.SetVector3("Angle", (baseRotation + Quaternion.Euler(velocityRotation.eulerAngles).eulerAngles));
+        }
     }
-   
+
+    private void CheckForWater()
+    {
+        
+        bool nowEmitting = Mathf.Abs(player.position.y - water.position.y) <= rayLength;
+        
+        //was emitting, no longer emitting , turn off
+        if (emitting && !nowEmitting)
+        {
+            waveEffect.Stop();
+        }
+        //wasn't emitting, now emitting, turn on
+        else if (!emitting && nowEmitting)
+        {
+            waveEffect.Play();
+        }
+        emitting = nowEmitting;
+        
+    }
+
 }

@@ -156,7 +156,6 @@ public class PlayerParryState : PlayerAirState
         Vector3 movementAccountedForRotation = velocityReflected;
         if (movementDirection.magnitude >= MOVEMENT_DEADZONE) movementAccountedForRotation = movementDirection.x * viewCamera.transform.right + movementDirection.y * viewCamera.transform.forward;
         Vector3 velocityRotated = Vector3.Lerp(velocityReflected, movementAccountedForRotation, Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ParryBounceControl));
-
         Player.RigidBody.linearVelocity = velocityRotated * bounceVelocity;
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Parry);
         Vector2 lateralSpeed = new (Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z);

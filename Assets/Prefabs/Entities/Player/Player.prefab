@@ -66,6 +66,59 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &278957987745831042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1188241815664456475}
+  - component: {fileID: 6508867802264025288}
+  m_Layer: 3
+  m_Name: WaterRipple
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1188241815664456475
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278957987745831042}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 754765103659970446}
+  m_Father: {fileID: 3340420948024593123}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6508867802264025288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278957987745831042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89932678e9315044c8effa8fd3b9d34c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterWaveManager
+  player: {fileID: 4316075470623054589}
+  water: {fileID: 0}
+  waveEffect: {fileID: 3245411820551107810}
+  rayLength: 25
+  moveaheadDistance: 35
+  waveMask:
+    serializedVersion: 2
+    m_Bits: 16384
 --- !u!1 &501779863776134576
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,127 +483,6 @@ MonoBehaviour:
   shockwaveAnimator: {fileID: 5128722457129827077}
   shockwaveTransform: {fileID: 7503041214908823427}
   rb: {fileID: 4316075470623054589}
---- !u!1 &1223615096744797838
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 754765103659970446}
-  - component: {fileID: 3245411820551107810}
-  - component: {fileID: 6359978301888644360}
-  m_Layer: 0
-  m_Name: WaterRippleEffect
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &754765103659970446
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223615096744797838}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -323.1331, y: -335.35, z: 930.08514}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3340420948024593123}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!2083052967 &3245411820551107810
-VisualEffect:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223615096744797838}
-  m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: ae3f5aad984dcdc4c8cfb2d12622a689, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
-  m_StartSeed: 0
-  m_ResetSeedOnPlay: 1
-  m_AllowInstancing: 1
-  m_ResourceVersion: 1
-  m_PropertySheet:
-    m_Float:
-      m_Array: []
-    m_Vector2f:
-      m_Array: []
-    m_Vector3f:
-      m_Array:
-      - m_Value: {x: 90, y: 0, z: 0}
-        m_Name: Angle
-        m_Overridden: 1
-    m_Vector4f:
-      m_Array: []
-    m_Uint:
-      m_Array: []
-    m_Int:
-      m_Array: []
-    m_Matrix4x4f:
-      m_Array: []
-    m_AnimationCurve:
-      m_Array: []
-    m_Gradient:
-      m_Array: []
-    m_NamedObject:
-      m_Array: []
-    m_Bool:
-      m_Array: []
---- !u!73398921 &6359978301888644360
-VFXRenderer:
-  serializedVersion: 1
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223615096744797838}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 0
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
 --- !u!1 &1382705354711093442
 GameObject:
   m_ObjectHideFlags: 0
@@ -2034,7 +1966,7 @@ Transform:
   - {fileID: 1583420984136553807}
   - {fileID: 5214714064461455167}
   - {fileID: 7582263950975749527}
-  - {fileID: 754765103659970446}
+  - {fileID: 1188241815664456475}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &8061839667610271217
@@ -7779,7 +7711,7 @@ GameObject:
   - component: {fileID: 4852880683823735147}
   - component: {fileID: 5062487693353608178}
   m_Layer: 3
-  m_Name: Trail
+  m_Name: WindTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8195,6 +8127,105 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRunState
   hasInactiveProcess: 0
   hasInactivePhysicsProcess: 0
+--- !u!1001 &4504255774777358406
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1188241815664456475}
+    m_Modifications:
+    - target: {fileID: 1407462948113632420, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_ResetSeedOnPlay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407462948113632420, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_InitialEventName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407462948113632420, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_InitialEventNameOverriden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407462948113632420, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407462948113632420, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Name
+      value: SpawnRate
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407462948113632420, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Value
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407462948113632420, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Value
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407462948113632420, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3348835005032586952, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_Name
+      value: WaterRippleEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817682629383706568, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817682629383706568, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817682629383706568, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817682629383706568, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817682629383706568, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817682629383706568, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817682629383706568, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817682629383706568, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817682629383706568, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817682629383706568, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+--- !u!4 &754765103659970446 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3817682629383706568, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+  m_PrefabInstance: {fileID: 4504255774777358406}
+  m_PrefabAsset: {fileID: 0}
+--- !u!2083052967 &3245411820551107810 stripped
+VisualEffect:
+  m_CorrespondingSourceObject: {fileID: 1407462948113632420, guid: cf1d50fa1af8f034c8a0628bb8bbb0cc, type: 3}
+  m_PrefabInstance: {fileID: 4504255774777358406}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7976760705969138300
 PrefabInstance:
   m_ObjectHideFlags: 0
