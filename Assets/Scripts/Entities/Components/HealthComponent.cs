@@ -85,7 +85,6 @@ public class HealthComponent : MonoBehaviour
         {
             statusEffects[ID].removeStatus -= RemoveStatusEffect;
             statusEffects.Remove(ID);
-            Debug.Log("Successfully removed status effect " + ID);
         }
         else
         {

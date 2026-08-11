@@ -30,7 +30,7 @@ public class LeviathanEntity : BaseEnemy
 
     public override void OnEntityDamaged(HitboxContactInfo info)
     {
-        if (info.DamageInfo.damage <= 0) return;
+        if (info.DamageInfo.damage < 1) return;
         stateMachine.TransitionTo<LeviathanMoveState>();
     }
 

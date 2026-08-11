@@ -67,8 +67,6 @@ public class PlayerGetHitState : PlayerAirState
     }
     void ApplyInvincibility()
     {
-        //reset if its already there
-        Player.HealthComponent.RemoveStatusEffect(StatusEffectID.PlayerGethitInvulnerability);
         InvulnerabilityEffect invulnerabilityEffect = new(StatusEffectID.PlayerGethitInvulnerability, DamageSource.AnySource, InvulnerabilityEffect.INFINITE_DURATION_VALUE);
         Player.HealthComponent.AddStatusEffect(invulnerabilityEffect);
     }
@@ -96,7 +94,6 @@ public class PlayerGetHitState : PlayerAirState
     {
         if (invulnerablityTracker < 1 && invulnPostHitstun)
         {
-            Debug.Log("Removing get hit invuln");
             Player.HealthComponent.RemoveStatusEffect(StatusEffectID.PlayerGethitInvulnerability);
             invulnPostHitstun = false;
         }

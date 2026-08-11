@@ -14,7 +14,7 @@ public class PlayerParryState : PlayerAirState
 
     //guarantees that the player leaves the hitbox rather then getting struck right out of a parry
     //saved as const because this isn't a design choice primarily, moreso fixing a tech problem
-    public const int POST_SUCCESSFUL_PARRY_INVULNERABLITY_FRAMES = 6;
+    public const int POST_SUCCESSFUL_PARRY_INVULNERABLITY_FRAMES = 1;
 
     [SerializeField] LayerMask parryMask;
     [SerializeField] UnityEvent parryPerformed;
@@ -88,16 +88,20 @@ public class PlayerParryState : PlayerAirState
         {
             StateMachine.TransitionTo<PlayerFallState>();
         }
-        if (ParryPossible())
+        if (EarlyParryPossible())
         {
             PerformParry(Player.PlayerInput.GetMovementDirection(), parryRaycast.normal);
             StateMachine.TransitionTo<PlayerFallState>();
             return;
         }
-        parryData = new ParryData(Player.RigidBody.linearVelocity, Player.RigidBody.position);
+        //ignore hitstop sitting speed to 0
+        if (Player.RigidBody.linearVelocity.magnitude > 0.001f)
+        {
+            parryData = new ParryData(Player.RigidBody.linearVelocity, Player.RigidBody.position);
+        }
     }
 
-    bool ParryPossible()
+    bool EarlyParryPossible()
     {
         if (parryData.previousSpeed.magnitude <= MINIMUM_SPEED_FOR_PARRY) return false;
         var ray = new Ray(parryData.previousLocation, Player.RigidBody.position - parryData.previousLocation);
@@ -149,8 +153,9 @@ public class PlayerParryState : PlayerAirState
             EntityManager.Instance.SetTimeScale(0, Player, hitstopDuration);
         }
         Vector3 velocityReflected = Vector3.Reflect(previousDirection, normal).normalized;
-        Vector3 movementAccountedForRotation = movementDirection.x * viewCamera.transform.right + movementDirection.y * viewCamera.transform.forward;
-        Vector3 velocityRotated = Vector3.Lerp(velocityReflected, movementAccountedForRotation.normalized, Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ParryBounceControl));
+        Vector3 movementAccountedForRotation = velocityReflected;
+        if (movementDirection.magnitude >= MOVEMENT_DEADZONE) movementAccountedForRotation = movementDirection.x * viewCamera.transform.right + movementDirection.y * viewCamera.transform.forward;
+        Vector3 velocityRotated = Vector3.Lerp(velocityReflected, movementAccountedForRotation, Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ParryBounceControl));
 
         Player.RigidBody.linearVelocity = velocityRotated * bounceVelocity;
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Parry);
