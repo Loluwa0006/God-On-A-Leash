@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerMaximumDashPower
   m_EditorClassIdentifier: Assembly-CSharp::StatObject
   type: 1
-  floatValue: 35
+  floatValue: 10.5
   curveValue:
     serializedVersion: 2
     m_Curve: []

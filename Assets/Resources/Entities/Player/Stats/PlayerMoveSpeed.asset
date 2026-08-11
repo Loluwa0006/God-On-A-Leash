@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: PlayerMoveSpeed
   m_EditorClassIdentifier: Assembly-CSharp::StatObject
   type: 1
-  floatValue: 40
+  floatValue: 24
   curveValue:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  statID: 1
+  jumpInfoValue:
+    jumpHeight: 0
+    jumpTimeToPeak: 0
+    jumpTimeToDecent: 0
+  percentageValue: 0
   statValueType: 0

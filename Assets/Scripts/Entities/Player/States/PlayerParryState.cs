@@ -12,6 +12,10 @@ public class PlayerParryState : PlayerAirState
     //if you were moving slower then this, then you might have not been moving at all.
     public const float MINIMUM_SPEED_FOR_PARRY = 0.1f;
 
+    //guarantees that the player leaves the hitbox rather then getting struck right out of a parry
+    //saved as const because this isn't a design choice primarily, moreso fixing a tech problem
+    public const int POST_SUCCESSFUL_PARRY_INVULNERABLITY_FRAMES = 6;
+
     [SerializeField] LayerMask parryMask;
     [SerializeField] UnityEvent parryPerformed;
     int durationTracker = 0;
@@ -166,8 +170,8 @@ public class PlayerParryState : PlayerAirState
 
         var hitstopDuration = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSuccessfulParryHitstopDuration);
 
-        InvulnerabilityEffect invulnerabilityEffect = new(StatusEffectID.ParryProjectileInvulnerability, DamageSource.EnemySmallProjectile, hitstopDuration + 1);
-        InvulnerabilityEffect invulnerabilityEffect2 = new(StatusEffectID.ParryWaterInvulnerability, DamageSource.Water, hitstopDuration + 1);
+        InvulnerabilityEffect invulnerabilityEffect = new(StatusEffectID.ParryProjectileInvulnerability, DamageSource.EnemySmallProjectile, hitstopDuration + POST_SUCCESSFUL_PARRY_INVULNERABLITY_FRAMES);
+        InvulnerabilityEffect invulnerabilityEffect2 = new(StatusEffectID.ParryWaterInvulnerability, DamageSource.Water, hitstopDuration + POST_SUCCESSFUL_PARRY_INVULNERABLITY_FRAMES);
         Player.HealthComponent.AddStatusEffect(invulnerabilityEffect);
         Player.HealthComponent.AddStatusEffect(invulnerabilityEffect2);
 

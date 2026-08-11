@@ -64,11 +64,12 @@ public class PlayerBaseState : BaseState
 
     public virtual void OnPlayerStruck(HitboxContactInfo info)
     {
+
         Dictionary<string, object> getHitStateMessage = new()
         {
             [PlayerGetHitState.PlayerGetHitMessage.ContactInfo.ToString()] = info
         };
         StateMachine.TransitionTo<PlayerGetHitState>(getHitStateMessage);
     }
-    
+
 }

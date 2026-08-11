@@ -22,6 +22,8 @@ public class PlayerGetHitState : PlayerAirState
     int hitstunTracker = 0;
     int invulnerablityTracker = 0;
     HitboxContactInfo contactInfo;
+
+    bool invulnPostHitstun = false;
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
@@ -42,7 +44,6 @@ public class PlayerGetHitState : PlayerAirState
         }
         ApplyAttackKnockback();
         ApplyInvincibility();
-        invulnerablityTracker = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ExtraInvulnerabilityFramesAfterHit);
     }
 
     public override void AnimationSetup()
@@ -66,6 +67,8 @@ public class PlayerGetHitState : PlayerAirState
     }
     void ApplyInvincibility()
     {
+        //reset if its already there
+        Player.HealthComponent.RemoveStatusEffect(StatusEffectID.PlayerGethitInvulnerability);
         InvulnerabilityEffect invulnerabilityEffect = new(StatusEffectID.PlayerGethitInvulnerability, DamageSource.AnySource, InvulnerabilityEffect.INFINITE_DURATION_VALUE);
         Player.HealthComponent.AddStatusEffect(invulnerabilityEffect);
     }
@@ -91,10 +94,15 @@ public class PlayerGetHitState : PlayerAirState
 
     public override void InactivePhysicsProcess()
     {
-        invulnerablityTracker--;
-        if (invulnerablityTracker == 0)
+        if (invulnerablityTracker < 1 && invulnPostHitstun)
         {
+            Debug.Log("Removing get hit invuln");
             Player.HealthComponent.RemoveStatusEffect(StatusEffectID.PlayerGethitInvulnerability);
+            invulnPostHitstun = false;
+        }
+        else
+        {
+            invulnerablityTracker = (int) Mathf.MoveTowards(invulnerablityTracker, 0.0f, 1.0f);
         }
     }
 
@@ -116,5 +124,7 @@ public class PlayerGetHitState : PlayerAirState
     {
         base.Exit();
         Player.Model.transform.rotation = Quaternion.LookRotation(viewCamera.transform.forward, Vector3.up);
+        invulnerablityTracker = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ExtraInvulnerabilityFramesAfterHit);
+        invulnPostHitstun = true;
     }
 }

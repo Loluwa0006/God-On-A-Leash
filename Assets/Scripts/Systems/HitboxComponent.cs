@@ -39,6 +39,7 @@ public class HitboxComponent : MonoBehaviour
     [SerializeField] DamageInfo damageInfo;
     [SerializeField] bool activeOnStart = false;
     [SerializeField] bool blacklistOnHit = true;
+    [SerializeField] bool useMeshCollider = false;
     public DamageInfo DamageInfo { get { return damageInfo; } set { damageInfo = value; } }
 
     [Header("Editor")]
@@ -94,6 +95,7 @@ public class HitboxComponent : MonoBehaviour
     }
     void CheckForCollisions()
     {
+        if (useMeshCollider) return;
         for (int i = 0; i < struckTargets.Length; i++)
         {
             struckTargets[i] = null;
@@ -110,6 +112,14 @@ public class HitboxComponent : MonoBehaviour
                 DamageEntity(hp);
             }
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!useMeshCollider) return;
+        if (!other.TryGetComponent<HealthComponent>(out var hp)) return;
+        if (blacklistedTargets.Contains(hp) || previousTargets.Contains(hp)) return;
+        DamageEntity(hp);
     }
 
 
@@ -144,7 +154,7 @@ public class HitboxComponent : MonoBehaviour
     {
         HitboxContactInfo collisionInfo = new()
         {
-            DamageInfo = damageInfo,
+            DamageInfo = damageInfo.Copy(),
             collisionPoint = hitboxCollider.bounds.ClosestPoint(healthComponent.Hurtbox.bounds.center),
             hurtbox = healthComponent.Hurtbox,
             
@@ -152,6 +162,9 @@ public class HitboxComponent : MonoBehaviour
         healthComponent.Damage(collisionInfo);
         if (blacklistOnHit) previousTargets.Add(healthComponent);
     }
+
+    
+
 }
 [System.Serializable]
 public class DamageInfo
@@ -182,6 +195,18 @@ public class DamageInfo
         {
             return knockbackVector;
         }
+    }
+
+    public DamageInfo Copy()
+    {
+        DamageInfo info = new DamageInfo();
+        info.damage = damage;
+        info.hitstunFrames = hitstunFrames;
+        info.knockbackPower = knockbackPower;
+        info.knockbackVector = knockbackVector;
+        info.useCollisionPointToDetermineKnockbackDirection = useCollisionPointToDetermineKnockbackDirection;
+        info.damageSource = damageSource;
+        return info;
     }
 }
 

@@ -75,7 +75,6 @@ public class PlayerController : BaseActor
 
     public void OnPlayerDamaged(HitboxContactInfo info)
     {
-//        if (info.DamageInfo.damage <= 0) return;
         Dictionary<string, object> getHitStateMessage = new()
         {
             [PlayerGetHitState.PlayerGetHitMessage.ContactInfo.ToString()] = info

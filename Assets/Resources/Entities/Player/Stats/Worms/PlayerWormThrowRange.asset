@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerWormThrowRange
   m_EditorClassIdentifier: Assembly-CSharp::StatObject
   type: 7
-  floatValue: 850
+  floatValue: 450
   curveValue:
     serializedVersion: 2
     m_Curve: []
