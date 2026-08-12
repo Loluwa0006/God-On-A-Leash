@@ -82,8 +82,7 @@ public class PlayerParryState : PlayerAirState
         {
             StateMachine.TransitionTo<PlayerRailParryState>();
             return;
-        }
-        
+        }        
         if (durationTracker == Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ProperParryDuration) + Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PartialParryDuration))
         {
             StateMachine.TransitionTo<PlayerFallState>();
@@ -140,13 +139,13 @@ public class PlayerParryState : PlayerAirState
     void PerformParry(Vector3 movementDirection, Vector3 normal)
     {
         float previousSpeed = parryData.previousSpeed.magnitude;
+        Debug.Log("Current speed == " + Player.RigidBody.linearVelocity + ", magnitude of " + Player.RigidBody.linearVelocity.magnitude);
         Vector3 previousDirection = parryData.previousSpeed.normalized;
         float bounceVelocity = previousSpeed + (previousSpeed * Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ParrySpeedIncrease));
         var hitstopDuration = (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSuccessfulParryHitstopDuration);
         if (durationTracker > Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ProperParryDuration))
         {
             bounceVelocity *= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PartialParrySpeedPenalty);
-            hitstopDuration = 0;
         } 
         else
         {
@@ -162,6 +161,7 @@ public class PlayerParryState : PlayerAirState
         Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_AtHighSpeed), lateralSpeed.magnitude >= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerSpeedToBeConsideredFast));
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_ParryPerformed));
         parryPerformed.Invoke();
+        Debug.Log("New speed == " + Player.RigidBody.linearVelocity + ", magnitude of " + Player.RigidBody.linearVelocity.magnitude);
     }
     public override void Exit()
     {
