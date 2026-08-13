@@ -10,7 +10,11 @@ public class EntityManager : MonoBehaviour
     List<BaseEntity> entityList = new();
     public int PlayerID { get; set; }
 
-    float durationOfTimeScaleChange = 0f;
+    public float DurationOfTimeScaleChange { get; set; } = 0.0f;
+
+    public bool GamePaused { get; set; } = false;
+
+    float previousTimeScale = 0.0f;
     private void Start()
     {
         if (Instance != null && Instance != this)
@@ -49,6 +53,7 @@ public class EntityManager : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (GamePaused) return;
         foreach (var entity in entityList)
         {
             if (entity.enabled) entity.PhysicsProcess();
@@ -57,14 +62,15 @@ public class EntityManager : MonoBehaviour
 
     private void Update()
     {
+        if (GamePaused) return;
         foreach (var entity in entityList)
         {
             if (entity.enabled) entity.Process();
         } 
-        if (durationOfTimeScaleChange > 0.001f)
+        if (DurationOfTimeScaleChange > 0.001f)
         {
-            durationOfTimeScaleChange = Mathf.MoveTowards(durationOfTimeScaleChange, 0, Time.unscaledDeltaTime);
-            if (durationOfTimeScaleChange <= 0.001f)
+            DurationOfTimeScaleChange = Mathf.MoveTowards(DurationOfTimeScaleChange, 0, Time.unscaledDeltaTime);
+            if (DurationOfTimeScaleChange <= 0.001f)
             {
                 Time.timeScale = 1f;
             }
@@ -115,7 +121,21 @@ public class EntityManager : MonoBehaviour
     public void SetTimeScale(float timeScale, BaseEntity requestor, int duration)
     {
         if (duration <= 0) return;
+        previousTimeScale = Time.timeScale;
         Time.timeScale = timeScale;
-        durationOfTimeScaleChange = (float) duration / 60; // converts frames to seconds 
+        DurationOfTimeScaleChange = (float) duration / 60; // converts frames to seconds 
+    }
+
+    public void PauseGame()
+    {
+        GamePaused = true;
+        previousTimeScale = Time.timeScale;
+        Time.timeScale = 0;
+    }
+
+    public void UnpauseGame()
+    {
+        GamePaused = false;
+        Time.timeScale = previousTimeScale;
     }
 }
