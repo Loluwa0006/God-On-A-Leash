@@ -71,8 +71,6 @@ public class RodManager : BaseEntity
             grappleJoint.spring = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodSpring);
             grappleJoint.damper = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodDamper);
 
-            var distance = Vector3.Distance(grappleInfo.GrapplePosition, player.Collider.bounds.center);
-
             grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMaxDistanceWithNoSpring);
             grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMinDistanceWithNoSpring);
 
@@ -100,8 +98,6 @@ public class RodManager : BaseEntity
             grappleJoint.massScale = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodSwingMassScale);
             grappleJoint.spring = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodSpringWhileDashing);
             grappleJoint.damper = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodDamperWhileDashing);
-
-            var distance = Vector3.Distance(grappleInfo.GrapplePosition, player.Collider.bounds.center);
 
             grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMaxDistanceWithNoSpringWhileDashing);
             grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMinDistanceWithNoSpringWhileDashing);

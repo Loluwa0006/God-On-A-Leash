@@ -5,6 +5,9 @@
   <Project Path="NaughtyAttributes.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="SplineCollider.csproj" />
+  <Project Path="SplineMesh.Runtime.csproj" />
+  <Project Path="SplineMesh.Editor.csproj" />
+  <Project Path="SplineMesh.Colliders.csproj" />
   <Project Path="sc.skyboxes.demo.runtime.csproj" />
   <Project Path="ShaderGraphVariables.csproj" />
   <Project Path="SplineColliderEditor.csproj" />

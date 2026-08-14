@@ -21,6 +21,8 @@ public class PlayerThrowWormState : PlayerAirState
     bool stateCancellable = false;
 
     int durationTracker = 0;
+
+    Queue<WormEntity> wormQueue = new();
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
@@ -29,25 +31,43 @@ public class PlayerThrowWormState : PlayerAirState
         float wormJumpPower = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormJumpInfo);
         newSpeed.y = Mathf.Max(newSpeed.y + wormJumpPower, wormJumpPower);
         Player.RigidBody.linearVelocity = newSpeed;
-    //    if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered && Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail))
-    //    {
-         //   FireWorm(Player.WormManager.GetNewWormRail(), cost: (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail));
-    //    }
-     //   else
-     //   {
-            FireWorm(Player.WormManager.GetNewWorm(), cost: 1);
-    //    }
+        int wormsRequiredForRail = (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail);
+        if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered
+            && Player.WormManager.WormsRemaining >= Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail)
+            && wormQueue.Count >= wormsRequiredForRail - 1
+            && !Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Buffered)
+        {
+            int railCost = (int) Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail);
+            FireWorm(Player.WormManager.GetNewWorm(), cost: railCost, spawnRail: true );
+        }
+        else
+        {
+            FireWorm(Player.WormManager.GetNewWorm(), cost: 1, spawnRail: false);
+        }
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Consume();
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Consume();
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedThrowingWorm));
         wormThrown.Invoke();
     }
 
-    void FireWorm(WormEntity worm, int cost)
+    void FireWorm(WormEntity worm, int cost, bool spawnRail)
     {
         var cameraRay = viewCamera.ScreenPointToRay(new Vector2(Screen.width / 2.0f, Screen.height / 2.0f));
         worm.Fire(cameraRay.direction, Player.transform.position, Player.RigidBody.linearVelocity);
         Player.WormManager.WormsRemaining -= cost;
+
+
+       
+        wormQueue.Enqueue(worm);
+        if (wormQueue.Count > Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail)) wormQueue.Dequeue();
+
+        if (spawnRail)
+        {
+            var rail = Player.WormManager.GetNewWormRail();
+            var startWorm = wormQueue.Dequeue();
+            var endWorm = wormQueue.Dequeue();
+            rail.EnableLine(startWorm, endWorm, Player.transform);
+        }
     }
     public override void PhysicsProcess()
     {

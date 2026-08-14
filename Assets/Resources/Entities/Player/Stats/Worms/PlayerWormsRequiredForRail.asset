@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerWormsRequiredForRail
   m_EditorClassIdentifier: Assembly-CSharp::StatObject
   type: 0
-  floatValue: 3
+  floatValue: 2
   curveValue:
     serializedVersion: 2
     m_Curve: []
@@ -24,8 +24,5 @@ MonoBehaviour:
     jumpHeight: 0
     jumpTimeToPeak: 0
     jumpTimeToDecent: 0
-  jumpGravityID: 0
-  fallGravityID: 0
-  jumpVelocityID: 0
-  statID: 11
+  percentageValue: 0
   statValueType: 0

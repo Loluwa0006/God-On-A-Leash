@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class WormEntity : BaseEntity
@@ -14,13 +15,17 @@ public class WormEntity : BaseEntity
     int gravityTracker = 0;
     public bool wormActive { get; private set; }
     public Rigidbody Rigidbody { get => rigidBody; }
+
+    public Action<WormEntity> wormDisabled;
+    public Action<WormEntity> wormEnabled;
+
     int remainingHitsBeforeDeactivation = 2;
 
     Vector3 startingLocation;
 
     float additionalDistanceToTarget = 0; //Used to make the worm fly further if the player is moving really fast.
 
-    bool inFlight = false;
+    public bool InFlight { get; private set;  }
     public void Initialize(EntityStatsManager statsManager)
     {
         base.Initialize();
@@ -46,9 +51,10 @@ public class WormEntity : BaseEntity
 
         if (!refired) remainingHitsBeforeDeactivation = (int) StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormHitsBeforeDeactivation);
 
-        inFlight = true;
+        InFlight = true;
         this.startingLocation = startingLocation;
         additionalDistanceToTarget = ownerVelocity.magnitude;
+        wormEnabled?.Invoke(this);
     }
 
     public void Deactivate()
@@ -57,6 +63,7 @@ public class WormEntity : BaseEntity
         model.SetActive(false);
         rigidBody.isKinematic = true;
         wormActive = false;
+        wormDisabled?.Invoke(this);
     }
 
     public override void PhysicsProcess()
@@ -84,6 +91,10 @@ public class WormEntity : BaseEntity
             Fire(knockbackDirection, startingLocation, ownerVelocity, refired: true);
             
         }
+        else if (contactInfo.DamageInfo.damageSource == DamageSource.Water)
+        {
+            Deactivate();
+        }
     }
 
     void GravityLogic()
@@ -104,11 +115,11 @@ public class WormEntity : BaseEntity
 
     void TargetLogic()
     {
-        if (!inFlight) return;
+        if (!InFlight) return;
         if (Vector3.Distance(rigidBody.position, startingLocation) >= StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormThrowRange) + additionalDistanceToTarget)
         {
             rigidBody.linearVelocity = Vector3.zero; //Make it hover at the target location instead of falling down.
-            inFlight = false;
+            InFlight = false;
         }
     }
 }

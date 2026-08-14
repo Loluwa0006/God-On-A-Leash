@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.anandev.splinemesh": "file:C:/Users/temia/Downloads/SplineMesh-main/SplineMesh-main",
     "com.isako.spline-collider": "https://github.com/Isako-Sakuraba/Unity-Spline-Collider.git",
     "com.unity.ai.navigation": "2.0.10",
     "com.unity.animation.rigging": "1.4.1",
