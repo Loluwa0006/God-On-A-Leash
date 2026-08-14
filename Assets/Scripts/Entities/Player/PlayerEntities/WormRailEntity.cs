@@ -3,7 +3,7 @@ using UnityEngine.Splines;
 
 public class WormRailEntity : BaseEntity
 {
-    public const int UPDATE_RATE = 3;
+    public const int UPDATE_RATE = 1;
     [SerializeField] SplineContainer splineContainer;
     [SerializeField] MeshRenderer meshRenderer;
 

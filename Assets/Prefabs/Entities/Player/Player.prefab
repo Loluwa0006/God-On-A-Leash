@@ -114,7 +114,7 @@ MonoBehaviour:
   player: {fileID: 4316075470623054589}
   water: {fileID: 0}
   waveEffect: {fileID: 3245411820551107810}
-  rayLength: 25
+  rayLength: 250
   moveaheadDistance: 35
   waveMask:
     serializedVersion: 2
@@ -161,7 +161,6 @@ GameObject:
   - component: {fileID: 7503041214908823427}
   - component: {fileID: 8643749651035158242}
   - component: {fileID: 4347096803792451812}
-  - component: {fileID: 849465072193076230}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -241,28 +240,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &849465072193076230
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 586120684116171199}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &688355114899007959
 GameObject:
   m_ObjectHideFlags: 0
@@ -1374,7 +1351,8 @@ MonoBehaviour:
     m_Bits: 33792
   railCollider: {fileID: 8443746451259274933}
   splineAnimator: {fileID: 1366431042455759010}
-  cameraTransitionTime: 0.35
+  cameraTransitionTime: 0.5
+  railPositionOffset: {x: 0, y: 0.5, z: 0}
 --- !u!135 &8443746451259274933
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1507,6 +1485,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7435467149138354754}
   - component: {fileID: 8445331606179173087}
+  - component: {fileID: 2433818277743470723}
   m_Layer: 3
   m_Name: RodManager
   m_TagString: Untagged
@@ -1543,7 +1522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a240b9dba9f341478b19dd14d896db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RodManager
-  idComponent: {fileID: 0}
+  idComponent: {fileID: 2433818277743470723}
   rodLine: {fileID: 8496726179433166469}
   grappleMask:
     serializedVersion: 2
@@ -1552,6 +1531,19 @@ MonoBehaviour:
   GrappleLineStartPoint: {fileID: 427260736233143285}
   grapplePoint: {fileID: 6271263608659458738}
   rodLengthDisplay: {fileID: 0}
+--- !u!114 &2433818277743470723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5355215119351398126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b73511aa27605468744d3677198fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IDComponent
+  idType: 6
 --- !u!1 &5401427390679268989
 GameObject:
   m_ObjectHideFlags: 0
@@ -2031,8 +2023,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5834537706312432830}
   serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
+  m_Mass: 4.5
+  m_LinearDamping: 0.05
   m_AngularDamping: 0.3
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -2068,7 +2060,7 @@ MonoBehaviour:
   m_Method: 1
   m_Duration: 62.5
   m_MaxSpeed: 8
-  m_EasingMode: 1
+  m_EasingMode: 0
   m_AlignmentMode: 1
   m_ObjectForwardAxis: 2
   m_ObjectUpAxis: 1
@@ -7567,7 +7559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WormManager
   wormPrefab: {fileID: 1895401925792460249, guid: b0e3f6ed5e41de34b9024fcb4d1d2f4d, type: 3}
-  wormRailPrefab: {fileID: 1560132180474416024, guid: 4ac5f9485228463418fb023e9bb46bf5, type: 3}
+  wormRailPrefab: {fileID: 5431750498227419362, guid: 4ac5f9485228463418fb023e9bb46bf5, type: 3}
   player: {fileID: 1870535501843506831}
   wormDisplay: {fileID: 0}
 --- !u!1 &7453938923956039747
@@ -7580,6 +7572,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4489595010220830823}
   - component: {fileID: 1378361783068774386}
+  - component: {fileID: 8814323363164246352}
   m_Layer: 3
   m_Name: SquashbucklerManager
   m_TagString: Untagged
@@ -7614,7 +7607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9cba579494a5b646a930ced74bbc20c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SquashbucklerManager
-  idComponent: {fileID: 0}
+  idComponent: {fileID: 8814323363164246352}
   maxCharge: 10
   anarchyManager: {fileID: 5114671140808074405}
   squashbucklerMeter: {fileID: 0}
@@ -7622,6 +7615,19 @@ MonoBehaviour:
   playerStatManager: {fileID: 6676928779841109646}
   squashbucklerAvailableColor: {r: 0.023529412, g: 0.8392157, b: 0.627451, a: 1}
   squashbucklerUnavailableColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+--- !u!114 &8814323363164246352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7453938923956039747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b73511aa27605468744d3677198fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IDComponent
+  idType: 6
 --- !u!1 &7589547966762801291
 GameObject:
   m_ObjectHideFlags: 0
@@ -9909,7 +9915,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7093816237693114157}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
   m_Name: 

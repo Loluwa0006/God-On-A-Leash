@@ -33,6 +33,7 @@ public class CameraManager : MonoBehaviour
 
     CinemachineCamera cameraToTransitionTo;
 
+    bool transitioningCameras = false;
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -73,6 +74,7 @@ public class CameraManager : MonoBehaviour
                 mixingCamera.SetWeight(camera, 0.0f);
             }
             mixingCamera.SetWeight(activeCamera, 1.0f);
+            transitioningCameras = false;
         }
     }
 
@@ -88,6 +90,20 @@ public class CameraManager : MonoBehaviour
 
     public void TransitionToCamera(CinemachineCamera camera, float duration)
     {
+        if (activeCamera == camera) return;
+        if (transitioningCameras)
+        {
+
+            activeCamera = cameraToTransitionTo;
+            foreach (var cam in mixingCamera.ChildCameras)
+            {
+                if (cam == cameraToTransitionTo) continue;
+                mixingCamera.SetWeight(cam, 0.0f);
+            }
+            mixingCamera.SetWeight(activeCamera, 1.0f);
+            transitioningCameras = false;
+        }
+        transitioningCameras = true;
         cameraTransitionTime = duration;
         elaspedTransitionTime = 0.0f;
         cameraToTransitionTo = camera;

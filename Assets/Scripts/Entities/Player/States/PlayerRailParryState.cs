@@ -9,6 +9,7 @@ public class PlayerRailParryState : PlayerBaseState
     [SerializeField] SphereCollider railCollider;
     [SerializeField] SplineAnimate splineAnimator;
     [SerializeField] float cameraTransitionTime = 0.35f;
+    [SerializeField] Vector3 railPositionOffset = new Vector3(0, 1.5f, 0);
     SplineContainer splineToFollow;
 
     float splineDirection;
@@ -23,6 +24,8 @@ public class PlayerRailParryState : PlayerBaseState
            typeof(PlayerShadowstepState), 
         };
     }
+
+    Collider[] railCheck = new Collider[1];
 
     public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
     {
@@ -41,7 +44,7 @@ public class PlayerRailParryState : PlayerBaseState
             StateMachine.TransitionTo<PlayerFallState>();
             return;
         }
-        Player.CameraManager.ControlPlayerRotation = false;
+       // Player.CameraManager.ControlPlayerRotation = false;
         splineAnimator.enabled = true;
 
         InitializeSplineMovement();
@@ -50,12 +53,13 @@ public class PlayerRailParryState : PlayerBaseState
         Player.RigidBody.isKinematic = false;
 
         Player.CameraManager.TransitionToCamera(Player.CameraManager.CloseFollowCamera, cameraTransitionTime);
+        Player.Model.transform.localPosition = railPositionOffset;
     }
 
     public override void AnimationSetup()
     {
         base.AnimationSetup();
-        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_RailParryPerformed));
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedRailGrind));
     }
 
     void InitializeSplineMovement()
@@ -68,24 +72,27 @@ public class PlayerRailParryState : PlayerBaseState
         splineDirection = Mathf.Sign(velocityProjectedOntoSpline);
         splineAnimator.Container = splineToFollow;
         splineAnimator.MaxSpeed = Mathf.Abs(
-            Mathf.Max(lateralSpeed.magnitude * Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PreviousSpeedToRailSpeedRatio) * velocityProjectedOntoSpline,
+            Mathf.Max(Player.RigidBody.linearVelocity.magnitude * Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PreviousSpeedToRailSpeedRatio) * velocityProjectedOntoSpline,
             Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.RailParryMinimumSpeed))) ;
         splineAnimator.NormalizedTime = time;
         splineLength = splineToFollow.CalculateLength();
+        splineAnimator.Play();
     }
 
     public override void PhysicsProcess()
     {
-        float delta = splineAnimator.MaxSpeed / splineLength;
-        float timeToAdd = (delta * splineDirection) * Time.fixedDeltaTime;
-        splineAnimator.NormalizedTime = Mathf.Clamp01(splineAnimator.NormalizedTime + timeToAdd);
-        SplineUtility.Evaluate(splineToFollow.Spline, splineAnimator.NormalizedTime, out float3 splinePoint, out float3 tangent, out float3 upVector);
-        var splineRotation = Quaternion.LookRotation(splineToFollow.transform.TransformDirection(-tangent), upVector);
-        Player.RigidBody.Move(splineToFollow.transform.TransformPoint(splinePoint), splineRotation);
-        Player.CameraManager.LookTarget.rotation = splineRotation;
+      //  float delta = splineAnimator.MaxSpeed / splineLength;
+      //  float timeToAdd = (delta * splineDirection) * Time.fixedDeltaTime;
+        //splineAnimator.NormalizedTime = Mathf.Clamp01(splineAnimator.NormalizedTime + timeToAdd);
+       // SplineUtility.Evaluate(splineToFollow.Spline, splineAnimator.NormalizedTime, out float3 splinePoint, out float3 tangent, out float3 upVector);
+      //  var splineRotation = Quaternion.LookRotation(splineToFollow.transform.TransformDirection(-tangent), upVector);
+      //  var targetPosition = splineToFollow.transform.TransformPoint(splinePoint) + railPositionOffset;
+        //Player.RigidBody.Move(targetPosition, splineRotation);
+       // Player.CameraManager.LookTarget.rotation = splineRotation;
 
-        if (splineAnimator.NormalizedTime > 0.999f || splineAnimator.NormalizedTime < 0.001f || !Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Parry].ActionPressed)
+        if (splineAnimator.NormalizedTime > 0.99f || splineAnimator.NormalizedTime < 0.01f || !Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Parry].ActionPressed)
         {
+            splineAnimator.Pause();
             StateMachine.TransitionTo<PlayerFallState>();
         }
     }
@@ -94,7 +101,7 @@ public class PlayerRailParryState : PlayerBaseState
     {
         Vector3 normalizedTangent = Vector3.Normalize(tangent);
 
-        Vector3 exitVelocity = splineAnimator.MaxSpeed * normalizedTangent * splineDirection;
+        Vector3 exitVelocity = splineAnimator.MaxSpeed * splineDirection * normalizedTangent;
         float railParryMinimumJump = Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.RailParryMinimumJump);
         if (exitVelocity.y < railParryMinimumJump) exitVelocity.y = railParryMinimumJump;
 
@@ -108,19 +115,21 @@ public class PlayerRailParryState : PlayerBaseState
         SplineUtility.Evaluate(splineToFollow.Spline, splineAnimator.NormalizedTime, out float3 position, out float3 tangent, out float3 upVector);
         Player.RigidBody.linearVelocity = CalculateExitVelocity(tangent);
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.RailParry);
-        Player.CameraManager.ControlPlayerRotation = true;
+     //   Player.CameraManager.ControlPlayerRotation = true;
         Player.CameraManager.TransitionToCamera(Player.CameraManager.DefaultCamera, cameraTransitionTime);
+        railCheck[0] = null;
+        Player.Model.transform.localPosition = Vector3.zero;
 
     }
     public override bool StateAvailable()
     {
         if (Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Parry].ActionPressed)
         {
-            var overlap = Physics.OverlapSphere(railCollider.bounds.center, railCollider.radius, railLayer, QueryTriggerInteraction.Collide);
-            if (overlap.Length > 0)
+            int overlap = Physics.OverlapSphereNonAlloc(railCollider.bounds.center, railCollider.radius, railCheck, railLayer, QueryTriggerInteraction.Collide);
+            if (overlap > 0 && railCheck[0] != null)
             {
-                splineToFollow = overlap[0].GetComponent<SplineContainer>();
-                if (splineToFollow == null) splineToFollow = overlap[0].transform.parent.GetComponent<SplineContainer>();
+                splineToFollow = railCheck[0].GetComponent<SplineContainer>();
+                if (splineToFollow == null) splineToFollow = railCheck[0].transform.parent.GetComponent<SplineContainer>();
                 return true;
             }
         }
