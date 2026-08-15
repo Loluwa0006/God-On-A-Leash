@@ -27,6 +27,8 @@ public class PlayerRailParryState : PlayerBaseState
 
     Collider[] railCheck = new Collider[1];
 
+    RigidbodyInterpolation previousInterpolation;
+
     public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
     {
         base.InitializeState(stateMachine, owner);
@@ -37,14 +39,14 @@ public class PlayerRailParryState : PlayerBaseState
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
-        
 
+        previousInterpolation = Player.RigidBody.interpolation;
+        Player.RigidBody.interpolation = RigidbodyInterpolation.None;
         if (splineToFollow == null)
         {
             StateMachine.TransitionTo<PlayerFallState>();
             return;
         }
-       // Player.CameraManager.ControlPlayerRotation = false;
         splineAnimator.enabled = true;
 
         InitializeSplineMovement();
@@ -52,7 +54,6 @@ public class PlayerRailParryState : PlayerBaseState
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Parry].Consume();
         Player.RigidBody.isKinematic = false;
 
-        Player.CameraManager.TransitionToCamera(Player.CameraManager.CloseFollowCamera, cameraTransitionTime);
         Player.Model.transform.localPosition = railPositionOffset;
     }
 
@@ -67,8 +68,7 @@ public class PlayerRailParryState : PlayerBaseState
         var pointInLocalSpace = splineToFollow.transform.InverseTransformPoint(Player.Collider.bounds.center);
         SplineUtility.GetNearestPoint(splineToFollow.Spline, pointInLocalSpace, out float3 startPosition, out float time);
         Vector3 tangent = Vector3.Normalize(SplineUtility.EvaluateTangent(splineToFollow.Spline, time));
-        Vector2 lateralSpeed = new Vector2(Player.RigidBody.linearVelocity.x, Player.RigidBody.linearVelocity.z);
-        var velocityProjectedOntoSpline = Vector3.Dot(tangent, lateralSpeed.normalized);
+        var velocityProjectedOntoSpline = Vector3.Dot(tangent, Player.RigidBody.linearVelocity.normalized);
         splineDirection = Mathf.Sign(velocityProjectedOntoSpline);
         splineAnimator.Container = splineToFollow;
         splineAnimator.MaxSpeed = Mathf.Abs(
@@ -76,23 +76,15 @@ public class PlayerRailParryState : PlayerBaseState
             Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.RailParryMinimumSpeed))) ;
         splineAnimator.NormalizedTime = time;
         splineLength = splineToFollow.CalculateLength();
-        splineAnimator.Play();
     }
 
     public override void PhysicsProcess()
     {
-      //  float delta = splineAnimator.MaxSpeed / splineLength;
-      //  float timeToAdd = (delta * splineDirection) * Time.fixedDeltaTime;
-        //splineAnimator.NormalizedTime = Mathf.Clamp01(splineAnimator.NormalizedTime + timeToAdd);
-       // SplineUtility.Evaluate(splineToFollow.Spline, splineAnimator.NormalizedTime, out float3 splinePoint, out float3 tangent, out float3 upVector);
-      //  var splineRotation = Quaternion.LookRotation(splineToFollow.transform.TransformDirection(-tangent), upVector);
-      //  var targetPosition = splineToFollow.transform.TransformPoint(splinePoint) + railPositionOffset;
-        //Player.RigidBody.Move(targetPosition, splineRotation);
-       // Player.CameraManager.LookTarget.rotation = splineRotation;
-
+       float delta = splineAnimator.MaxSpeed / splineLength;
+       float timeToAdd = (delta * splineDirection) * Time.fixedDeltaTime;
+        splineAnimator.NormalizedTime = Mathf.Clamp01(splineAnimator.NormalizedTime + timeToAdd);
         if (splineAnimator.NormalizedTime > 0.99f || splineAnimator.NormalizedTime < 0.01f || !Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Parry].ActionPressed)
         {
-            splineAnimator.Pause();
             StateMachine.TransitionTo<PlayerFallState>();
         }
     }
@@ -114,11 +106,12 @@ public class PlayerRailParryState : PlayerBaseState
         Player.RigidBody.isKinematic = false;
         SplineUtility.Evaluate(splineToFollow.Spline, splineAnimator.NormalizedTime, out float3 position, out float3 tangent, out float3 upVector);
         Player.RigidBody.linearVelocity = CalculateExitVelocity(tangent);
+        Player.RigidBody.rotation = Quaternion.LookRotation(Player.RigidBody.linearVelocity.normalized);
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.RailParry);
-     //   Player.CameraManager.ControlPlayerRotation = true;
-        Player.CameraManager.TransitionToCamera(Player.CameraManager.DefaultCamera, cameraTransitionTime);
+       // Player.CameraManager.TransitionToCamera(Player.CameraManager.DefaultCamera, cameraTransitionTime);
         railCheck[0] = null;
         Player.Model.transform.localPosition = Vector3.zero;
+        Player.RigidBody.interpolation = previousInterpolation;
 
     }
     public override bool StateAvailable()

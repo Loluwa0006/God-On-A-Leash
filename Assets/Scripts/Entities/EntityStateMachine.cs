@@ -25,8 +25,6 @@ public class EntityStateMachine : MonoBehaviour
         if (currentState == null) currentState = stateLookup.ElementAt(0).Value;
         initialized = true;
     }
-
-
     public void Process()
     {
         if (!initialized) return;
