@@ -60,7 +60,8 @@ public class PlayerRailParryState : PlayerBaseState
     public override void AnimationSetup()
     {
         base.AnimationSetup();
-        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedRailGrind));
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_GrindingRail), true);
+        Player.Animator.ResetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_JumpPerformed));
     }
 
     void InitializeSplineMovement()
@@ -85,9 +86,11 @@ public class PlayerRailParryState : PlayerBaseState
         splineAnimator.NormalizedTime = Mathf.Clamp01(splineAnimator.NormalizedTime + timeToAdd);
         if (splineAnimator.NormalizedTime > 0.99f || splineAnimator.NormalizedTime < 0.01f || !Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Parry].ActionPressed)
         {
+            Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_RailJumpPerformed));
             StateMachine.TransitionTo<PlayerFallState>();
         }
     }
+
 
     Vector3 CalculateExitVelocity(Vector3 tangent)
     {
@@ -98,6 +101,12 @@ public class PlayerRailParryState : PlayerBaseState
         if (exitVelocity.y < railParryMinimumJump) exitVelocity.y = railParryMinimumJump;
 
         return exitVelocity;
+    }
+
+    public override void AnimationTeardown()
+    {
+        base.AnimationTeardown();
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_GrindingRail), false);
     }
     public override void Exit()
     {

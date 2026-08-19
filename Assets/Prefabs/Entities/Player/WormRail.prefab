@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Container: {fileID: 6582243539463485549}
   m_TargetMesh: {fileID: 0}
   m_RebuildOnSplineChange: 1
-  m_RebuildFrequency: 3
+  m_RebuildFrequency: 7
   m_UpdateColliders: 1
   m_Sides: 8
   m_SegmentsPerUnit: 1

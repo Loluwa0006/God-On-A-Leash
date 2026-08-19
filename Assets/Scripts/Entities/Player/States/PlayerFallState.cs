@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 public class PlayerFallState : PlayerAirState
 {
@@ -27,13 +26,6 @@ public class PlayerFallState : PlayerAirState
         };
     }
 
-
-    public override void AnimationSetup()
-    {
-        base.AnimationSetup();
-        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedFalling));
-    }
-
     public override void PhysicsProcess()
     {
         Player.PlayerGrounded = IsGrounded();
@@ -51,12 +43,17 @@ public class PlayerFallState : PlayerAirState
                 StateMachine.TransitionTo<PlayerIdleState>();
             }
         }
+        //wait for previous animation
+        if (Player.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f)
+        {
+            Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsFalling), true);
+        }
     }
 
     public override void AnimationTeardown()
     {
         base.AnimationTeardown();
-        Player.Animator.ResetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedFalling));
+        Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsFalling), false);
     }
     public override bool StateAvailable()
     {

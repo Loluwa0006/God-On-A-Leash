@@ -23,7 +23,7 @@ public class PlayerShadowstepState : PlayerBaseState
     public override void AnimationSetup()
     {
         base.AnimationSetup();
-        Player.Animator.ResetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedFalling));
+        Player.Animator.ResetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsFalling));
         Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedShadowstep));
     }
     public override void PhysicsProcess()
