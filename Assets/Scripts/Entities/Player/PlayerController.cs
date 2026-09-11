@@ -10,11 +10,11 @@ public class PlayerController : BaseActor
         Trigger_StartedSwing,
         Trigger_StartedShadowstep,
         Trigger_StartedDashing,
+        Trigger_StartedYawn,
         Trigger_ParryPerformed,
         Trigger_EnteredHitstun,
         Trigger_JumpPerformed,
         Trigger_RailJumpPerformed,
-
         Bool_GrindingRail,
         Bool_IsFalling,
         Bool_IsParrying,

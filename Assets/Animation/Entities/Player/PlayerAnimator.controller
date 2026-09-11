@@ -697,6 +697,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+  - m_Name: StartedYawn
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   - m_Name: HitstunReactionLevel
     m_Type: 3
     m_DefaultFloat: 0
@@ -861,6 +867,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: IsYawning
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: StartedYawn
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 9067426488600665871}
@@ -1034,7 +1043,7 @@ AnimatorStateTransition:
   m_ExitTime: 1
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 3
+  m_InterruptionSource: 4
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1102 &3855508513270655591
@@ -1327,7 +1336,7 @@ AnimatorStateMachine:
     m_Position: {x: 1090, y: 490, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6952599515236184408}
-    m_Position: {x: -479.33466, y: 425.07355, z: 0}
+    m_Position: {x: -480, y: 430, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -5158155742552295099}

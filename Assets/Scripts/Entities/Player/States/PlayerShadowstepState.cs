@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.VFX;
 public class PlayerShadowstepState : PlayerBaseState
 {
     [SerializeField] List<SkinnedMeshRenderer> playerMeshes = new();
     [SerializeField] Material shadowMaterial;
+
+    [SerializeField] VisualEffect shadowTrail;
     float shadowstepSpeed;
 
     int durationTracker = 0;
@@ -12,6 +14,12 @@ public class PlayerShadowstepState : PlayerBaseState
     bool startedAtMaxCharge = false;
 
     Material previousMaterial = null;
+
+    public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
+    {
+        base.InitializeState(stateMachine, owner);
+        shadowTrail.Stop();
+    }
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
@@ -24,6 +32,7 @@ public class PlayerShadowstepState : PlayerBaseState
         Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.Slash].Consume(); //prevent accidental dragonslashes
         previousMaterial = playerMeshes[0].material;
         foreach (var mesh in playerMeshes) mesh.material = shadowMaterial;
+        shadowTrail.Play();
     }
 
     public override void AnimationSetup()
@@ -74,6 +83,7 @@ public class PlayerShadowstepState : PlayerBaseState
         base.Exit();
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Shadowstep);
         foreach (var mesh in playerMeshes) mesh.material = previousMaterial;
+        shadowTrail.Stop();
     }
 
     public override void AnimationTeardown()

@@ -47,6 +47,7 @@ public class PlayerYawnState : PlayerAirState
     {
         base.AnimationSetup();
         Player.Animator.SetBool(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Bool_IsYawning), true);
+        Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_StartedYawn));
     }
     void OnJustYawn()
     {
