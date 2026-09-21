@@ -44,6 +44,7 @@ public class PlayerGetHitState : PlayerAirState
         }
         ApplyAttackKnockback();
         ApplyInvincibility();
+        Player.CameraManager.ControlPlayerRotation = false;
     }
 
     public override void AnimationSetup()
@@ -74,7 +75,7 @@ public class PlayerGetHitState : PlayerAirState
     {
         var knockbackVector = contactInfo.DamageInfo.GetKnockbackVector(contactInfo.collisionPoint, contactInfo.hurtbox.bounds.center);
         Player.RigidBody.linearVelocity = knockbackVector;
-        Player.Model.transform.rotation = Quaternion.LookRotation(-knockbackVector, Vector3.up);
+        Player.RigidBody.MoveRotation(Quaternion.LookRotation(-knockbackVector, Vector3.up));
     }
     public override void PhysicsProcess()
     {
@@ -120,8 +121,8 @@ public class PlayerGetHitState : PlayerAirState
     public override void Exit()
     {
         base.Exit();
-        Player.Model.transform.rotation = Quaternion.LookRotation(viewCamera.transform.forward, Vector3.up);
         invulnerablityTracker = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ExtraInvulnerabilityFramesAfterHit);
         invulnPostHitstun = true;
+        Player.CameraManager.ControlPlayerRotation = true;
     }
 }
