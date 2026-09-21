@@ -109,5 +109,13 @@ public class CameraManager : MonoBehaviour
         cameraToTransitionTo = camera;
     }
 
+    public void ResetView(Vector2 newView)
+    {
+        lookDirection = newView;
+    }
 
+    public void ResetView(Quaternion newView)
+    {
+        lookDirection = new Vector2(newView.eulerAngles.y, newView.eulerAngles.x);
+    }
 }

@@ -212,12 +212,12 @@ MonoBehaviour:
   m_Container: {fileID: 6582243539463485549}
   m_TargetMesh: {fileID: 0}
   m_RebuildOnSplineChange: 1
-  m_RebuildFrequency: 7
+  m_RebuildFrequency: 10
   m_UpdateColliders: 1
   m_Sides: 8
   m_SegmentsPerUnit: 1
   m_Capped: 0
-  m_Radius: 0.5
+  m_Radius: 2
   m_Range: {x: 0, y: 1}
   m_FlipNormals: 0
   m_Shape:
@@ -318,7 +318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071d6bb0c8f2a454ca8ca93c60213dc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SplineMesh.Colliders::SplineMeshTools.Colliders.SplineBoxColliderGenerator
-  width: 8
-  height: 8
+  width: 15
+  height: 15
   offset: {x: 0, y: 0, z: 0}
-  resolution: 10
+  resolution: 8
