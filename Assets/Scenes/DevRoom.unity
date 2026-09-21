@@ -352574,6 +352574,22 @@ PrefabInstance:
       propertyPath: m_Target
       value: 
       objectReference: {fileID: 1357020677}
+    - target: {fileID: 1366431042455759010, guid: 4312f6125a628fb479f93113155619b0, type: 3}
+      propertyPath: m_Duration
+      value: 58.815098
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366431042455759010, guid: 4312f6125a628fb479f93113155619b0, type: 3}
+      propertyPath: m_MaxSpeed
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366431042455759010, guid: 4312f6125a628fb479f93113155619b0, type: 3}
+      propertyPath: m_AlignmentMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366431042455759010, guid: 4312f6125a628fb479f93113155619b0, type: 3}
+      propertyPath: m_ObjectForwardAxis
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1378361783068774386, guid: 4312f6125a628fb479f93113155619b0, type: 3}
       propertyPath: squashbucklerMeter
       value: 

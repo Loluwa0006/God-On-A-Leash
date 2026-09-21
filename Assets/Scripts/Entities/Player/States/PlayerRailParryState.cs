@@ -76,8 +76,17 @@ public class PlayerRailParryState : PlayerBaseState
         splineAnimator.NormalizedTime = time;
         splineLength = splineToFollow.CalculateLength();
         Player.RigidBody.MovePosition(startPosition);
-        Player.Model.transform.localPosition = railPositionOffset;
-        Player.Model.transform.localRotation = railRotationOffset;
+        
+        Player.Model.transform.SetLocalPositionAndRotation(railPositionOffset, railRotationOffset);
+
+        if (splineDirection < 0)
+        {
+            splineAnimator.ObjectForwardAxis = SplineComponent.AlignAxis.NegativeYAxis;
+        }
+        else
+        {
+            splineAnimator.ObjectForwardAxis = SplineComponent.AlignAxis.YAxis;
+        }
     }
 
     public override void PhysicsProcess()
@@ -89,7 +98,7 @@ public class PlayerRailParryState : PlayerBaseState
         {
             Player.Animator.SetTrigger(Player.GetAnimationParameterFormatted(PlayerController.AnimationParameter.Trigger_RailJumpPerformed));
             StateMachine.TransitionTo<PlayerFallState>();
-        }
+        }        
     }
 
 
@@ -115,6 +124,7 @@ public class PlayerRailParryState : PlayerBaseState
         splineAnimator.enabled = false;
         Player.RigidBody.isKinematic = false;
         SplineUtility.Evaluate(splineToFollow.Spline, splineAnimator.NormalizedTime, out _, out float3 tangent, out _);
+        if (splineDirection < 0) tangent = -tangent;
         Player.RigidBody.linearVelocity = CalculateExitVelocity(tangent);
         //I have to use atan2 here because the tangent is in world space and I want to get the angle in degrees for the y axis
         Player.CameraManager.ResetView( Quaternion.Euler(0, Mathf.Atan2(tangent.x, tangent.z) * Mathf.Rad2Deg, 0));
