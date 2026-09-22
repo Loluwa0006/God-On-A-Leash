@@ -1296,8 +1296,8 @@ MonoBehaviour:
     m_MaintainOffset: 0
     m_ConstrainedAxes:
       x: 1
-      y: 1
-      z: 1
+      y: 0
+      z: 0
 --- !u!1 &3360112544056742745
 GameObject:
   m_ObjectHideFlags: 0
