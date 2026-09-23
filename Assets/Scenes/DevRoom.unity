@@ -352233,18 +352233,26 @@ PrefabInstance:
       propertyPath: entityDamaged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 903249804}
+    - target: {fileID: 7551317858004239039, guid: 0bdf6b0fd3efe3249b57b2c1522c633c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7646166458516138389, guid: 0bdf6b0fd3efe3249b57b2c1522c633c, type: 3}
       propertyPath: m_Name
       value: 'Leviathan '
       objectReference: {fileID: 0}
     - target: {fileID: 7646166458516138389, guid: 0bdf6b0fd3efe3249b57b2c1522c633c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7925681697848827762, guid: 0bdf6b0fd3efe3249b57b2c1522c633c, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 629357141}
+    - target: {fileID: 9007138121703564119, guid: 0bdf6b0fd3efe3249b57b2c1522c633c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9079805809090756410, guid: 0bdf6b0fd3efe3249b57b2c1522c633c, type: 3}
       propertyPath: m_Mesh
       value: 
