@@ -75,7 +75,7 @@ public class PlayerGetHitState : PlayerAirState
     {
         var knockbackVector = contactInfo.DamageInfo.GetKnockbackVector(contactInfo.collisionPoint, contactInfo.hurtbox.bounds.center);
         Player.RigidBody.linearVelocity = knockbackVector;
-        Player.RigidBody.MoveRotation(Quaternion.LookRotation(-knockbackVector, Vector3.up));
+        Player.Model.transform.rotation = Quaternion.LookRotation(-knockbackVector, Vector3.up);
     }
     public override void PhysicsProcess()
     {
@@ -124,5 +124,6 @@ public class PlayerGetHitState : PlayerAirState
         invulnerablityTracker = (int)Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.ExtraInvulnerabilityFramesAfterHit);
         invulnPostHitstun = true;
         Player.CameraManager.ControlPlayerRotation = true;
+        Player.Model.transform.localRotation = Quaternion.identity;
     }
 }
