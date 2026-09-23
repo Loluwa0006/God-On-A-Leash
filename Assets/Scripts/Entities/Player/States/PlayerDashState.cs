@@ -40,7 +40,6 @@ public class PlayerDashState : PlayerAirState
 
         var dashDirectionCorrected = Mathf.Clamp(dashDirection, 0, 1); //makes neutral and holding back the same value
 
-
         AirborneMovement(Player.PlayerInput.GetMovementDirection(), Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerDashLateralAcceleration));
 
         var directionToGrapple = (Player.RodManager.GrappleInfo.GrapplePosition - Player.Collider.bounds.center).normalized;
@@ -67,6 +66,12 @@ public class PlayerDashState : PlayerAirState
         }
 
         Player.RodManager.RodLength = distanceFromGrapplePoint;
+
+        //rotate model to face direction of movement
+        var euler = Quaternion.LookRotation(Player.RigidBody.linearVelocity).eulerAngles;
+        euler.y = 0;
+        euler.z = 0;
+        Player.Model.transform.localRotation = Quaternion.Euler(euler);
     }
 
  
@@ -77,6 +82,7 @@ public class PlayerDashState : PlayerAirState
         Player.RodManager.DisableGrapple();
         Player.AnarchyManager.GenerateAnarchy(ScaledGenerationMethod.Dash);
         Player.CameraManager.TransitionToCamera(Player.CameraManager.DefaultCamera, cameraTransitionTime);
+        Player.Model.transform.localRotation = Quaternion.identity;
     }
     public override void AnimationTeardown()
     {
