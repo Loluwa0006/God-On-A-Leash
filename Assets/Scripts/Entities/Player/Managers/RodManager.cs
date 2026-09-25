@@ -8,10 +8,18 @@ public class RodManager : BaseEntity
     [SerializeField] PlayerController player;
     [SerializeField] Transform GrappleLineStartPoint;
     [SerializeField] Transform grapplePoint;
-
-
     [SerializeField] TMP_Text rodLengthDisplay;
 
+    [Header("Grapple Animations")]
+    //ampitiude 
+    [SerializeField] float waveLength = 0.6f;
+
+    //number of flu- im not gonna try spelling it
+    [SerializeField] int waveCount = 8;
+    // time before waves become straight again
+    [SerializeField] float waveDuration = 0.2f;
+
+    float elaspedGrappleTime = 0.0f;
     bool grappleActive = true;
 
     SpringJoint grappleJoint;
@@ -46,12 +54,13 @@ public class RodManager : BaseEntity
     } 
 
     public float RodLengthPercentage
-    {
+    { 
         get => RodLength / player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxRodRange);
     }
     public override void Initialize()
     {
         base.Initialize();
+        rodLine.positionCount = waveCount;
         DisableGrapple();
         RodLength = 0.0f;
     }
@@ -60,24 +69,13 @@ public class RodManager : BaseEntity
     {
         if (GrappleUtilities.RaycastResult.collider != null)
         {
-            grappleInfo.collider = GrappleUtilities.RaycastResult.collider;
-            grappleInfo.offset = GrappleUtilities.RaycastResult.point - grappleInfo.collider.bounds.center;
-
-            grappleJoint = player.gameObject.AddComponent<SpringJoint>();
-            grappleJoint.autoConfigureConnectedAnchor = false;
-            grappleJoint.connectedAnchor = grappleInfo.GrapplePosition;
-
+            EnableGrapple();
             grappleJoint.massScale = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodSwingMassScale);
             grappleJoint.spring = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodSpring);
             grappleJoint.damper = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodDamper);
 
             grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMaxDistanceWithNoSpring);
             grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMinDistanceWithNoSpring);
-
-            grappleActive = true;
-            rodLine.enabled = true;
-
-            RodLength = Vector3.Distance(player.RigidBody.position, GrappleUtilities.RaycastResult.point);
         }
     }
 
@@ -85,15 +83,7 @@ public class RodManager : BaseEntity
     {
         if (GrappleUtilities.RaycastResult.collider != null)
         {
-            grappleActive = true;
-            rodLine.enabled = true;
-
-            grappleInfo.collider = GrappleUtilities.RaycastResult.collider;
-            grappleInfo.offset = GrappleUtilities.RaycastResult.point - grappleInfo.collider.bounds.center;
-
-            grappleJoint = player.gameObject.AddComponent<SpringJoint>();
-            grappleJoint.autoConfigureConnectedAnchor = false;
-            grappleJoint.connectedAnchor = grappleInfo.GrapplePosition;
+            EnableGrapple();
 
             grappleJoint.massScale = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodSwingMassScale);
             grappleJoint.spring = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodSpringWhileDashing);
@@ -101,11 +91,10 @@ public class RodManager : BaseEntity
 
             grappleJoint.maxDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMaxDistanceWithNoSpringWhileDashing);
             grappleJoint.minDistance = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerRodMinDistanceWithNoSpringWhileDashing);
-
-
-            RodLength = Vector3.Distance(player.RigidBody.position, GrappleUtilities.RaycastResult.point);
         }
     }
+
+
     private void FixedUpdate()
     {
         if (grappleJoint != null)
@@ -114,6 +103,21 @@ public class RodManager : BaseEntity
         }
     }
 
+    void EnableGrapple()
+    {
+        elaspedGrappleTime = 0.0f;
+        grappleInfo.collider = GrappleUtilities.RaycastResult.collider;
+        grappleInfo.offset = GrappleUtilities.RaycastResult.point - grappleInfo.collider.bounds.center;
+
+        grappleJoint = player.gameObject.AddComponent<SpringJoint>();
+        grappleJoint.autoConfigureConnectedAnchor = false;
+        grappleJoint.connectedAnchor = grappleInfo.GrapplePosition;
+
+        grappleActive = true;
+        rodLine.enabled = true;
+
+        RodLength = Vector3.Distance(player.RigidBody.position, GrappleUtilities.RaycastResult.point);
+    }
 
     public void DisableGrapple()
     {
@@ -126,9 +130,33 @@ public class RodManager : BaseEntity
     {
         if (grappleActive)
         {
-            rodLine.SetPosition(0, GrappleLineStartPoint.position);
-            rodLine.SetPosition(1, grappleInfo.GrapplePosition);
+            Vector3 startPosition = GrappleLineStartPoint.position;
+            Vector3 endPosition = grappleInfo.GrapplePosition;
+            Vector3 direction = (endPosition - startPosition).normalized;
+            float timeElaspedAsPercent = elaspedGrappleTime/waveDuration;
+            if (timeElaspedAsPercent > 0.999f) timeElaspedAsPercent = 1.0f;
+            float wavePower = ( 1.0f - timeElaspedAsPercent);
+
+            for (int i = 0; i < waveCount; i++)
+            {
+                float progress = i / ((float)waveCount - 1);
+                Vector3 pointPosition = Vector3.Lerp(startPosition, endPosition, progress);
+
+                Vector3 waveDirection = Vector3.Cross(Vector3.Cross(direction, Vector3.up), direction);
+                float randomSample = Random.Range(0, 1000000);
+                float sineStuff = Mathf.Sin(randomSample * Mathf.PI * 2) * waveLength * wavePower;
+                pointPosition += waveDirection * sineStuff;
+                rodLine.SetPosition(i, pointPosition);
+            }
             grapplePoint.position = grappleInfo.GrapplePosition;
+        }
+    }
+
+    private void Update()
+    {
+        if (grappleActive)
+        {
+            elaspedGrappleTime += Time.deltaTime;
         }
     }
 }

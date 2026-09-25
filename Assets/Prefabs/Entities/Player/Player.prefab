@@ -1295,7 +1295,7 @@ MonoBehaviour:
     m_WorldUpAxis: 2
     m_MaintainOffset: 0
     m_ConstrainedAxes:
-      x: 1
+      x: 0
       y: 0
       z: 0
 --- !u!1 &3360112544056742745
@@ -1696,6 +1696,9 @@ MonoBehaviour:
   GrappleLineStartPoint: {fileID: 427260736233143285}
   grapplePoint: {fileID: 6271263608659458738}
   rodLengthDisplay: {fileID: 0}
+  waveLength: 0.6
+  waveCount: 8
+  waveDuration: 0.25
 --- !u!114 &2433818277743470723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2223,11 +2226,11 @@ MonoBehaviour:
   m_PlayOnAwake: 0
   m_LoopMode: 0
   m_Method: 1
-  m_Duration: 58.815098
+  m_Duration: 67.10691
   m_MaxSpeed: 25
   m_EasingMode: 0
   m_AlignmentMode: 1
-  m_ObjectForwardAxis: 1
+  m_ObjectForwardAxis: 4
   m_ObjectUpAxis: 5
   m_StartOffset: 0
 --- !u!114 &2288019825110320831
