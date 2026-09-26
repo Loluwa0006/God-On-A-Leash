@@ -183,7 +183,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _1st_Wave_Height: 0.01
-    - _1st_Wave_Length: 3
+    - _1st_Wave_Length: 952.3
     - _1st_Wave_Sharpness: 0.3
     - _1st_Wave_Speed: 1
     - _2nd_Wave_Height: 0.015
@@ -358,12 +358,12 @@ Material:
     - _SurfFoam_AlphaBlend: 0
     - _SurfFoam_Edge: 0.3
     - _SurfFoam_EdgeSmooth: 0.301
-    - _SurfFoam_Scale: 0.08
+    - _SurfFoam_Scale: 0.005
     - _Surface: 1
     - _SurfaceDistortionScale: 1.48
     - _SurfaceDistortionStrength: 0.1
     - _SurfaceDistortion_Scale: 1
-    - _SurfaceDistortion_Strength: 0.2
+    - _SurfaceDistortion_Strength: 0.05
     - _SurfaceFoamDistortion: 0.1
     - _SurfaceFoamScale: 2.5
     - _SurfaceFomShaodwDepth: 24.99
@@ -465,7 +465,7 @@ Material:
     - _WaveDirection: {r: 1, g: 0, b: 0, a: 0}
     - _WaveDirection2nd: {r: 0, g: 0, b: 1, a: 0}
     - _WaveTopColor: {r: 1, g: 0.07585351, b: 0, a: 1}
-    - _Wave_Top_Color: {r: 0.29829118, g: 0.9207434, b: 0.9245283, a: 1}
+    - _Wave_Top_Color: {r: 0, g: 0.14901961, b: 0.6431373, a: 1}
     - _maskMinMax: {r: 0, g: 0.78, b: 0, a: 0}
     - _shoreTexSpeed: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _shoreTexTile: {r: 1, g: 1, b: 0, a: 0}

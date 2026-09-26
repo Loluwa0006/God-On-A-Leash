@@ -71,7 +71,6 @@ public class LeviathanProjectileState : LeviathanBaseState
 
     public void FireProjectiles(float delayBetweenShots, float numberOfShots)
     {
-        Debug.Log("Firing " + numberOfShots + " projectiles with a " + delayBetweenShots + " sec delay per shot");
         StartCoroutine(FireMultipleProjectiles(delayBetweenShots, numberOfShots));
     }
 
