@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LivingRumShipAbility
   idComponent: {fileID: 890841231728789372}
+  ID: 1
   livingRumProjectile: {fileID: 8871178927053859816}
   rumTarget: {fileID: 4787894131270264209}
   firePoint: {fileID: 2137148611482741707}
@@ -178,6 +179,12 @@ MonoBehaviour:
   meshObjects:
   - {fileID: 7355682756305888722}
   ownerEntityType: 1
+  ProjectileFired:
+    m_PersistentCalls:
+      m_Calls: []
+  ProjectileDestroyed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6416407280116297385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +238,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileVelocityModifier
   priority: 0
+  useAuthoredDirection: 0
+  authoredDirection: {x: 0, y: 0, z: 0}
+  delayBeforeMovement: 0
   moveAcceleration: 15
   moveSpeed: 90
   rotationOffset: {x: 0, y: 0, z: 0, w: 0}

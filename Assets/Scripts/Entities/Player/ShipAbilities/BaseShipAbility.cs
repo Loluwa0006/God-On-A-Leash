@@ -9,7 +9,7 @@ public class BaseShipAbility : BaseEntity
 
     public bool AbilityActive { get; protected set; }
 
-    public ShipAbilityID AbilityID { get; }
+    public ShipAbilityID AbilityID { get => ID; }
 
     public virtual void InitializeShipAbility(AnarchyManager anarchyManager, PlayerController player)
     {

@@ -27,29 +27,37 @@ public class ShipManager : MonoBehaviour
     }
     public void InitializeShipManager()
     {
-        _ = InitializeShipAbilities();
+         InitializeShipAbilities();
     }
 
-    async Task InitializeShipAbilities()
+    void InitializeShipAbilities()
     {
-       for (int x = 0; x < selectedAbilties.Count; x++)
+        for (int x = 0; x < selectedAbilties.Count; x++)
         {
-            var addressablesLoad = Addressables.LoadAssetAsync<GameObject>(selectedAbilties[x].ID.ToString());
-            var addressablesResult = await addressablesLoad.Task;
-            if (addressablesLoad.Status == AsyncOperationStatus.Succeeded)
-            {
-                if (!addressablesResult.TryGetComponent<BaseShipAbility>(out var abilityComponent)) continue;
-                abilityComponent.InitializeShipAbility(player.AnarchyManager, player);
-                var newEntry = new AbilityEntry
-                {
-                    ability = abilityComponent,
-                    abilityInput = selectedAbilties[x].abilityInput
-                };
-                shipAbilities.Add(newEntry);
-            }
+            AddNewAbility(selectedAbilties[x].ID, selectedAbilties[x].abilityInput);      
         }
     }
-    private void Update()
+
+    async void AddNewAbility(ShipAbilityID ID, InputManager.BufferableInputs input)
+    {
+        var addressablesLoad = Addressables.LoadAssetAsync<GameObject>(ID.ToString());
+        var addressablesResult = await addressablesLoad.Task;
+
+        if (addressablesResult == null) return;
+        if (!addressablesResult.TryGetComponent<BaseShipAbility>(out var abilityComponent))
+        {
+            Debug.LogWarning("Could not find ship ability in " + addressablesResult.ToString());
+        }
+        abilityComponent.InitializeShipAbility(player.AnarchyManager, player);
+        var newEntry = new AbilityEntry
+        {
+            ability = abilityComponent,
+            abilityInput = input
+        };
+        shipAbilities.Add(newEntry);
+        Debug.Log("Added new ability " + abilityComponent.AbilityID.ToString() + " to ship abilities list");
+    }
+    public void Update()
     {
         for (int i = 0; i < shipAbilities.Count; i++)
         {
@@ -62,7 +70,7 @@ public class ShipManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    public void FixedUpdate()
     {
         for (int i = 0; i < shipAbilities.Count; i++)
         {
@@ -73,6 +81,8 @@ public class ShipManager : MonoBehaviour
 
     protected bool IsAbilityAvailable(BaseShipAbility ability, InputManager.BufferableInputs input)
     {
+
+       
         if (!AbilitiesAvailable) return false;
         if (ability == null) return false;
         if (!ability.AbilityAvailable()) return false;

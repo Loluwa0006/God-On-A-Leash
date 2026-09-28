@@ -32,6 +32,7 @@ public class WaterWaveManager : MonoBehaviour
             var wavePosition = new Vector3(player.position.x, water.position.y, player.position.z);
             wavePosition += player.transform.forward * moveaheadDistance;
             var lateralVelocity = new Vector3(player.linearVelocity.x, 0, player.linearVelocity.z);
+            if (lateralVelocity.magnitude < 0.001f) return;
             var velocityRotation = Quaternion.LookRotation(lateralVelocity);
             
 

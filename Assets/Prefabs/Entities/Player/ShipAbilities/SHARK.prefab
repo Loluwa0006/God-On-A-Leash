@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SHARKShipAbility
   idComponent: {fileID: 1829370646076623579}
+  ID: 4
   sharkAbilityData: {fileID: 11400000, guid: 009118482a1de014e97d0ce19447aeac, type: 2}
 --- !u!114 &1829370646076623579
 MonoBehaviour:

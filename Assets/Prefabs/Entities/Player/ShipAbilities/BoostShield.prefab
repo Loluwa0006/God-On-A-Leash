@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoostShieldShipAbility
   idComponent: {fileID: 5271314989900139356}
-  anarchyCost: 0
+  ID: 0
   shieldObject: {fileID: 8143787611906544824}
   shieldCollider: {fileID: 7231506499242498268}
   healthComponent: {fileID: 4815549100061195739}
@@ -92,6 +92,9 @@ MonoBehaviour:
   entityHealed:
     m_PersistentCalls:
       m_Calls: []
+  componentInitialized:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8143787611906544824
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +113,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1584432564704299460
 Transform:
   m_ObjectHideFlags: 0
@@ -119,8 +122,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8143787611906544824}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.03155639, y: 0.9224745, z: 0.37693617, w: -0.07722784}
+  m_LocalPosition: {x: -5.719241, y: 325.49603, z: 19.787304}
   m_LocalScale: {x: 100, y: 65, z: 15}
   m_ConstrainProportionsScale: 0
   m_Children: []

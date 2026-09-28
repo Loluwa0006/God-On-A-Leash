@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChronoShipAbility
   idComponent: {fileID: 215834995733400152}
+  ID: 3
   chronoAbilityData: {fileID: 11400000, guid: b582d8c007140e24cb2c27fce0e00390, type: 2}
   vfxAnimator: {fileID: 6062288895060346151}
 --- !u!114 &215834995733400152
