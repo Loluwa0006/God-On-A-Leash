@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ShipAbiilities
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: ShipAbiilities
+  m_GUID: 1a69288c082519d4484a80d04b7fe076
+  m_SerializeEntries:
+  - m_GUID: 19a59435d3905d549b30587c486ff3f6
+    m_Address: BoostShield
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ShipAbility
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a50a91aaa5e0974f85158dd281aab20
+    m_Address: LivingRum
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ShipAbility
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 910c2e9e8018a8f47bead9d22a8c1867
+    m_Address: Chrono
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ShipAbility
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b27c06c0c7f965b4b8df6e72860b4f6d
+    m_Address: EMP
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ShipAbility
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ffd7ddc2f5f60754c8ae69655b0c08f2
+    m_Address: SHARK
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ShipAbility
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 2aa7125ef27a71e479bfea35926e3b3c, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1d315566b052eb44893faba27ebaec95, type: 2}
+    - {fileID: 11400000, guid: 37d5029ea1ca07e45baf1155b94f30cd, type: 2}

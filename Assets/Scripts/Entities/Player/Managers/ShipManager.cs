@@ -1,65 +1,74 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class ShipManager : MonoBehaviour
 {
     [SerializeField] PlayerController player;
-    [SerializeField] ShipAbilityRegistry abilityOneID;
-    [SerializeField] ShipAbilityRegistry abilityTwoID;
-    BaseShipAbility abilityOne;
-    BaseShipAbility abilityTwo;
-    
-    [System.Serializable]
-    struct ShipAbilityIndex
-    {
-        public ShipAbilityRegistry ID;
-        public BaseShipAbility Prefab;
-    }
+    [SerializeField] List<SerializedAbility> selectedAbilties = new();
 
-    [SerializeField] List<ShipAbilityIndex> shipAbilityRegister = new();
-
+    List<AbilityEntry> shipAbilities = new();
     public bool AbilitiesAvailable { set; get; } = true;
 
+    [System.Serializable]
+    public struct AbilityEntry
+    {
+        public BaseShipAbility ability;
+        public InputManager.BufferableInputs abilityInput;
+    }
+    [System.Serializable]
+    public struct SerializedAbility
+    {
+        public ShipAbilityID ID;
+
+        public InputManager.BufferableInputs abilityInput;
+    }
     public void InitializeShipManager()
     {
-        InitializeShipAbilities();
+        _ = InitializeShipAbilities();
     }
 
-    void InitializeShipAbilities()
+    async Task InitializeShipAbilities()
     {
-        for (int i = 0; i < shipAbilityRegister.Count; i++)
+       for (int x = 0; x < selectedAbilties.Count; x++)
         {
-            var index = shipAbilityRegister[i];
-            if (index.ID == abilityOneID)
+            var addressablesLoad = Addressables.LoadAssetAsync<GameObject>(selectedAbilties[x].ID.ToString());
+            var addressablesResult = await addressablesLoad.Task;
+            if (addressablesLoad.Status == AsyncOperationStatus.Succeeded)
             {
-                abilityOne = Instantiate(index.Prefab);
-            }
-            if (index.ID == abilityTwoID)
-            {
-                abilityTwo = Instantiate(index.Prefab);
+                if (!addressablesResult.TryGetComponent<BaseShipAbility>(out var abilityComponent)) continue;
+                abilityComponent.InitializeShipAbility(player.AnarchyManager, player);
+                var newEntry = new AbilityEntry
+                {
+                    ability = abilityComponent,
+                    abilityInput = selectedAbilties[x].abilityInput
+                };
+                shipAbilities.Add(newEntry);
             }
         }
-        if (abilityOne != null) abilityOne.InitializeShipAbility(player.AnarchyManager, player);
-        if (abilityTwo != null) abilityTwo.InitializeShipAbility(player.AnarchyManager, player);
     }
     private void Update()
     {
-        if (IsAbilityAvailable(abilityOne, InputManager.BufferableInputs.ShipAbilityOne))
+        for (int i = 0; i < shipAbilities.Count; i++)
         {
-            abilityOne.ActivateAbility();
-            player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.ShipAbilityOne].Consume();
-        }
-        if (IsAbilityAvailable(abilityTwo, InputManager.BufferableInputs.ShipAbilityTwo))
-        {
-            abilityTwo.ActivateAbility();
-            player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.ShipAbilityTwo].Consume();
+            var entry = shipAbilities[i];
+            if (IsAbilityAvailable(entry.ability, entry.abilityInput))
+             {
+                entry.ability.ActivateAbility();
+                player.PlayerInput.BufferRegistry[entry.abilityInput].Consume();
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        if (abilityOne != null && abilityOne.AbilityActive) abilityOne.UpdateAbility();
-        if (abilityTwo != null && abilityTwo.AbilityActive) abilityTwo.UpdateAbility();
+        for (int i = 0; i < shipAbilities.Count; i++)
+        {
+            var ability = shipAbilities[i].ability;
+            if (ability.AbilityActive) ability.UpdateAbility();
+        }
     }
 
     protected bool IsAbilityAvailable(BaseShipAbility ability, InputManager.BufferableInputs input)

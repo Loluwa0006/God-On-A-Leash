@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class BaseShipAbility : BaseEntity
 {
+    [SerializeField] ShipAbilityID ID;
     protected AnarchyManager anarchyManager;
     protected PlayerController player;
     public int AnarchyCost { get; protected set; }
 
     public bool AbilityActive { get; protected set; }
+
+    public ShipAbilityID AbilityID { get; }
 
     public virtual void InitializeShipAbility(AnarchyManager anarchyManager, PlayerController player)
     {

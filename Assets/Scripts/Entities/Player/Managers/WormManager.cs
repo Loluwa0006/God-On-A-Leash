@@ -77,7 +77,7 @@ public class WormManager : MonoBehaviour
     {
         var newWorm = wormPool.Dequeue();
         wormPool.Enqueue(newWorm);
-        wormRequested.Invoke(newWorm);
+        wormRequested?.Invoke(newWorm);
         if (!ActiveWorms.Contains(newWorm)) ActiveWorms.Add(newWorm);
         newWorm.wormDisabled += OnWormDeactivated;
         return newWorm;
