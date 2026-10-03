@@ -1,14 +1,11 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class ShipManager : MonoBehaviour
 {
     [SerializeField] PlayerController player;
     [SerializeField] List<SerializedAbility> selectedAbilties = new();
-
     List<AbilityEntry> shipAbilities = new();
     public bool AbilitiesAvailable { set; get; } = true;
 
@@ -22,7 +19,6 @@ public class ShipManager : MonoBehaviour
     public struct SerializedAbility
     {
         public ShipAbilityID ID;
-
         public InputManager.BufferableInputs abilityInput;
     }
     public void InitializeShipManager()
@@ -42,11 +38,11 @@ public class ShipManager : MonoBehaviour
     {
         var addressablesLoad = Addressables.LoadAssetAsync<GameObject>(ID.ToString());
         var addressablesResult = await addressablesLoad.Task;
-
-        if (addressablesResult == null) return;
-        if (!addressablesResult.TryGetComponent<BaseShipAbility>(out var abilityComponent))
+        var instance = Instantiate(addressablesResult, null);
+        if (instance == null) return;
+        if (!instance.TryGetComponent<BaseShipAbility>(out var abilityComponent))
         {
-            Debug.LogWarning("Could not find ship ability in " + addressablesResult.ToString());
+            Debug.LogWarning("Could not find ship ability in " + instance.ToString());
         }
         abilityComponent.InitializeShipAbility(player.AnarchyManager, player);
         var newEntry = new AbilityEntry
@@ -55,7 +51,7 @@ public class ShipManager : MonoBehaviour
             abilityInput = input
         };
         shipAbilities.Add(newEntry);
-        Debug.Log("Added new ability " + abilityComponent.AbilityID.ToString() + " to ship abilities list");
+        addressablesLoad.Release();
     }
     public void Update()
     {
@@ -78,17 +74,12 @@ public class ShipManager : MonoBehaviour
             if (ability.AbilityActive) ability.UpdateAbility();
         }
     }
-
     protected bool IsAbilityAvailable(BaseShipAbility ability, InputManager.BufferableInputs input)
-    {
-
-       
+    {  
         if (!AbilitiesAvailable) return false;
         if (ability == null) return false;
         if (!ability.AbilityAvailable()) return false;
         if (!player.PlayerInput.BufferRegistry[input].Buffered) return false;
         return true;
     }
-
-
 }

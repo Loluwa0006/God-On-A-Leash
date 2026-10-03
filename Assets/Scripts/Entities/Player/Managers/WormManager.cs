@@ -23,29 +23,17 @@ public class WormManager : MonoBehaviour
             if (wormDisplay != null) wormDisplay.text = wormsRemaining.ToString();
         }
     }
-    Queue<WormEntity> wormPool = new();
+    public ObjectPool<WormEntity> WormPool { get; private set; } = new();
 
-    Queue<WormRailEntity> wormRailPool = new();
+    public ObjectPool<WormRailEntity> WormRailPool { get; private set; } = new();
 
-    public event Action<WormEntity> wormRequested;
+    public event Action<WormEntity> WormRequested;
 
-     public List<WormEntity> ActiveWorms { set; get; } = new();
+    public List<WormEntity> ActiveWorms { set; get; } = new();
     public void InitializeManager()
     {
         wormsRemaining = player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerMaxWorms);
-        foreach (var worm in wormPool)
-        {
-            Destroy(worm.gameObject);
-        }
-        foreach (var worm in wormRailPool)
-        {
-            Destroy(worm.gameObject);
-        }
-        wormPool.Clear();
-        wormRailPool.Clear();
-
         StartCoroutine(ConfigureWormPools());
-
     }
 
     IEnumerator ConfigureWormPools()
@@ -58,7 +46,7 @@ public class WormManager : MonoBehaviour
             EntityManager.Instance.RegisterEntity(newWorm);
             newWorm.Deactivate();
             newWorm.name = "Worm" + (i + 1);
-            wormPool.Enqueue(newWorm);
+            WormPool.AddToPool(newWorm);
         }
 
         for (int i = 0; i < WormsRemaining; i++)
@@ -69,15 +57,14 @@ public class WormManager : MonoBehaviour
             //the game hasn't started, so there's no worm to disable, and the function doesn't need the parameter to work
             newRail.DisableLine(disabledWorm: null);
             newRail.name = "WormRail" + ( i + 1);
-            wormRailPool.Enqueue(newRail);
+            WormRailPool.AddToPool(newRail);
         }
     }
 
     public WormEntity GetNewWorm()
     {
-        var newWorm = wormPool.Dequeue();
-        wormPool.Enqueue(newWorm);
-        wormRequested?.Invoke(newWorm);
+        var newWorm = WormPool.GetNewObject();
+        WormRequested?.Invoke(newWorm);
         if (!ActiveWorms.Contains(newWorm)) ActiveWorms.Add(newWorm);
         newWorm.wormDisabled += OnWormDeactivated;
         return newWorm;
@@ -85,9 +72,7 @@ public class WormManager : MonoBehaviour
 
     public WormRailEntity GetNewWormRail()
     {
-        var newWorm = wormRailPool.Dequeue();
-        wormRailPool.Enqueue(newWorm);
-        return newWorm;
+        return WormRailPool.GetNewObject();
     }
 
     void OnWormDeactivated(WormEntity worm)

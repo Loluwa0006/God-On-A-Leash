@@ -42,18 +42,9 @@ public class LivingRumShipAbility : BaseShipAbility
 
     void SetRumTarget()
     {
-        Ray ray = viewCamera.ViewportPointToRay(new Vector2(0.5f, 0.5f));
-        var raycast = Physics.Raycast(ray, out RaycastHit hit, livingRumAbilityData.RumRange, rumMask, QueryTriggerInteraction.Collide);
-        if (raycast)
-        {
-            rumTarget.position = hit.point;
-        }
-        else
-        {
-            rumTarget.position = ray.GetPoint(livingRumAbilityData.RumRange);
-        }
+        Ray ray = new (player.transform.position, viewCamera.transform.forward);
+        rumTarget.position = ray.GetPoint(livingRumAbilityData.RumRange);
     }
-
     public override void UpdateAbility()
     {
         base.UpdateAbility();

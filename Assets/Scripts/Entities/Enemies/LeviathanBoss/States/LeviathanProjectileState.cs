@@ -15,7 +15,7 @@ public class LeviathanProjectileState : LeviathanBaseState
 
     [SerializeField] protected ProjectileFireInformation projectileFireInfo;
 
-    protected Queue<BaseProjectile> projectilePool;
+    protected ObjectPool<BaseProjectile> projectilePool;
 
     [HideInInspector] public bool FireProjectileThisFrame;
     [HideInInspector] public bool ExitStateThisFrame;
@@ -29,7 +29,6 @@ public class LeviathanProjectileState : LeviathanBaseState
 
     public override void InitializeState(EntityStateMachine stateMachine, Transform owner)
     {
-        projectilePool = new Queue<BaseProjectile>(projectileFireInfo.poolSize);
         base.InitializeState(stateMachine, owner);
         for (int x = 0; x < projectileFireInfo.poolSize; x++)
         {
@@ -37,7 +36,7 @@ public class LeviathanProjectileState : LeviathanBaseState
             newProjectile.InitializeProjectile(Leviathan);
             newProjectile.name = Leviathan.name + newProjectile.name + x;
             newProjectile.DisableProjectile();
-            projectilePool.Enqueue(newProjectile);
+            projectilePool.AddToPool(newProjectile);
         }
     }
     public override void Enter(Dictionary<string, object> message = null)
@@ -64,9 +63,8 @@ public class LeviathanProjectileState : LeviathanBaseState
     }
     void FireProjectile()
     {
-        var newProjectile = projectilePool.Dequeue();
+        var newProjectile = projectilePool.GetNewObject();
         newProjectile.EnableProjectile(projectileFireInfo.spawnPoint.position, Leviathan.Target.transform);
-        projectilePool.Enqueue(newProjectile);
     }
 
     public void FireProjectiles(float delayBetweenShots, float numberOfShots)

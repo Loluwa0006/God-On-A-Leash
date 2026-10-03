@@ -23,6 +23,7 @@ public class PlayerThrowWormState : PlayerAirState
     int durationTracker = 0;
 
     Queue<WormEntity> wormQueue = new();
+
     public override void Enter(Dictionary<string, object> message = null)
     {
         base.Enter(message);
@@ -55,8 +56,6 @@ public class PlayerThrowWormState : PlayerAirState
         var cameraRay = viewCamera.ScreenPointToRay(new Vector2(Screen.width / 2.0f, Screen.height / 2.0f));
         worm.Fire(cameraRay.direction, Player.transform.position, Player.RigidBody.linearVelocity);
         Player.WormManager.WormsRemaining -= cost;
-
-
        
         wormQueue.Enqueue(worm);
         if (wormQueue.Count > Player.StatsManager.GetValueFromStat(StatDatabase.Instance.PlayerStats.PlayerWormsRequiredForRail)) wormQueue.Dequeue();
@@ -119,11 +118,10 @@ public class PlayerThrowWormState : PlayerAirState
 
     public override bool StateAvailable()
     {
-
         if (Player.WormManager.WormsRemaining > 0 && Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWorm].Buffered ||  Player.PlayerInput.BufferRegistry[InputManager.BufferableInputs.FireWormRail].Buffered)
         {
             return true;
         }
-            return false;
+        return false;
     }
 }

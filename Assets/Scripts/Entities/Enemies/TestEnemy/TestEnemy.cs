@@ -18,7 +18,7 @@ public class TestEnemy : BaseActor
     {
         public ProjectileInfoID ID;
         public ProjectileFireInformation fireInformation;
-        public Queue<BaseProjectile> projectilePool;
+        public ObjectPool<BaseProjectile> projectilePool;
     }
 
     [SerializeField] PlayerController player;
@@ -36,7 +36,7 @@ public class TestEnemy : BaseActor
     {
         for (int i = 0; i < testEnemyProjectileInfos.Count; i++)
         {
-            Queue<BaseProjectile> projectilePool = new();
+            ObjectPool<BaseProjectile> projectilePool = new();
             var nextInfo = testEnemyProjectileInfos[i];
             for (int x = 0; x < nextInfo.fireInformation.poolSize; x++)
             {
@@ -44,7 +44,7 @@ public class TestEnemy : BaseActor
                 newProjectile.InitializeProjectile(this);
                 newProjectile.name = name + nextInfo.ID.ToString() + i;
                 newProjectile.DisableProjectile();
-                projectilePool.Enqueue(newProjectile);
+                projectilePool.AddToPool(newProjectile);
             }
             nextInfo.projectilePool = projectilePool;
             testEnemyProjectileInfos[i] = nextInfo;
@@ -62,9 +62,8 @@ public class TestEnemy : BaseActor
     {
         fireState = FireState.Reloading;
         var queueInfo = projectileRegistry[queuedProjectileFire];
-        var nextProjectile = queueInfo.projectilePool.Dequeue();
+        var nextProjectile = queueInfo.projectilePool.GetNewObject();
         nextProjectile.EnableProjectile(queueInfo.fireInformation.spawnPoint.position, player.transform);
-        projectileRegistry[queuedProjectileFire].projectilePool.Enqueue(nextProjectile);
         cooldownRemaining = projectileRegistry[queuedProjectileFire].fireInformation.fireCooldown;
     }
 

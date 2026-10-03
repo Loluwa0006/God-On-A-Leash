@@ -8,7 +8,7 @@ public class SHARKShipAbility : BaseShipAbility
     {
         AnarchyCost = sharkAbilityData.AbilityCost;
         base.InitializeShipAbility(anarchyManager, player);
-        player.WormManager.wormRequested += OnWormRequested;
+        player.WormManager.WormRequested += OnWormRequested;
     }
 
     void OnWormRequested(WormEntity worm)
