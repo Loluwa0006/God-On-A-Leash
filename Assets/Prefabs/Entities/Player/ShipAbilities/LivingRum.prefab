@@ -31,7 +31,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7205113759672925259}
   - {fileID: 8389617058257243413}
   - {fileID: 2137148611482741707}
   m_Father: {fileID: 0}
@@ -107,6 +106,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7881144120006442856}
+  - {fileID: 7205113759672925259}
   m_Father: {fileID: 4598795629440825056}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &8377834744018633101
@@ -147,8 +147,10 @@ MonoBehaviour:
   rigidBody: {fileID: 7250767610126268265}
   projectileColliders: []
   meshObjects:
-  - {fileID: 7355682756305888722}
-  ownerEntityType: 1
+  - {fileID: 8795002651597872692}
+  - {fileID: 4756618998993660182}
+  - {fileID: 4827235781525687048}
+  ownerEntityType: 0
   ProjectileFired:
     m_PersistentCalls:
       m_Calls: []
@@ -209,6 +211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileVelocityModifier
   priority: 600
   useAuthoredDirection: 0
+  resetSpeedOnDeactivation: 1
   authoredDirection: {x: 0, y: 0, z: 0}
   delayBeforeMovement: 0
   moveAcceleration: 0.25
@@ -227,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileHomingModifier
   priority: 500
-  homingPower: 0.5
+  homingPower: 2
   hasMaxDistanceForHoming: 0
   maxDistanceForHoming: 1500
   invertHoming: 0
@@ -246,6 +249,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileLifetimeModifier
   priority: 400
   lifetimeInSeconds: 7
+  OnLifetimeExpire:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1246128536096520023}
+        m_TargetAssemblyTypeName: LivingRumShipAbility, Assembly-CSharp
+        m_MethodName: DeactivateAbility
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4386820304148584493
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +326,7 @@ Transform:
   m_LocalScale: {x: 30, y: 30, z: 30}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4598795629440825056}
+  m_Father: {fileID: 8389617058257243413}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8002608871086538812
 MeshFilter:
@@ -436,13 +454,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8da3c19b96f334f4daeae9871c42fd5d, type: 3}
---- !u!1 &7355682756305888722 stripped
+--- !u!1 &4756618998993660182 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8da3c19b96f334f4daeae9871c42fd5d, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2942869708459553173, guid: 8da3c19b96f334f4daeae9871c42fd5d, type: 3}
   m_PrefabInstance: {fileID: 7698283091849713795}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7881144120006442856 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8da3c19b96f334f4daeae9871c42fd5d, type: 3}
+  m_PrefabInstance: {fileID: 7698283091849713795}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8795002651597872692 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1214824004972775095, guid: 8da3c19b96f334f4daeae9871c42fd5d, type: 3}
   m_PrefabInstance: {fileID: 7698283091849713795}
   m_PrefabAsset: {fileID: 0}

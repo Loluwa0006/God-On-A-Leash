@@ -9,7 +9,6 @@ public class LivingRumShipAbility : BaseShipAbility
     [SerializeField] LayerMask rumMask;
     [SerializeField] LivingRumAbilityData livingRumAbilityData;
 
-    int durationTracker = 0;
     public override void InitializeShipAbility(AnarchyManager anarchyManager, PlayerController player)
     {
         AnarchyCost = livingRumAbilityData.AbilityCost;
@@ -26,10 +25,10 @@ public class LivingRumShipAbility : BaseShipAbility
     }
     override public void ActivateAbility()
     {
+        if (livingRumProjectile.Active) livingRumProjectile.DisableProjectile();
         base.ActivateAbility();
         SetRumTarget();
-        durationTracker = livingRumAbilityData.RumDuration;
-        float velocityToInheritFromOwner = Vector3.Dot((rumTarget.position - player.Collider.bounds.center).normalized, player.RigidBody.linearVelocity);
+       float velocityToInheritFromOwner = Vector3.Dot((rumTarget.position - player.Collider.bounds.center).normalized, player.RigidBody.linearVelocity.normalized);
         livingRumProjectile.RigidBody.linearVelocity = player.RigidBody.linearVelocity * velocityToInheritFromOwner;
         livingRumProjectile.EnableProjectile(firePoint.position, rumTarget);
     }
@@ -37,7 +36,11 @@ public class LivingRumShipAbility : BaseShipAbility
     public override void DeactivateAbility()
     {
         base.DeactivateAbility();
-        livingRumProjectile.DisableProjectile();
+        if (livingRumProjectile.ProjectileColliders.Contains(GrappleUtilities.RaycastResult.collider))
+        {
+            player.RodManager.DisableGrapple();
+            //Hack solution for now since worms aren't projectile entities yet
+        }
     }
 
     void SetRumTarget()
@@ -50,10 +53,5 @@ public class LivingRumShipAbility : BaseShipAbility
         base.UpdateAbility();
         if (!AbilityActive) return;
         SetRumTarget();
-        durationTracker--;
-        if (durationTracker <= 0 && AbilityActive)
-        {
-            DeactivateAbility();
-        }
     }
 }

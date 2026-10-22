@@ -5,7 +5,7 @@ public class ProjectileVelocityModifier : BaseProjectileModifier
 {
 
     [SerializeField] bool useAuthoredDirection = false;
-
+    [SerializeField] bool resetSpeedOnDeactivation = true;
     [SerializeField, ShowIf (nameof(useAuthoredDirection))] Vector3 authoredDirection = Vector3.zero;
     [SerializeField] float delayBeforeMovement = 0.0f;
     [SerializeField] float moveAcceleration = 8.0f;
@@ -65,5 +65,11 @@ public class ProjectileVelocityModifier : BaseProjectileModifier
 
             Projectile.RigidBody.AddForce(forceToAdd, ForceMode.VelocityChange);
         }
+    }
+
+    public override void OnProjectileDisabled()
+    {
+        base.OnProjectileDisabled();
+        if (resetSpeedOnDeactivation) Projectile.RigidBody.linearVelocity = Vector3.zero;
     }
 }

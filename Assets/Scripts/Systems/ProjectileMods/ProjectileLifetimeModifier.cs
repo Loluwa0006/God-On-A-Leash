@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ProjectileLifetimeModifier : BaseProjectileModifier
 {
@@ -8,6 +9,8 @@ public class ProjectileLifetimeModifier : BaseProjectileModifier
     int lifetimeTracker = 0;
 
     public int LifetimeRemaining => Mathf.Max(MaxLifeTime - lifetimeTracker, 0);
+
+    public UnityEvent<BaseProjectile> OnLifetimeExpire = new();
 
     public override void OnProjectileFired()
     {
@@ -22,6 +25,7 @@ public class ProjectileLifetimeModifier : BaseProjectileModifier
         if (LifetimeRemaining == 0)
         {
             Projectile.DisableProjectile();
+            OnLifetimeExpire.Invoke(Projectile);
         }
     }
 }
